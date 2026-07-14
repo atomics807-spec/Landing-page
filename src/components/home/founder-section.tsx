@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
+import Link from 'next/link';
 import { Quote, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Locale } from '@/i18n';

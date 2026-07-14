@@ -15,13 +15,14 @@ interface StatItem {
   icon: keyof typeof iconMap;
   value: string;
   suffix?: string;
+  labelKey: string;
 }
 
 const stats: StatItem[] = [
-  { icon: 'users', value: '500', suffix: '+' },
-  { icon: 'briefcase', value: '150', suffix: '+' },
-  { icon: 'globe', value: '15', suffix: '+' },
-  { icon: 'award', value: '10', suffix: '+' },
+  { icon: 'users', value: '500', suffix: '+', labelKey: 'clients' },
+  { icon: 'briefcase', value: '150', suffix: '+', labelKey: 'projects' },
+  { icon: 'globe', value: '15', suffix: '+', labelKey: 'partners' },
+  { icon: 'award', value: '10', suffix: '+', labelKey: 'experience' },
 ];
 
 export function StatisticsSection() {
@@ -56,7 +57,6 @@ export function StatisticsSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => {
             const Icon = iconMap[stat.icon];
-            const labelKey = stat.icon as 'clients' | 'projects' | 'partners' | 'experience';
 
             return (
               <motion.div
@@ -74,7 +74,7 @@ export function StatisticsSection() {
                   {stat.value}
                   {stat.suffix}
                 </p>
-                <p className="text-primary-100 text-sm md:text-base">{t(labelKey)}</p>
+                <p className="text-primary-100 text-sm md:text-base">{t(stat.labelKey)}</p>
               </motion.div>
             );
           })}
