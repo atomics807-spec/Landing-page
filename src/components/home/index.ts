@@ -1,0 +1,10 @@
+export { HeroSection } from './hero-section';
+export { StatisticsSection } from './statistics-section';
+export { AboutSection } from './about-section';
+export { ServicesSection } from './services-section';
+export { FounderSection } from './founder-section';
+export { SubcompaniesSection } from './subcompanies-section';
+export { TestimonialsSection } from './testimonials-section';
+export { CTASection } from './cta-section';
+export { FAQSection } from './faq-section';
+export { NewsletterSection } from './newsletter-section';

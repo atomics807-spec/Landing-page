@@ -1,0 +1,390 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "view": "Voir",
+    "search": "Rechercher",
+    "submit": "Soumettre",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "readMore": "En savoir plus",
+    "learnMore": "Découvrir",
+    "getStarted": "Commencer",
+    "contactUs": "Contactez-nous",
+    "viewAll": "Voir tout",
+    "home": "Accueil",
+    "about": "À propos",
+    "services": "Services",
+    "properties": "Propriétés",
+    "blog": "Blog",
+    "contact": "Contact",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "register": "S'inscrire",
+    "profile": "Profil",
+    "welcome": "Bienvenue",
+    "copyright": "Tous droits réservés"
+  },
+  "navigation": {
+    "announcement": "Construire des Partenariats Durables • Excellence Professionnelle",
+    "home": "Accueil",
+    "about": "À propos",
+    "services": "Services",
+    "properties": "Propriétés",
+    "blog": "Blog",
+    "contact": "Contact",
+    "consultants": "Nos Consultants",
+    "team": "Notre Équipe",
+    "subcompanies": "Filiales",
+    "careers": "Carrières",
+    "login": "Espace Client",
+    "adminDashboard": "Tableau de bord"
+  },
+  "hero": {
+    "title": "Solutions Professionnelles... Croissance Durable",
+    "subtitle": "Paraysco Consulting Inc. fournit des solutions de conseil innovantes qui comblent le fossé entre les idées et la mise en œuvre, l'investissement et les opportunités, et l'ambition et la croissance durable.",
+    "cta": "Commencer Aujourd'hui",
+    "ctaSecondary": "Nos Services"
+  },
+  "about": {
+    "title": "À Propos de Paraysco Consulting Inc.",
+    "subtitle": "Construire des Partenariats Durables • Excellence Professionnelle • Créer une Valeur Durable",
+    "description": "Paraysco Consulting Inc. est un cabinet de conseil professionnel multidisciplinaire engagé à fournir des solutions intégrées dans l'immobilier, l'ingénierie, la construction, l'approvisionnement, la gestion de projets, le conseil en investissements et le conseil aux entreprises.",
+    "vision": {
+      "title": "Notre Vision",
+      "content": "Devenir la principale entreprise de conseil et de facilitation des investissements en Afrique, offrant des services professionnels de classe mondiale qui transforment les entreprises, renforcent les institutions, développent des infrastructures durables et créent une valeur socio-économique durable pour les générations futures."
+    },
+    "mission": {
+      "title": "Notre Mission",
+      "content": "Fournir des solutions de conseil innovantes, fiables et intégrées qui autonomisent les gouvernements, les institutions financières, les entreprises, les investisseurs et les communautés pour atteindre une croissance durable grâce à l'excellence professionnelle, aux partenariats stratégiques et à la mise en œuvre responsable des projets."
+    },
+    "values": {
+      "title": "Nos Valeurs Fondamentales",
+      "items": {
+        "integrity": "Intégrité - Nous menons nos affaires avec honnêteté, éthique et transparence.",
+        "excellence": "Excellence Professionnelle - Nous visons les normes les plus élevées dans chaque mission grâce à la compétence et à l'exécution disciplinée.",
+        "accountability": "Responsabilité - Nous assumons la responsabilité de nos actions, décisions et performances.",
+        "innovation": "Innovation - Nous embrassons la créativité, la technologie et l'amélioration continue.",
+        "collaboration": "Collaboration - Nous valorisons le travail d'équipe et croyons que des résultats exceptionnels sont atteints par des partenariats significatifs.",
+        "sustainability": "Durabilité - Nous soutenons le développement responsable qui équilibre la croissance économique avec la protection de l'environnement."
+      }
+    }
+  },
+  "founder": {
+    "title": "Message du Président",
+    "name": "M. Mola Scott",
+    "role": "Directeur Général, Paraysco Consulting Inc.",
+    "message": "Chez Paraysco Consulting Inc., nous croyons que le vrai développement est atteint par un leadership visionnaire, des partenariats stratégiques, l'excellence professionnelle et une intégrité inébranlable. Notre entreprise a été fondée avec un objectif clair — fournir des solutions de conseil innovantes qui comblent le fossé entre les idées et la mise en œuvre, l'investissement et les opportunités, et l'ambition et la croissance durable. Grâce à l'innovation, au professionnalisme et à la collaboration, nous aspirons à devenir l'un des principaux cabinets de conseil multidisciplinaires d'Afrique. Nous restons engagés à créer de la valeur pour nos clients, à renforcer les institutions, à soutenir le développement d'infrastructures durables et à contribuer de manière significative à la transformation économique nationale et régionale.",
+    "signature": "Mola Scott",
+    "cta": "Lire le Message Intégral"
+  },
+  "statistics": {
+    "title": "Nos Réalisations",
+    "clients": "Clients Satisfaits",
+    "projects": "Projets Réalisés",
+    "partners": "Partenaires Mondiaux",
+    "experience": "Années d'Excellence"
+  },
+  "services": {
+    "title": "Nos Services",
+    "subtitle": "Solutions Complètes pour Vos Besoins d'Entreprise",
+    "realEstate": {
+      "title": "Immobilier et Gestion de Propriétés",
+      "description": "Services d'acquisition de biens, de location, de gestion d'installations et de conseil en investissements immobiliers.",
+      "features": ["Acquisition de Biens", "Gestion Locative", "Gestion d'Installations", "Conseil en Investissement"]
+    },
+    "engineering": {
+      "title": "Ingénierie et Infrastructure",
+      "description": "Planification des infrastructures, études de faisabilité techniques et assurance qualité en ingénierie.",
+      "features": ["Planification des Infrastructures", "Études de Faisabilité", "Assurance Qualité", "Conception Technique"]
+    },
+    "construction": {
+      "title": "Gestion de Projets de Construction",
+      "description": "Planification de projets, supervision de construction, suivi des coûts et contrôle des délais.",
+      "features": ["Planification de Projets", "Supervision de Construction", "Gestion des Coûts", "Contrôle des Délais"]
+    },
+    "procurement": {
+      "title": "Approvisionnement et Chaîne d'Approvisionnement",
+      "description": "Cadres d'appels d'offres transparents, administration des contrats et approvisionnement optimal.",
+      "features": ["Cadres d'Appels d'Offres", "Administration des Contrats", "Gestion des Fournisseurs", "Approvisionnement de Qualité"]
+    },
+    "investment": {
+      "title": "Conseil en Investissement",
+      "description": "Modélisation financière, développement de business cases et outils de support pour le financement de projets.",
+      "features": ["Modélisation Financière", "Business Cases", "Financement de Projets", "Évaluation des Risques"]
+    },
+    "consultancy": {
+      "title": "Conseil aux Entreprises",
+      "description": "Stratégie d'entreprise, développement organisationnel et transformation institutionnelle.",
+      "features": ["Stratégie d'Entreprise", "Développement Organisationnel", "Optimisation des Processus", "Gestion du Changement"]
+    }
+  },
+  "subcompanies": {
+    "title": "Nos Filiales",
+    "subtitle": "Entreprises Diversifiées du Groupe Paraysco",
+    "parayscoExpress": {
+      "name": "Paraysco Express",
+      "description": "Services logistiques et de livraison basés sur la technologie pour les individus et les entreprises.",
+      "services": ["Livraison de Repas", "Livraison de Colis", "Services d'Errand", "Enlèvement et Dépôt", "Expédition Express"]
+    },
+    "elohimAzar": {
+      "name": "Elohim Azar Speedboat Services",
+      "description": "Services de transport maritime et de logistique haut de gamme pour passagers et marchandises.",
+      "services": ["Transport de Passagers", "Services de Charter", "Location d'Entreprise", "Tourisme", "Urgence Maritime", "Cargo", "Conseil Maritime"]
+    },
+    "houseOfPat": {
+      "name": "House Of Pat",
+      "description": "Commerce de mode luxueux spécialisé dans les tissus premium et les collections de mariée.",
+      "services": ["Tissus de Dentelle de Luxe", "Collection de Mariée", "Pochettes de Luxe", "Vente en Gros", "Conseils de Style"]
+    }
+  },
+  "properties": {
+    "title": "Propriétés en Vedette",
+    "subtitle": "Découvrez les Opportunités Immobilières Premium",
+    "status": {
+      "available": "Disponible",
+      "sold": "Vendu",
+      "reserved": "Réservé",
+      "archived": "Archivé"
+    },
+    "filters": {
+      "location": "Emplacement",
+      "price": "Gamme de Prix",
+      "category": "Catégorie",
+      "bedrooms": "Chambres",
+      "bathrooms": "Salles de Bain",
+      "status": "Statut",
+      "search": "Rechercher des propriétés..."
+    },
+    "details": {
+      "bedrooms": "Chambres",
+      "bathrooms": "Salles de Bain",
+      "area": "Surface",
+      "location": "Emplacement",
+      "features": "Caractéristiques",
+      "gallery": "Galerie",
+      "contact": "Demander des Informations"
+    }
+  },
+  "consultants": {
+    "title": "Nos Consultants",
+    "subtitle": "Conseillers Professionnels Experts",
+    "specialization": "Spécialisation"
+  },
+  "team": {
+    "title": "Direction Exécutive",
+    "subtitle": "Rencontrez les Visionnaires derriere Notre Succès"
+  },
+  "testimonials": {
+    "title": "Ce Que Disent Nos Clients",
+    "subtitle": "La Confiance des Entreprises et des Institutions"
+  },
+  "blog": {
+    "title": "Dernières Actualités",
+    "subtitle": "Nouvelles et Mises à Jour de Paraysco Consulting",
+    "readTime": "min de lecture",
+    "categories": {
+      "all": "Tout",
+      "news": "Actualités",
+      "insights": "Perspectives",
+      "updates": "Mises à Jour"
+    }
+  },
+  "faqs": {
+    "title": "Questions Fréquentes",
+    "subtitle": "Trouvez des Réponses à Vos Questions"
+  },
+  "contact": {
+    "title": "Contactez-Nous",
+    "subtitle": "Nous Serions Ravis de Vous Entendre",
+    "form": {
+      "name": "Votre Nom",
+      "email": "Adresse Email",
+      "phone": "Numéro de Téléphone",
+      "subject": "Sujet",
+      "message": "Votre Message",
+      "submit": "Envoyer le Message",
+      "sending": "Envoi en cours..."
+    },
+    "info": {
+      "address": "Adresse du Bureau",
+      "phone": "Téléphone / WhatsApp",
+      "email": "Email",
+      "hours": "Heures d'Ouverture"
+    },
+    "map": "Trouvez-Nous sur la Carte"
+  },
+  "newsletter": {
+    "title": "Restez Informé",
+    "subtitle": "Abonnez-vous à notre newsletter pour recevoir les dernières actualités.",
+    "placeholder": "Entrez votre adresse email",
+    "button": "S'abonner",
+    "success": "Merci de votre inscription !",
+    "error": "Une erreur s'est produite. Veuillez réessayer."
+  },
+  "footer": {
+    "description": "Paraysco Consulting Inc. s'engage à fournir des solutions de conseil innovantes, fiables et intégrées pour une croissance durable.",
+    "quickLinks": "Liens Rapides",
+    "services": "Nos Services",
+    "connect": "Connectez-Vous Avec Nous",
+    "legal": "Mentions Légales",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation",
+    "cookies": "Politique des Cookies"
+  },
+  "auth": {
+    "login": {
+      "title": "Bon Retour",
+      "subtitle": "Connectez-vous à votre compte",
+      "email": "Adresse Email",
+      "password": "Mot de Passe",
+      "remember": "Se souvenir de moi",
+      "forgot": "Mot de passe oublié ?",
+      "submit": "Se Connecter",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "register": "S'inscrire"
+    },
+    "register": {
+      "title": "Créer un Compte",
+      "subtitle": "Rejoignez Paraysco Consulting",
+      "fullName": "Nom Complet",
+      "email": "Adresse Email",
+      "password": "Mot de Passe",
+      "confirmPassword": "Confirmer le Mot de Passe",
+      "privacy": "J'accepte la Politique de Confidentialité",
+      "submit": "Créer un Compte",
+      "hasAccount": "Vous avez déjà un compte ?",
+      "login": "Se connecter"
+    },
+    "forgot": {
+      "title": "Réinitialiser le Mot de Passe",
+      "subtitle": "Entrez votre email pour recevoir les instructions",
+      "submit": "Envoyer le Lien",
+      "back": "Retour à la connexion"
+    },
+    "reset": {
+      "title": "Définir un Nouveau Mot de Passe",
+      "subtitle": "Entrez votre nouveau mot de passe",
+      "submit": "Réinitialiser le Mot de Passe"
+    },
+    "verify": {
+      "title": "Vérifiez Votre Email",
+      "subtitle": "Nous avons envoyé un lien de vérification à votre email",
+      "resend": "Renvoyer l'email de vérification"
+    },
+    "errors": {
+      "invalidCredentials": "Email ou mot de passe invalide",
+      "emailExists": "Un compte avec cet email existe déjà",
+      "weakPassword": "Le mot de passe est trop faible",
+      "networkError": "Erreur réseau. Veuillez réessayer.",
+      "unknownError": "Une erreur inconnue s'est produite"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Tableau de Bord",
+      "welcome": "Bon retour"
+    },
+    "properties": {
+      "title": "Propriétés",
+      "add": "Ajouter une Propriété",
+      "edit": "Modifier la Propriété",
+      "delete": "Supprimer la Propriété",
+      "status": {
+        "available": "Disponible",
+        "sold": "Vendu",
+        "reserved": "Réservé",
+        "archived": "Archivé"
+      }
+    },
+    "blog": {
+      "title": "Blog",
+      "create": "Créer un Article",
+      "edit": "Modifier l'Article",
+      "delete": "Supprimer l'Article"
+    },
+    "services": {
+      "title": "Services",
+      "manage": "Gérer les Services"
+    },
+    "team": {
+      "title": "Membres de l'Équipe",
+      "manage": "Gérer l'Équipe"
+    },
+    "consultants": {
+      "title": "Consultants",
+      "manage": "Gérer les Consultants"
+    },
+    "subcompanies": {
+      "title": "Filiales",
+      "manage": "Gérer les Filiales"
+    },
+    "testimonials": {
+      "title": "Témoignages",
+      "manage": "Gérer les Témoignages"
+    },
+    "faqs": {
+      "title": "FAQs",
+      "manage": "Gérer les FAQs"
+    },
+    "careers": {
+      "title": "Carrières",
+      "manage": "Gérer les Carrières"
+    },
+    "contacts": {
+      "title": "Messages de Contact",
+      "view": "Voir les Messages",
+      "export": "Exporter"
+    },
+    "newsletter": {
+      "title": "Newsletter",
+      "subscribers": "Abonnés"
+    },
+    "settings": {
+      "title": "Paramètres",
+      "general": "Paramètres Généraux",
+      "seo": "Paramètres SEO",
+      "social": "Réseaux Sociaux",
+      "footer": "Pied de Page",
+      "navbar": "Navigation",
+      "homepage": "Sections de la Page d'Accueil"
+    },
+    "media": {
+      "title": "Médiathèque",
+      "upload": "Télécharger"
+    },
+    "audit": {
+      "title": "Journaux d'Audit",
+      "activity": "Journaux d'Activité"
+    }
+  },
+  "validation": {
+    "required": "Ce champ est obligatoire",
+    "email": "Veuillez entrer une adresse email valide",
+    "minLength": "Doit contenir au moins {min} caractères",
+    "maxLength": "Doit contenir au plus {max} caractères",
+    "passwordMatch": "Les mots de passe ne correspondent pas",
+    "invalidPhone": "Veuillez entrer un numéro de téléphone valide",
+    "privacyRequired": "Vous devez accepter la politique de confidentialité"
+  },
+  "errors": {
+    "404": {
+      "title": "Page Non Trouvée",
+      "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+      "cta": "Retour à l'Accueil"
+    },
+    "500": {
+      "title": "Une Erreur s'est Produite",
+      "description": "Nous rencontrons des difficultés techniques. Veuillez réessayer plus tard.",
+      "cta": "Réessayer"
+    }
+  }
+}

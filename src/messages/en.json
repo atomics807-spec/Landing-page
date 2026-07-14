@@ -1,0 +1,390 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "view": "View",
+    "search": "Search",
+    "submit": "Submit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "contactUs": "Contact Us",
+    "viewAll": "View All",
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "properties": "Properties",
+    "blog": "Blog",
+    "contact": "Contact",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "profile": "Profile",
+    "welcome": "Welcome",
+    "copyright": "All rights reserved"
+  },
+  "navigation": {
+    "announcement": "Building Sustainable Partnerships • Delivering Professional Excellence",
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "properties": "Properties",
+    "blog": "Blog",
+    "contact": "Contact",
+    "consultants": "Our Consultants",
+    "team": "Our Team",
+    "subcompanies": "Subsidiary Companies",
+    "careers": "Careers",
+    "login": "Client Login",
+    "adminDashboard": "Dashboard"
+  },
+  "hero": {
+    "title": "Professional Solutions... Sustainable Growth",
+    "subtitle": "Paraysco Consulting Inc. provides innovative consultancy solutions that bridge the gap between ideas and implementation, investment and opportunity, and ambition and sustainable growth.",
+    "cta": "Get Started Today",
+    "ctaSecondary": "Our Services"
+  },
+  "about": {
+    "title": "About Paraysco Consulting Inc.",
+    "subtitle": "Building Sustainable Partnerships • Delivering Professional Excellence • Creating Lasting Value",
+    "description": "Paraysco Consulting Inc. is a multidisciplinary professional consulting firm committed to providing integrated solutions across real estate, engineering, construction, procurement, project management, investment advisory and business consultancy.",
+    "vision": {
+      "title": "Our Vision",
+      "content": "To become Africa's leading multidisciplinary consulting and investment facilitation company, delivering world-class professional services that transform businesses, strengthen institutions, develop sustainable infrastructure, and create lasting socio-economic value for future generations."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "content": "To provide innovative, reliable, and integrated consultancy solutions that empower governments, financial institutions, businesses, investors, and communities to achieve sustainable growth through professional excellence, strategic partnerships, and responsible project implementation."
+    },
+    "values": {
+      "title": "Our Core Values",
+      "items": {
+        "integrity": "Integrity - We conduct our business honestly, ethically, and transparently.",
+        "excellence": "Professional Excellence - We strive for the highest standards in every assignment through competence and disciplined execution.",
+        "accountability": "Accountability - We take responsibility for our actions, decisions, and performance.",
+        "innovation": "Innovation - We embrace creativity, technology, and continuous improvement.",
+        "collaboration": "Collaboration - We value teamwork and believe that successful outcomes are achieved through meaningful partnerships.",
+        "sustainability": "Sustainability - We support responsible development that balances economic growth with environmental protection."
+      }
+    }
+  },
+  "founder": {
+    "title": "Chairman's Message",
+    "name": "Mr. Mola Scott",
+    "role": "Chief Executive Officer, Paraysco Consulting Inc.",
+    "message": "At Paraysco Consulting Inc., we believe that true development is achieved through visionary leadership, strategic partnerships, professional excellence and unwavering integrity. Our company was established with a clear purpose—to provide innovative consultancy solutions that bridge the gap between ideas and implementation, investment and opportunity, and ambition and sustainable growth. Through innovation, professionalism and collaboration, we aspire to become one of Africa's leading multidisciplinary consulting firms. We remain committed to creating value for our clients, strengthening institutions, supporting sustainable infrastructure development and contributing meaningfully to national and regional economic transformation.",
+    "signature": "Mola Scott",
+    "cta": "Read Full Message"
+  },
+  "statistics": {
+    "title": "Our Achievements",
+    "clients": "Satisfied Clients",
+    "projects": "Projects Completed",
+    "partners": "Global Partners",
+    "experience": "Years of Excellence"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Comprehensive Solutions for Your Business Needs",
+    "realEstate": {
+      "title": "Real Estate & Property Management",
+      "description": "Property sourcing, leasing, facility management, and investment property advisory services.",
+      "features": ["Property Sourcing", "Leasing Management", "Facility Management", "Investment Advisory"]
+    },
+    "engineering": {
+      "title": "Engineering & Infrastructure",
+      "description": "Infrastructure planning, technical feasibility studies, and engineering quality assurance.",
+      "features": ["Infrastructure Planning", "Feasibility Studies", "Quality Assurance", "Technical Design"]
+    },
+    "construction": {
+      "title": "Construction Project Management",
+      "description": "Project planning, construction supervision, cost tracking, and timeline controls.",
+      "features": ["Project Planning", "Construction Supervision", "Cost Management", "Timeline Control"]
+    },
+    "procurement": {
+      "title": "Procurement & Supply Chain",
+      "description": "Transparent bidding frameworks, contract administration, and value-for-money sourcing.",
+      "features": ["Bidding Frameworks", "Contract Administration", "Vendor Management", "Quality Sourcing"]
+    },
+    "investment": {
+      "title": "Investment Advisory",
+      "description": "Financial modelling, business case development, and project finance support tools.",
+      "features": ["Financial Modelling", "Business Cases", "Project Finance", "Risk Assessment"]
+    },
+    "consultancy": {
+      "title": "Business Consultancy",
+      "description": "Corporate strategy, organizational development, and institutional transformation.",
+      "features": ["Corporate Strategy", "Org Development", "Process Optimization", "Change Management"]
+    }
+  },
+  "subcompanies": {
+    "title": "Our Subsidiary Companies",
+    "subtitle": "Diverse Business Ventures Under Paraysco Group",
+    "parayscoExpress": {
+      "name": "Paraysco Express",
+      "description": "Technology-driven logistics and delivery services for individuals and businesses.",
+      "services": ["Food Delivery", "Package Delivery", "Errand Services", "Pickup & Drop-off", "Express Shipping"]
+    },
+    "elohimAzar": {
+      "name": "Elohim Azar Speedboat Services",
+      "description": "Premium marine transport and logistics services for passengers and cargo.",
+      "services": ["Passenger Transport", "Charter Services", "Corporate Hire", "Tourism", "Emergency Marine", "Cargo", "Marine Consultancy"]
+    },
+    "houseOfPat": {
+      "name": "House Of Pat",
+      "description": "Luxury fashion retail specializing in premium fabrics and bridal collections.",
+      "services": ["Luxury Lace Fabrics", "Bridal Collection", "Luxury Clutches", "Bulk Supply", "Styling Advice"]
+    }
+  },
+  "properties": {
+    "title": "Featured Properties",
+    "subtitle": "Discover Premium Real Estate Opportunities",
+    "status": {
+      "available": "Available",
+      "sold": "Sold",
+      "reserved": "Reserved",
+      "archived": "Archived"
+    },
+    "filters": {
+      "location": "Location",
+      "price": "Price Range",
+      "category": "Category",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "status": "Status",
+      "search": "Search properties..."
+    },
+    "details": {
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "area": "Area",
+      "location": "Location",
+      "features": "Features",
+      "gallery": "Gallery",
+      "contact": "Inquire About This Property"
+    }
+  },
+  "consultants": {
+    "title": "Our Consultants",
+    "subtitle": "Expert Professional Advisors",
+    "specialization": "Specialization"
+  },
+  "team": {
+    "title": "Executive Leadership",
+    "subtitle": "Meet the Visionaries Behind Our Success"
+  },
+  "testimonials": {
+    "title": "What Our Clients Say",
+    "subtitle": "Trusted by Businesses and Institutions"
+  },
+  "blog": {
+    "title": "Latest Insights",
+    "subtitle": "News and Updates from Paraysco Consulting",
+    "readTime": "min read",
+    "categories": {
+      "all": "All",
+      "news": "News",
+      "insights": "Insights",
+      "updates": "Updates"
+    }
+  },
+  "faqs": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find Answers to Common Questions"
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "We'd Love to Hear from You",
+    "form": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "subject": "Subject",
+      "message": "Your Message",
+      "submit": "Send Message",
+      "sending": "Sending..."
+    },
+    "info": {
+      "address": "Office Address",
+      "phone": "Phone / WhatsApp",
+      "email": "Email",
+      "hours": "Business Hours"
+    },
+    "map": "Find Us on Map"
+  },
+  "newsletter": {
+    "title": "Stay Updated",
+    "subtitle": "Subscribe to our newsletter for the latest insights and updates.",
+    "placeholder": "Enter your email address",
+    "button": "Subscribe",
+    "success": "Thank you for subscribing!",
+    "error": "Something went wrong. Please try again."
+  },
+  "footer": {
+    "description": "Paraysco Consulting Inc. is committed to providing innovative, reliable, and integrated consultancy solutions for sustainable growth.",
+    "quickLinks": "Quick Links",
+    "services": "Our Services",
+    "connect": "Connect With Us",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account",
+      "email": "Email Address",
+      "password": "Password",
+      "remember": "Remember me",
+      "forgot": "Forgot password?",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join Paraysco Consulting",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "privacy": "I agree to the Privacy Policy",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "login": "Sign in"
+    },
+    "forgot": {
+      "title": "Reset Password",
+      "subtitle": "Enter your email to receive reset instructions",
+      "submit": "Send Reset Link",
+      "back": "Back to login"
+    },
+    "reset": {
+      "title": "Set New Password",
+      "subtitle": "Enter your new password",
+      "submit": "Reset Password"
+    },
+    "verify": {
+      "title": "Verify Your Email",
+      "subtitle": "We've sent a verification link to your email",
+      "resend": "Resend verification email"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "emailExists": "An account with this email already exists",
+      "weakPassword": "Password is too weak",
+      "networkError": "Network error. Please try again.",
+      "unknownError": "An unknown error occurred"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Welcome back"
+    },
+    "properties": {
+      "title": "Properties",
+      "add": "Add Property",
+      "edit": "Edit Property",
+      "delete": "Delete Property",
+      "status": {
+        "available": "Available",
+        "sold": "Sold",
+        "reserved": "Reserved",
+        "archived": "Archived"
+      }
+    },
+    "blog": {
+      "title": "Blog",
+      "create": "Create Post",
+      "edit": "Edit Post",
+      "delete": "Delete Post"
+    },
+    "services": {
+      "title": "Services",
+      "manage": "Manage Services"
+    },
+    "team": {
+      "title": "Team Members",
+      "manage": "Manage Team"
+    },
+    "consultants": {
+      "title": "Consultants",
+      "manage": "Manage Consultants"
+    },
+    "subcompanies": {
+      "title": "Subcompanies",
+      "manage": "Manage Subcompanies"
+    },
+    "testimonials": {
+      "title": "Testimonials",
+      "manage": "Manage Testimonials"
+    },
+    "faqs": {
+      "title": "FAQs",
+      "manage": "Manage FAQs"
+    },
+    "careers": {
+      "title": "Careers",
+      "manage": "Manage Careers"
+    },
+    "contacts": {
+      "title": "Contact Messages",
+      "view": "View Messages",
+      "export": "Export"
+    },
+    "newsletter": {
+      "title": "Newsletter",
+      "subscribers": "Subscribers"
+    },
+    "settings": {
+      "title": "Settings",
+      "general": "General Settings",
+      "seo": "SEO Settings",
+      "social": "Social Media",
+      "footer": "Footer",
+      "navbar": "Navigation",
+      "homepage": "Homepage Sections"
+    },
+    "media": {
+      "title": "Media Library",
+      "upload": "Upload"
+    },
+    "audit": {
+      "title": "Audit Logs",
+      "activity": "Activity Logs"
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "minLength": "Must be at least {min} characters",
+    "maxLength": "Must be at most {max} characters",
+    "passwordMatch": "Passwords do not match",
+    "invalidPhone": "Please enter a valid phone number",
+    "privacyRequired": "You must accept the privacy policy"
+  },
+  "errors": {
+    "404": {
+      "title": "Page Not Found",
+      "description": "The page you're looking for doesn't exist or has been moved.",
+      "cta": "Go to Homepage"
+    },
+    "500": {
+      "title": "Something Went Wrong",
+      "description": "We're experiencing technical difficulties. Please try again later.",
+      "cta": "Try Again"
+    }
+  }
+}
