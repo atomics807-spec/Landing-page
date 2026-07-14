@@ -78,6 +78,21 @@ CREATE TABLE property_images (
 CREATE INDEX idx_property_images_property ON property_images(property_id);
 
 -- =====================================================
+-- CATEGORIES TABLE (Must be created before blog_posts)
+-- =====================================================
+CREATE TABLE categories (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    name_en VARCHAR(255),
+    name_fr VARCHAR(255),
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_categories_slug ON categories(slug);
+
+-- =====================================================
 -- BLOG POSTS TABLE
 -- =====================================================
 CREATE TABLE blog_posts (
@@ -105,21 +120,6 @@ CREATE TABLE blog_posts (
 CREATE INDEX idx_blog_slug ON blog_posts(slug);
 CREATE INDEX idx_blog_published ON blog_posts(published);
 CREATE INDEX idx_blog_author ON blog_posts(author_id);
-
--- =====================================================
--- CATEGORIES TABLE
--- =====================================================
-CREATE TABLE categories (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name VARCHAR(255) NOT NULL,
-    name_en VARCHAR(255),
-    name_fr VARCHAR(255),
-    slug VARCHAR(255) UNIQUE NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX idx_categories_slug ON categories(slug);
 
 -- =====================================================
 -- CONSULTANTS TABLE
