@@ -94,6 +94,11 @@ export function Header({ locale }: HeaderProps) {
       icon: Users,
     },
     {
+      label: 'Team',
+      href: `/${locale}/team`,
+      icon: Users,
+    },
+    {
       label: t('blog'),
       href: `/${locale}/blog`,
       icon: FileText,
@@ -143,27 +148,44 @@ export function Header({ locale }: HeaderProps) {
                 <NavigationMenuItem key={item.label}>
                   {item.children ? (
                     <>
-                      <NavigationMenuTrigger className="text-sm font-medium">
+                      <NavigationMenuTrigger className="text-sm font-medium bg-primary-50 hover:bg-primary-100 text-primary-700 dark:bg-primary-900/20 dark:hover:bg-primary-900/30 dark:text-primary-300">
+                        <Briefcase className="w-4 h-4 mr-1" />
                         {item.label}
+                        <ChevronDown className="w-4 h-4 ml-1" />
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                          {item.children.map((child) => (
-                            <li key={child.label}>
-                              <Link
-                                href={child.href}
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 focus:bg-gray-100"
-                              >
-                                <div className="text-sm font-medium leading-none">
-                                  {child.label}
-                                </div>
-                                <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                                  {child.description}
-                                </p>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
+                        <div className="p-4 bg-gradient-to-br from-white to-primary-50 dark:from-gray-800 dark:to-primary-900/20">
+                          <p className="text-xs font-semibold text-primary-600 uppercase mb-3">Our Services</p>
+                          <ul className="grid gap-3 md:grid-cols-2">
+                            {item.children.map((child) => (
+                              <li key={child.label}>
+                                <Link
+                                  href={child.href}
+                                  className="block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 bg-white hover:bg-primary-600 hover:text-white shadow-sm hover:shadow-md border border-gray-100 hover:border-primary-300 group"
+                                >
+                                  <div className="text-sm font-semibold group-hover:text-white flex items-center">
+                                    <div className="w-8 h-8 rounded-lg bg-primary-100 group-hover:bg-white/20 flex items-center justify-center mr-2">
+                                      <Briefcase className="w-4 h-4 text-primary-600 group-hover:text-white" />
+                                    </div>
+                                    {child.label}
+                                  </div>
+                                  <p className="line-clamp-2 text-xs leading-snug text-gray-500 group-hover:text-white/80 mt-2">
+                                    {child.description}
+                                  </p>
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <Link
+                              href={item.href}
+                              className="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center"
+                            >
+                              View All Services
+                              <ChevronDown className="w-4 h-4 ml-1 rotate-[-90deg]" />
+                            </Link>
+                          </div>
+                        </div>
                       </NavigationMenuContent>
                     </>
                   ) : (
