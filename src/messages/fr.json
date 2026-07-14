@@ -185,7 +185,8 @@
   "consultants": {
     "title": "Nos Consultants",
     "subtitle": "Conseillers Professionnels Experts",
-    "specialization": "Spécialisation"
+    "specialization": "Spécialisation",
+    "contact": "Contacter le Consultant"
   },
   "team": {
     "title": "Direction Exécutive",
