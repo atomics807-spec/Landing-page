@@ -167,17 +167,16 @@ export function Header({ locale }: HeaderProps) {
                       </NavigationMenuContent>
                     </>
                   ) : (
-                    <Link href={item.href} legacyBehavior passHref>
-                      <NavigationMenuLink
-                        className={cn(
-                          'text-sm font-medium transition-colors hover:text-primary-600',
-                          pathname === item.href
-                            ? 'text-primary-600'
-                            : 'text-gray-600 dark:text-gray-300'
-                        )}
-                      >
-                        {item.label}
-                      </NavigationMenuLink>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        'text-sm font-medium transition-colors hover:text-primary-600',
+                        pathname === item.href
+                          ? 'text-primary-600'
+                          : 'text-gray-600 dark:text-gray-300'
+                      )}
+                    >
+                      {item.label}
                     </Link>
                   )}
                 </NavigationMenuItem>
