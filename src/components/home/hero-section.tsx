@@ -3,8 +3,11 @@
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, MessageCircle } from 'lucide-react';
 import type { Locale } from '@/i18n';
+
+const WHATSAPP_NUMBER = '237676914581';
+const WHATSAPP_MESSAGE = 'Hello! I would like to learn more about Paraysco Consulting Inc. services.';
 
 interface HeroSectionProps {
   locale: Locale;
@@ -182,6 +185,23 @@ export function HeroSection({ locale }: HeroSectionProps) {
           />
         </motion.div>
       </motion.div>
+
+      {/* WhatsApp Floating Button */}
+      <motion.a
+        href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 1.5, duration: 0.5, type: 'spring' }}
+        className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
+        aria-label="Chat on WhatsApp"
+      >
+        <MessageCircle className="w-7 h-7 group-hover:scale-110 transition-transform" />
+        <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          Chat with us
+        </span>
+      </motion.a>
     </section>
   );
 }

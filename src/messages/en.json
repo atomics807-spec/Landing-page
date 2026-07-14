@@ -232,6 +232,10 @@
   },
   "footer": {
     "description": "Paraysco Consulting Inc. is committed to providing innovative, reliable, and integrated consultancy solutions for sustainable growth.",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "copyright": "All rights reserved.",
     "quickLinks": "Quick Links",
     "services": "Our Services",
     "connect": "Connect With Us",
