@@ -36,26 +36,13 @@ export async function updateSession(request: NextRequest) {
   // Refresh session if expired
   await supabase.auth.getUser();
 
-  // Get user role
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (user) {
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single();
-    
-    response.headers.set('x-user-role', profile?.role || 'user');
-  }
-
   return response;
 }
 
 // Rate limiting map (in production, use Redis or similar)
 const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
 
-export function rateLimit(
+function rateLimit(
   identifier: string,
   maxRequests: number = 100,
   windowMs: number = 60000
@@ -78,7 +65,7 @@ export function rateLimit(
 }
 
 // Security headers
-export function getSecurityHeaders(): Record<string, string> {
+function getSecurityHeaders(): Record<string, string> {
   return {
     'X-DNS-Prefetch-Control': 'on',
     'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
@@ -89,3 +76,32 @@ export function getSecurityHeaders(): Record<string, string> {
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   };
 }
+
+// Main middleware function
+export async function middleware(request: NextRequest) {
+  // Skip middleware for static files and API routes
+  if (
+    request.nextUrl.pathname.startsWith('/_next') ||
+    request.nextUrl.pathname.startsWith('/api') ||
+    request.nextUrl.pathname.startsWith('/static') ||
+    request.nextUrl.pathname.includes('.')
+  ) {
+    return NextResponse.next();
+  }
+
+  // Apply security headers
+  const response = NextResponse.next();
+  const securityHeaders = getSecurityHeaders();
+  
+  Object.entries(securityHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+
+  return response;
+}
+
+export const config = {
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
+};
