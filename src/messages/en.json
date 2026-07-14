@@ -253,6 +253,29 @@
     "terms": "Terms of Service",
     "cookies": "Cookie Policy"
   },
+  "privacy": {
+    "title": "Privacy Policy",
+    "section1": {
+      "title": "Information We Collect",
+      "content": "Paraysco Consulting Inc. collects information that you provide directly to us, including but not limited to your name, email address, phone number, and any other information you choose to provide when using our services or contacting us through our website."
+    },
+    "section2": {
+      "title": "How We Use Your Information",
+      "content": "We use the information we collect to provide, maintain, and improve our services, to process transactions, to send you information including confirmations and updates, and to respond to your comments, questions, and requests."
+    },
+    "section3": {
+      "title": "Information Sharing",
+      "content": "We do not sell, trade, or otherwise transfer your personally identifiable information to third parties without your consent. This does not include trusted third parties who assist us in operating our website, conducting our business, or servicing you."
+    },
+    "section4": {
+      "title": "Data Security",
+      "content": "We implement a variety of security measures to maintain the safety of your personal information. Your personal information is contained behind secured networks and is only accessible by a limited number of persons who have special access rights."
+    },
+    "section5": {
+      "title": "Contact Us",
+      "content": "If you have any questions about this Privacy Policy, please contact us at paraysco@gmail.com or through our contact page."
+    }
+  },
   "auth": {
     "login": {
       "title": "Welcome Back",

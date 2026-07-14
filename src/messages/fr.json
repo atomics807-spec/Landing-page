@@ -253,6 +253,29 @@
     "terms": "Conditions d'Utilisation",
     "cookies": "Politique des Cookies"
   },
+  "privacy": {
+    "title": "Politique de Confidentialité",
+    "section1": {
+      "title": "Informations que Nous Collectons",
+      "content": "Paraysco Consulting Inc. collecte les informations que vous nous fournissez directement, y compris mais sans s'y limiter votre nom, adresse email, numéro de téléphone, et toute autre information que vous choisissez de fournir lors de l'utilisation de nos services ou de nous contacter via notre site web."
+    },
+    "section2": {
+      "title": "Comment Nous Utilisons Vos Informations",
+      "content": "Nous utilisons les informations que nous collectons pour fournir, maintenir et améliorer nos services, traiter les transactions, vous envoyer des informations incluant les confirmations et mises à jour, et répondre à vos commentaires, questions et demandes."
+    },
+    "section3": {
+      "title": "Partage d'Informations",
+      "content": "Nous ne vendons, n'échangeons ni ne transférons autrement vos informations personnelles identifiables à des tiers sans votre consentement. Cela n'inclut pas les tiers de confiance qui nous aident à exploiter notre site web, à mener nos affaires ou à vous servir."
+    },
+    "section4": {
+      "title": "Sécurité des Données",
+      "content": "Nous mettons en œuvre diverses mesures de sécurité pour maintenir la sécurité de vos informations personnelles. Vos informations personnelles sont contenues derrière des réseaux sécurisés et ne sont accessibles que par un nombre limité de personnes ayant des droits d'accès spéciaux."
+    },
+    "section5": {
+      "title": "Contactez-Nous",
+      "content": "Si vous avez des questions concernant cette Politique de Confidentialité, veuillez nous contacter à paraysco@gmail.com ou via notre page de contact."
+    }
+  },
   "auth": {
     "login": {
       "title": "Bon Retour",

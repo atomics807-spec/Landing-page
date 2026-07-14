@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
@@ -23,6 +23,7 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(registerFormSchema),
@@ -157,9 +158,16 @@ export default function RegisterPage() {
             </div>
 
             <div className="flex items-start space-x-3">
-              <Checkbox
-                id="privacy_policy"
-                {...register('privacy_policy')}
+              <Controller
+                name="privacy_policy"
+                control={control}
+                render={({ field }) => (
+                  <Checkbox
+                    id="privacy_policy"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                )}
               />
               <label
                 htmlFor="privacy_policy"
