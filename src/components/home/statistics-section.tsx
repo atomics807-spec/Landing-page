@@ -34,7 +34,7 @@ export function StatisticsSection() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
             backgroundSize: '40px 40px',
           }}
         />
@@ -56,7 +56,6 @@ export function StatisticsSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => {
             const Icon = iconMap[stat.icon];
-
             return (
               <motion.div
                 key={stat.icon}
@@ -66,12 +65,11 @@ export function StatisticsSection() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/10 backdrop-blur flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
                   <Icon className="w-8 h-8 text-white" />
                 </div>
                 <p className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  {stat.value}
-                  {stat.suffix}
+                  {stat.value}{stat.suffix}
                 </p>
                 <p className="text-primary-100 text-sm md:text-base">{t(stat.labelKey)}</p>
               </motion.div>
