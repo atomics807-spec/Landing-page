@@ -30,7 +30,6 @@ export function StatisticsSection() {
 
   return (
     <section className="py-20 bg-primary-600 relative overflow-hidden">
-      {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div
           className="absolute inset-0"
