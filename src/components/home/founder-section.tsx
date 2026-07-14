@@ -30,7 +30,6 @@ export function FounderSection({ locale }: FounderSectionProps) {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
-          {/* Founder Image */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -54,13 +53,11 @@ export function FounderSection({ locale }: FounderSectionProps) {
               </div>
             </div>
 
-            {/* Quote Icon */}
             <div className="absolute -top-6 -left-6 w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center shadow-xl hidden lg:flex">
               <Quote className="w-8 h-8 text-white" />
             </div>
           </motion.div>
 
-          {/* Speech Content */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -74,7 +71,6 @@ export function FounderSection({ locale }: FounderSectionProps) {
               </p>
             </div>
 
-            {/* Signature */}
             <div className="pt-8 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
