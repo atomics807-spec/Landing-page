@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from 'next-themes';
 import { useTranslations } from 'next-intl';
 import {
   Menu,
@@ -31,6 +30,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
 import type { Locale } from '@/i18n';
+import { useTheme } from '@/components/providers/theme-provider';
 
 const locales: Locale[] = ['en', 'fr'];
 
@@ -40,7 +40,7 @@ interface HeaderProps {
 
 export function Header({ locale }: HeaderProps) {
   const t = useTranslations('navigation');
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
@@ -227,12 +227,18 @@ export function Header({ locale }: HeaderProps) {
 
             {/* Theme Toggle */}
             <button
-              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-              className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              onClick={toggleTheme}
+              className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 relative"
               aria-label="Toggle theme"
             >
-              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Sun className={cn(
+                "h-5 w-5 transition-all",
+                theme === 'light' ? 'opacity-100' : 'opacity-0'
+              )} />
+              <Moon className={cn(
+                "h-5 w-5 absolute inset-0 m-auto transition-all",
+                theme === 'dark' ? 'opacity-100' : 'opacity-0'
+              )} />
             </button>
 
             {/* Login Button */}
