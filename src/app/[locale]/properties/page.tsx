@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { Search, Filter, MapPin, Bed, Bath, Square, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -17,11 +17,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { formatCurrency } from '@/lib/utils';
-import type { Locale } from '@/i18n';
-
-interface PropertiesPageProps {
-  params: Promise<{ locale: string }>;
-}
 
 // Mock data for properties
 const mockProperties = [
@@ -75,8 +70,8 @@ const mockProperties = [
   },
 ];
 
-export default function PropertiesPage({ params }: PropertiesPageProps) {
-  const { locale } = React.use(params);
+export default function PropertiesPage() {
+  const locale = useLocale();
   const t = useTranslations('properties');
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');

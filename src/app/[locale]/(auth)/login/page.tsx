@@ -4,21 +4,16 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { loginFormSchema } from '@/lib/utils';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
-import type { Locale } from '@/i18n';
 
-interface LoginPageProps {
-  params: Promise<{ locale: string }>;
-}
-
-export default function LoginPage({ params }: LoginPageProps) {
-  const { locale } = React.use(params);
+export default function LoginPage() {
+  const locale = useLocale();
   const t = useTranslations('auth.login');
   const tErrors = useTranslations('auth.errors');
   const [showPassword, setShowPassword] = useState(false);

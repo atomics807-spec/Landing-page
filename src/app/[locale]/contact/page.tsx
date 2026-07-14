@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -12,14 +12,9 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { contactFormSchema } from '@/lib/utils';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2 } from 'lucide-react';
-import type { Locale } from '@/i18n';
 
-interface ContactPageProps {
-  params: Promise<{ locale: string }>;
-}
-
-export default function ContactPage({ params }: ContactPageProps) {
-  const { locale } = React.use(params);
+export default function ContactPage() {
+  const locale = useLocale();
   const t = useTranslations('contact');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { Calendar, Clock, User, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,11 +9,6 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import type { Locale } from '@/i18n';
-
-interface BlogPageProps {
-  params: Promise<{ locale: string }>;
-}
 
 // Mock blog data
 const mockPosts = [
@@ -51,8 +46,8 @@ const mockPosts = [
 
 const categories = ['All', 'Insights', 'Guide', 'News', 'Updates'];
 
-export default function BlogPage({ params }: BlogPageProps) {
-  const { locale } = React.use(params);
+export default function BlogPage() {
+  const locale = useLocale();
   const t = useTranslations('blog');
 
   return (

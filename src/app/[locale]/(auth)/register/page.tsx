@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,14 +12,9 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { registerFormSchema } from '@/lib/utils';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
-import type { Locale } from '@/i18n';
 
-interface RegisterPageProps {
-  params: Promise<{ locale: string }>;
-}
-
-export default function RegisterPage({ params }: RegisterPageProps) {
-  const { locale } = React.use(params);
+export default function RegisterPage() {
+  const locale = useLocale();
   const t = useTranslations('auth.register');
   const tErrors = useTranslations('auth.errors');
   const [showPassword, setShowPassword] = useState(false);
