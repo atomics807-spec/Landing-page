@@ -60,22 +60,37 @@ export async function loginUser(formData: { email: string; password: string }) {
   });
 
   if (authError) {
+    console.error('Login error:', authError);
     return { error: authError.message };
+  }
+
+  // Check if email is confirmed
+  if (authData.user && !authData.user.email_confirmed_at) {
+    return { error: 'Please confirm your email address before logging in. Check your inbox for the confirmation link.' };
   }
 
   // Check if user is an admin
   if (authData.user) {
-    const { data: adminData } = await supabase
-      .from('admins')
-      .select('id')
-      .eq('user_id', authData.user.id)
-      .single();
+    try {
+      const { data: adminData } = await supabase
+        .from('admins')
+        .select('id')
+        .eq('user_id', authData.user.id)
+        .single();
 
-    return { 
-      success: true, 
-      isAdmin: !!adminData,
-      user: authData.user 
-    };
+      return { 
+        success: true, 
+        isAdmin: !!adminData,
+        user: authData.user 
+      };
+    } catch (e) {
+      // If admins table doesn't exist or error, continue as regular user
+      return { 
+        success: true, 
+        isAdmin: false,
+        user: authData.user 
+      };
+    }
   }
 
   return { success: true };
