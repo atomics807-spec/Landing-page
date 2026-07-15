@@ -131,17 +131,18 @@ export default function ContactPage() {
                       <Button onClick={() => setSubmitted(false)}>Send Another Message</Button>
                     </div>
                   ) : (
-                    {propertyInquiry && (
-                      <div className="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg">
-                        <div className="flex items-center gap-2 text-primary-700 dark:text-primary-300">
-                          <Building2 className="w-5 h-5" />
-                          <span className="font-medium">Property Inquiry</span>
+                    <>
+                      {propertyInquiry && (
+                        <div className="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg">
+                          <div className="flex items-center gap-2 text-primary-700 dark:text-primary-300">
+                            <Building2 className="w-5 h-5" />
+                            <span className="font-medium">Property Inquiry</span>
+                          </div>
+                          <p className="text-sm text-primary-600 dark:text-primary-400 mt-1">
+                            You are inquiring about: {propertyInquiry.title}
+                          </p>
                         </div>
-                        <p className="text-sm text-primary-600 dark:text-primary-400 mt-1">
-                          You are inquiring about: {propertyInquiry.title}
-                        </p>
-                      </div>
-                    )}
+                      )}
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
@@ -223,6 +224,7 @@ export default function ContactPage() {
                         )}
                       </Button>
                     </form>
+                    </>
                   )}
                 </CardContent>
               </Card>
