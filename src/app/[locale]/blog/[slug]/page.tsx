@@ -87,7 +87,7 @@ const getBlogPost = (slug: string) => {
 export default function BlogPostPage() {
   const params = useParams();
   const locale = useLocale();
-  const [post, setPost] = useState<ReturnType<typeof getBlogPost>>(null);
+  const [post, setPost] = useState<ReturnType<typeof getBlogPost> | null>(null);
   const [slug, setSlug] = useState<string>('');
 
   useEffect(() => {
