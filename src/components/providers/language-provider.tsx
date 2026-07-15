@@ -1,8 +1,7 @@
 'use client';
 
 import { NextIntlClientProvider } from 'next-intl';
-import { getRequestConfig } from 'next-intl/server';
-import { cookies } from 'next/headers';
+import type { AbstractIntlMessages } from 'next-intl';
 
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'fr' }];
@@ -15,7 +14,7 @@ export default function LanguageProvider({
 }: {
   children: React.ReactNode;
   locale: string;
-  messages: Record<string, unknown>;
+  messages: AbstractIntlMessages;
 }) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>

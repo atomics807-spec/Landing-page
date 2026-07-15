@@ -50,7 +50,7 @@ export function ServicesSection({ locale }: ServicesSectionProps) {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => {
             const Icon = iconMap[service.key as keyof typeof iconMap];
 
@@ -62,7 +62,7 @@ export function ServicesSection({ locale }: ServicesSectionProps) {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Link href={`/${locale}/services/${service.key}`} className="group">
+                <Link href={`/${locale}/services`} className="group">
                   <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100 dark:border-gray-700">
                     <div className={`w-14 h-14 rounded-xl ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                       <Icon className="w-7 h-7 text-white" />

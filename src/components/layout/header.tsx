@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,16 +18,12 @@ import {
   Home,
   FileText,
   Phone,
+  Building,
+  Cog,
+  Construction,
+  TrendingUp,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-} from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
 import type { Locale } from '@/i18n';
 import { useTheme } from '@/components/providers/theme-provider';
@@ -44,6 +40,35 @@ export function Header({ locale }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
+  const servicesDropdownRef = useRef<HTMLDivElement>(null);
+
+  const services = [
+    {
+      label: 'Real Estate',
+      href: `/${locale}/services`,
+      description: 'Property management and investment advisory',
+      icon: Building,
+    },
+    {
+      label: 'Engineering',
+      href: `/${locale}/services`,
+      description: 'Infrastructure planning and technical studies',
+      icon: Cog,
+    },
+    {
+      label: 'Construction',
+      href: `/${locale}/services`,
+      description: 'Project management and supervision',
+      icon: Construction,
+    },
+    {
+      label: 'Investment Advisory',
+      href: `/${locale}/services`,
+      description: 'Financial modelling and business cases',
+      icon: TrendingUp,
+    },
+  ];
 
   const navItems = [
     {
@@ -60,28 +85,7 @@ export function Header({ locale }: HeaderProps) {
       label: t('services'),
       href: `/${locale}/services`,
       icon: Briefcase,
-      children: [
-        {
-          label: 'Real Estate',
-          href: `/${locale}/services/real-estate`,
-          description: 'Property management and investment advisory',
-        },
-        {
-          label: 'Engineering',
-          href: `/${locale}/services/engineering`,
-          description: 'Infrastructure planning and technical studies',
-        },
-        {
-          label: 'Construction',
-          href: `/${locale}/services/construction`,
-          description: 'Project management and supervision',
-        },
-        {
-          label: 'Investment Advisory',
-          href: `/${locale}/services/investment`,
-          description: 'Financial modelling and business cases',
-        },
-      ],
+      isDropdown: true,
     },
     {
       label: t('properties'),
@@ -116,6 +120,17 @@ export function Header({ locale }: HeaderProps) {
     window.location.href = newPath;
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(event.target as Node)) {
+        setIsServicesDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:border-gray-800 dark:bg-gray-950/95">
       {/* Announcement Bar */}
@@ -142,69 +157,94 @@ export function Header({ locale }: HeaderProps) {
           </Link>
 
           {/* Desktop Navigation */}
-          <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList>
-              {navItems.map((item) => (
-                <NavigationMenuItem key={item.label}>
-                  {item.children ? (
-                    <>
-                      <NavigationMenuTrigger className="text-sm font-medium bg-primary-50 hover:bg-primary-100 text-primary-700 dark:bg-primary-900/20 dark:hover:bg-primary-900/30 dark:text-primary-300">
-                        <Briefcase className="w-4 h-4 mr-1" />
-                        {item.label}
-                        <ChevronDown className="w-4 h-4 ml-1" />
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <div className="p-4 bg-gradient-to-br from-white to-primary-50 dark:from-gray-800 dark:to-primary-900/20">
-                          <p className="text-xs font-semibold text-primary-600 uppercase mb-3">Our Services</p>
-                          <ul className="grid gap-3 md:grid-cols-2">
-                            {item.children.map((child) => (
-                              <li key={child.label}>
-                                <Link
-                                  href={child.href}
-                                  className="block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 bg-white hover:bg-primary-600 hover:text-white shadow-sm hover:shadow-md border border-gray-100 hover:border-primary-300 group"
-                                >
-                                  <div className="text-sm font-semibold group-hover:text-white flex items-center">
-                                    <div className="w-8 h-8 rounded-lg bg-primary-100 group-hover:bg-white/20 flex items-center justify-center mr-2">
-                                      <Briefcase className="w-4 h-4 text-primary-600 group-hover:text-white" />
-                                    </div>
-                                    {child.label}
-                                  </div>
-                                  <p className="line-clamp-2 text-xs leading-snug text-gray-500 group-hover:text-white/80 mt-2">
-                                    {child.description}
-                                  </p>
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                            <Link
-                              href={item.href}
-                              className="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center"
-                            >
-                              View All Services
-                              <ChevronDown className="w-4 h-4 ml-1 rotate-[-90deg]" />
-                            </Link>
-                          </div>
-                        </div>
-                      </NavigationMenuContent>
-                    </>
-                  ) : (
-                    <Link
-                      href={item.href}
+          <nav className="hidden lg:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <div key={item.label} className="relative" ref={item.isDropdown ? servicesDropdownRef : undefined}>
+                {item.isDropdown ? (
+                  <>
+                    <button
+                      onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
+                      onMouseEnter={() => setIsServicesDropdownOpen(true)}
                       className={cn(
-                        'text-sm font-medium transition-colors hover:text-primary-600',
-                        pathname === item.href
-                          ? 'text-primary-600'
-                          : 'text-gray-600 dark:text-gray-300'
+                        'flex items-center space-x-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
+                        isServicesDropdownOpen
+                          ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
                       )}
                     >
+                      <Briefcase className="w-4 h-4 mr-1" />
                       {item.label}
-                    </Link>
-                  )}
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
+                      <ChevronDown className={cn(
+                        'w-4 h-4 ml-1 transition-transform duration-200',
+                        isServicesDropdownOpen && 'rotate-180'
+                      )} />
+                    </button>
+                    
+                    {/* Click-only dropdown - positioned to expand into hero section */}
+                    <AnimatePresence>
+                      {isServicesDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute left-0 top-full mt-2 w-80 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden"
+                          onClick={() => setIsServicesDropdownOpen(false)}
+                        >
+                          <div className="p-4 bg-gradient-to-br from-white to-primary-50 dark:from-gray-800 dark:to-primary-900/20">
+                            <p className="text-xs font-semibold text-primary-600 uppercase mb-3">Our Services</p>
+                            <div className="space-y-2">
+                              {services.map((service) => (
+                                <Link
+                                  key={service.label}
+                                  href={service.href}
+                                  className="flex items-start space-x-3 p-3 rounded-lg bg-white dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-700 group"
+                                >
+                                  <div className="w-10 h-10 rounded-lg bg-primary-100 group-hover:bg-primary-200 dark:bg-primary-900/50 dark:group-hover:bg-primary-800 flex items-center justify-center flex-shrink-0">
+                                    <service.icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-300">
+                                      {service.label}
+                                    </p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">
+                                      {service.description}
+                                    </p>
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
+                            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                              <Link
+                                href={item.href}
+                                className="text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 flex items-center"
+                              >
+                                View All Services
+                                <ChevronDown className="w-4 h-4 ml-1 rotate-[-90deg]" />
+                              </Link>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      'flex items-center space-x-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
+                      pathname === item.href
+                        ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-300'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
+                    )}
+                  >
+                    {item.icon && <item.icon className="w-4 h-4" />}
+                    <span>{item.label}</span>
+                  </Link>
+                )}
+              </div>
+            ))}
+          </nav>
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-2">
@@ -308,16 +348,17 @@ export function Header({ locale }: HeaderProps) {
                     {item.icon && <item.icon className="h-5 w-5" />}
                     <span>{item.label}</span>
                   </Link>
-                  {item.children && (
-                    <div className="ml-8 space-y-1">
-                      {item.children.map((child) => (
+                  {item.isDropdown && isMobileMenuOpen && (
+                    <div className="ml-4 space-y-1">
+                      {services.map((service) => (
                         <Link
-                          key={child.label}
-                          href={child.href}
+                          key={service.label}
+                          href={service.href}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 dark:text-gray-400"
+                          className="flex items-center space-x-2 rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 dark:text-gray-400"
                         >
-                          {child.label}
+                          <service.icon className="w-4 h-4" />
+                          <span>{service.label}</span>
                         </Link>
                       ))}
                     </div>

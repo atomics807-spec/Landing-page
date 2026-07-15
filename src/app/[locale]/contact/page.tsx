@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { contactFormSchema } from '@/lib/utils';
+import { contactFormSchema, type ContactFormData } from '@/lib/utils';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2 } from 'lucide-react';
 
 export default function ContactPage() {
@@ -24,17 +24,11 @@ export default function ContactPage() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
   });
 
-  const onSubmit = async (data: {
-    name: string;
-    email: string;
-    phone?: string;
-    subject: string;
-    message: string;
-  }) => {
+  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     try {
       // Simulate API call
@@ -128,9 +122,9 @@ export default function ContactPage() {
                             id="name"
                             placeholder="John Doe"
                             {...register('name')}
-                            error={errors.name?.message}
+                            error={typeof errors.name?.message === 'string' ? errors.name.message : undefined}
                           />
-                          {errors.name && (
+                          {errors.name && typeof errors.name.message === 'string' && (
                             <p className="text-sm text-red-500">{errors.name.message}</p>
                           )}
                         </div>
@@ -141,9 +135,9 @@ export default function ContactPage() {
                             type="email"
                             placeholder="john@example.com"
                             {...register('email')}
-                            error={errors.email?.message}
+                            error={typeof errors.email?.message === 'string' ? errors.email.message : undefined}
                           />
-                          {errors.email && (
+                          {errors.email && typeof errors.email.message === 'string' && (
                             <p className="text-sm text-red-500">{errors.email.message}</p>
                           )}
                         </div>
@@ -165,9 +159,9 @@ export default function ContactPage() {
                             id="subject"
                             placeholder="Project Inquiry"
                             {...register('subject')}
-                            error={errors.subject?.message}
+                            error={typeof errors.subject?.message === 'string' ? errors.subject.message : undefined}
                           />
-                          {errors.subject && (
+                          {errors.subject && typeof errors.subject.message === 'string' && (
                             <p className="text-sm text-red-500">{errors.subject.message}</p>
                           )}
                         </div>
@@ -180,9 +174,9 @@ export default function ContactPage() {
                           placeholder="Tell us about your project..."
                           rows={6}
                           {...register('message')}
-                          error={errors.message?.message}
+                          error={typeof errors.message?.message === 'string' ? errors.message.message : undefined}
                         />
-                        {errors.message && (
+                        {errors.message && typeof errors.message.message === 'string' && (
                           <p className="text-sm text-red-500">{errors.message.message}</p>
                         )}
                       </div>

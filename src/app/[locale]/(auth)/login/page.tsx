@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations, useLocale } from 'next-intl';
@@ -11,13 +12,23 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { loginFormSchema } from '@/lib/utils';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { loginUser } from '@/app/actions/auth';
 
-export default function LoginPage() {
+function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const locale = useLocale();
   const t = useTranslations('auth.login');
   const tErrors = useTranslations('auth.errors');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [registered, setRegistered] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('registered') === 'true') {
+      setRegistered(true);
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -33,13 +44,26 @@ export default function LoginPage() {
 
   const onSubmit = async (data: { email: string; password: string }) => {
     setError('');
+    setRegistered(false);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Login data:', data);
-      // Redirect would happen here
+      const result = await loginUser({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (result.error) {
+        setError(tErrors('invalidCredentials'));
+        return;
+      }
+
+      if (result.isAdmin) {
+        router.push('/admin');
+      } else {
+        router.push(`/${locale}`);
+      }
     } catch (err) {
-      setError(tErrors('invalidCredentials'));
+      console.error('Login error:', err);
+      setError(tErrors('unknownError'));
     }
   };
 
@@ -52,7 +76,6 @@ export default function LoginPage() {
         className="w-full max-w-md"
       >
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-          {/* Header */}
           <div className="text-center mb-8">
             <Link href={`/${locale}`} className="inline-flex items-center space-x-2 mb-6">
               <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
@@ -68,11 +91,16 @@ export default function LoginPage() {
             <p className="text-gray-500 dark:text-gray-400 mt-2">{t('subtitle')}</p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm">
                 {error}
+              </div>
+            )}
+
+            {registered && (
+              <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 p-3 rounded-lg text-sm">
+                Account created successfully! Please sign in with your credentials.
               </div>
             )}
 
@@ -83,7 +111,6 @@ export default function LoginPage() {
                 type="email"
                 placeholder="name@example.com"
                 {...register('email')}
-                error={errors.email?.message}
               />
               {errors.email && (
                 <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -104,9 +131,8 @@ export default function LoginPage() {
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
+                  placeholder="password"
                   {...register('password')}
-                  error={errors.password?.message}
                   className="pr-10"
                 />
                 <button
@@ -152,7 +178,6 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          {/* Footer */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {t('noAccount')}{' '}
@@ -167,5 +192,17 @@ export default function LoginPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 }

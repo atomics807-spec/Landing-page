@@ -100,7 +100,7 @@ export function SubcompaniesSection({ locale }: SubcompaniesSectionProps) {
                       variant="outline"
                       className="w-full group-hover:bg-primary-50 group-hover:border-primary-600"
                     >
-                      <Link href={`/#${company.key}`}>
+                      <Link href={`/${locale}/contact`}>
                         Learn More
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>

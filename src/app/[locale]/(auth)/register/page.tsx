@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations, useLocale } from 'next-intl';
@@ -12,8 +13,10 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { registerFormSchema } from '@/lib/utils';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { registerUser } from '@/app/actions/auth';
 
 export default function RegisterPage() {
+  const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('auth.register');
   const tErrors = useTranslations('auth.errors');
@@ -45,11 +48,27 @@ export default function RegisterPage() {
   }) => {
     setError('');
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Register data:', data);
-      // Redirect would happen here
+      const result = await registerUser({
+        email: data.email,
+        password: data.password,
+        full_name: data.full_name,
+      });
+
+      if (result.error) {
+        if (result.error.includes('already registered') || result.error.includes('already exists')) {
+          setError(tErrors('emailExists'));
+        } else if (result.error.includes('weak password')) {
+          setError(tErrors('weakPassword'));
+        } else {
+          setError(tErrors('networkError'));
+        }
+        return;
+      }
+
+      // Redirect to login page after successful registration
+      router.push(`/${locale}/login?registered=true`);
     } catch (err) {
+      console.error('Registration error:', err);
       setError(tErrors('unknownError'));
     }
   };
