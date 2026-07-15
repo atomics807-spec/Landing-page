@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
+import Link from 'next/link';
 import { Briefcase, MapPin, Clock, Users, Send, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -128,10 +129,12 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
                       </span>
                     </div>
                   </div>
-                  <Button className="md:w-auto">
-                    <Send className="w-4 h-4 mr-2" />
-                    Apply Now
-                  </Button>
+                  <Link href={`/${locale}/contact?subject=Application for ${career.title}&position=${career.id}`}>
+                    <Button className="md:w-auto">
+                      <Send className="w-4 h-4 mr-2" />
+                      Apply Now
+                    </Button>
+                  </Link>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">{career.description}</p>
                 <div>
@@ -158,10 +161,12 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
             We're always looking for talented individuals to join our team. Send us your CV and we'll keep it on file for future opportunities.
           </p>
-          <Button size="lg">
-            <Send className="w-5 h-5 mr-2" />
-            Send Open Application
-          </Button>
+          <Link href={`/${locale}/contact?subject=Open Application - General Inquiry`}>
+            <Button size="lg">
+              <Send className="w-5 h-5 mr-2" />
+              Send Open Application
+            </Button>
+          </Link>
         </div>
       </section>
     </div>

@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { contactFormSchema, type ContactFormData } from '@/lib/utils';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2, Briefcase } from 'lucide-react';
 
 function ContactForm() {
   const locale = useLocale();
@@ -21,6 +21,7 @@ function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [propertyInquiry, setPropertyInquiry] = useState<{ id: string; title: string } | null>(null);
+  const [jobInquiry, setJobInquiry] = useState<{ id: string; title: string } | null>(null);
 
   const {
     register,
@@ -35,8 +36,11 @@ function ContactForm() {
   useEffect(() => {
     const subject = searchParams.get('subject');
     const property = searchParams.get('property');
+    const position = searchParams.get('position');
+    
     if (subject) setValue('subject', subject);
     if (property) setPropertyInquiry({ id: property, title: subject || 'Property Inquiry' });
+    if (position) setJobInquiry({ id: position, title: subject || 'Job Application' });
   }, [searchParams, setValue]);
 
   const onSubmit = async (data: ContactFormData) => {
@@ -127,13 +131,24 @@ function ContactForm() {
                   ) : (
                     <>
                       {propertyInquiry && (
-                        <div className="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg">
+                        <div className="mb-4 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg">
                           <div className="flex items-center gap-2 text-primary-700 dark:text-primary-300">
                             <Building2 className="w-5 h-5" />
                             <span className="font-medium">Property Inquiry</span>
                           </div>
                           <p className="text-sm text-primary-600 dark:text-primary-400 mt-1">
                             You are inquiring about: {propertyInquiry.title}
+                          </p>
+                        </div>
+                      )}
+                      {jobInquiry && (
+                        <div className="mb-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                          <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
+                            <Briefcase className="w-5 h-5" />
+                            <span className="font-medium">Job Application</span>
+                          </div>
+                          <p className="text-sm text-green-600 dark:text-green-400 mt-1">
+                            Applying for: {jobInquiry.title}
                           </p>
                         </div>
                       )}
