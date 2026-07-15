@@ -211,6 +211,10 @@
     "title": "Questions Fréquentes",
     "subtitle": "Trouvez des Réponses à Vos Questions"
   },
+  "careers": {
+    "title": "Rejoignez Notre Équipe",
+    "subtitle": "Construisez Votre Carrière avec Paraysco Consulting Inc."
+  },
   "contact": {
     "title": "Contactez-Nous",
     "subtitle": "Nous Serions Ravis de Vous Entendre",
@@ -274,6 +278,62 @@
     "section5": {
       "title": "Contactez-Nous",
       "content": "Si vous avez des questions concernant cette Politique de Confidentialité, veuillez nous contacter à paraysco@gmail.com ou via notre page de contact."
+    }
+  },
+  "terms": {
+    "title": "Conditions d'Utilisation",
+    "lastUpdated": "Dernière mise à jour: 15 janvier 2025",
+    "section1": {
+      "title": "Acceptation des Conditions",
+      "content": "En accédant ou en utilisant le site web et les services de Paraysco Consulting Inc., vous acceptez d'être lié par ces Conditions d'Utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services."
+    },
+    "section2": {
+      "title": "Description des Services",
+      "content": "Paraysco Consulting Inc. fournit des services de conseil professionnels multidisciplinaires incluant le conseil en immobilier, les services d'ingénierie, la gestion de projets de construction, les services d'approvisionnement, le conseil en investissement et le conseil en affaires. Nous nous réservons le droit de modifier, suspendre ou discontinuer toute partie de nos services à tout moment."
+    },
+    "section3": {
+      "title": "Responsabilités de l'Utilisateur",
+      "content": "Vous acceptez d'utiliser nos services uniquement à des fins licites et conformément à ces Conditions. Vous êtes responsable de la confidentialité de vos identifiants de compte et de toutes les activités effectuées sous votre compte."
+    },
+    "section4": {
+      "title": "Propriété Intellectuelle",
+      "content": "Tout le contenu, les matériaux et les services fournis via notre site web sont la propriété intellectuelle de Paraysco Consulting Inc. ou de ses concédants. Vous ne pouvez pas reproduire, distribuer ou créer d'œuvres dérivées sans notre permission écrite expresse."
+    },
+    "section5": {
+      "title": "Limitation de Responsabilité",
+      "content": "Dans toute la mesure permise par la loi, Paraysco Consulting Inc. ne sera pas responsable des dommages indirects, accessoires, spéciaux, consécutifs ou punitifs résultant de votre utilisation de nos services."
+    },
+    "section6": {
+      "title": "Indemnisation",
+      "content": "Vous acceptez d'indemniser et de dégager Paraysco Consulting Inc., ses dirigeants, administrateurs, employés et agents de toute réclamation, dommage, perte ou dépense découlant de votre utilisation de nos services ou de la violation de ces Conditions."
+    },
+    "section7": {
+      "title": "Droit Applicable",
+      "content": "Ces Conditions seront régies et interprétées conformément aux lois du Cameroun. Tout litige découlant de ces Conditions sera résolu dans les tribunaux du Cameroun."
+    }
+  },
+  "cookies": {
+    "title": "Politique des Cookies",
+    "lastUpdated": "Dernière mise à jour: 15 janvier 2025",
+    "section1": {
+      "title": "Que Sont les Cookies",
+      "content": "Les cookies sont de petits fichiers texte stockés sur votre appareil lorsque vous visitiez un site web. Ils aident les sites web à mémoriser vos préférences et à améliorer votre expérience de navigation."
+    },
+    "section2": {
+      "title": "Comment Nous Utilisons les Cookies",
+      "content": "Nous utilisons des cookies pour comprendre comment vous utilisez notre site web, mémoriser vos préférences et améliorer votre expérience. Les cookies nous aident à analyser le trafic du site web et à personnaliser le contenu pour mieux vous servir."
+    },
+    "section3": {
+      "title": "Types de Cookies que Nous Utilisons",
+      "content": "Cookies Essentiels:_REQUIRED pour le bon fonctionnement du site web. Cookies de Performance: Nous aident à comprendre comment les visiteurs interagissent avec notre site web. Cookies de Fonctionnalité: Mémorisent vos préférences et paramètres. Cookies Analytiques: Suivent l'utilisation et les performances du site web."
+    },
+    "section4": {
+      "title": "Gestion des Cookies",
+      "content": "Vous pouvez contrôler et/ou supprimer les cookies comme vous le souhaitez. Vous pouvez supprimer tous les cookies qui sont déjà sur votre ordinateur et vous pouvez configurer la plupart des navigateurs pour empêcher leur placement. Cependant, cela peut causer le dysfonctionnement de certaines fonctionnalités du site web."
+    },
+    "section5": {
+      "title": "Cookies Tiers",
+      "content": "Certains cookies sur notre site web peuvent être placés par des fournisseurs de services tiers. Ces cookies sont régis par les politiques de confidentialité de ces tiers. Nous vous encourageons à consulter les politiques de ces tiers."
     }
   },
   "auth": {

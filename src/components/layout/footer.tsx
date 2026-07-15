@@ -68,18 +68,19 @@ export function Footer({ locale }: FooterProps) {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">P</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-600/30">
+                <span className="text-white font-bold text-2xl">P</span>
               </div>
               <div>
-                <span className="font-heading text-xl font-bold text-white">
-                  PARAYSCO
-                </span>
-                <span className="text-primary-400 font-heading text-xl font-bold">
-                  {' '}
-                  PCI
-                </span>
+                <div className="flex items-baseline gap-1">
+                  <span className="font-heading text-2xl font-bold text-white">
+                    PARAYSCO
+                  </span>
+                  <span className="text-primary-400 font-heading text-2xl font-bold">
+                    PCI
+                  </span>
+                </div>
               </div>
             </div>
             <p className="text-sm leading-relaxed">{t('description')}</p>
