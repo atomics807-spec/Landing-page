@@ -103,7 +103,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* Mobile Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm fixed top-0 left-0 right-0 z-50 md:hidden">
+      <header className="bg-white dark:bg-gray-800 shadow-sm fixed top-0 left-0 right-0 z-50 lg:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
             <button 
@@ -133,7 +133,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </header>
 
       {/* Desktop Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm fixed top-0 left-0 right-0 z-50 hidden md:block">
+      <header className="bg-white dark:bg-gray-800 shadow-sm fixed top-0 left-0 right-0 z-50 hidden lg:block">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
             <Link href="/en" className="flex items-center gap-3">
@@ -163,11 +163,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {isSidebarOpen && (
         <>
           <div 
-            className="fixed inset-0 bg-black/50 z-40 md:hidden" 
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
             onClick={closeSidebar}
           />
-          <aside className="fixed left-0 top-0 bottom-0 w-72 bg-white dark:bg-gray-800 shadow-xl z-50 md:hidden overflow-y-auto pt-16">
-            <div className="p-4">
+          <aside className="fixed left-0 top-0 bottom-0 w-72 bg-white dark:bg-gray-800 shadow-xl z-50 lg:hidden overflow-y-auto">
+            <div className="pt-16 p-4">
               <div className="flex items-center gap-3 mb-6 pb-4 border-b dark:border-gray-700">
                 <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold">P</span>
@@ -201,7 +201,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       )}
 
       {/* Desktop Sidebar - Fixed on left */}
-      <aside className="hidden md:block fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-lg overflow-y-auto z-30">
+      <aside className="hidden lg:block fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-lg overflow-y-auto z-30">
         <div className="p-4">
           <nav className="space-y-1">
             {navItems.map((item) => {
@@ -226,9 +226,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="pt-16 md:ml-64 min-h-screen">
-        <div className="p-4 md:p-6">
+      {/* Main Content - Full width on all screens */}
+      <main className="pt-16 lg:ml-64 min-h-screen">
+        <div className="p-4 sm:p-6 lg:p-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
