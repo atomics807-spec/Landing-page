@@ -17,6 +17,7 @@ import { useTheme } from '@/components/providers/theme-provider';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/profile', label: 'Profile', icon: UsersIcon },
   { href: '/admin/users', label: 'Users', icon: UsersIcon },
   { href: '/admin/properties', label: 'Properties', icon: Building2 },
   { href: '/admin/services', label: 'Services', icon: Briefcase },
