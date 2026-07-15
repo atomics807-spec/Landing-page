@@ -120,6 +120,12 @@ export default function AnalyticsPage() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Website Analytics & Progress</h1>
         <p className="text-gray-500">Track your website performance and content metrics</p>
+        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <p className="text-sm text-blue-700 dark:text-blue-300">
+            <strong>Note:</strong> Traffic data (visitors, page views, etc.) is tracked by Vercel Analytics. 
+            <a href="https://vercel.com/dashboard" target="_blank" rel="noopener noreferrer" className="underline ml-1">View real-time analytics on Vercel Dashboard →</a>
+          </p>
+        </div>
       </div>
 
       {/* Traffic Cards */}
