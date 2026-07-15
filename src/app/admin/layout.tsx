@@ -3,17 +3,17 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LogOut, Home, LayoutDashboard, Building2, FileText, 
   Briefcase, Users as UsersIcon, Mail, Settings,
   Image, MessageSquare, HelpCircle, Briefcase as CareerIcon,
-  Star, Users, Cog, Clock
+  Star, Users, Cog, Clock, Menu, X, Sun, Moon, Globe, ChevronDown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { createClient } from '@/lib/supabase/client';
+import { useTheme } from '@/components/providers/theme-provider';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -28,18 +28,25 @@ const navItems = [
   { href: '/admin/careers', label: 'Careers', icon: CareerIcon },
   { href: '/admin/blog', label: 'Blog', icon: FileText },
   { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
-  { href: '/admin/contact-messages', label: 'Contact Messages', icon: MessageSquare },
-  { href: '/admin/media-library', label: 'Media Library', icon: Image },
+  { href: '/admin/contact-messages', label: 'Messages', icon: MessageSquare },
+  { href: '/admin/media-library', label: 'Media', icon: Image },
   { href: '/admin/settings', label: 'Settings', icon: Cog },
-  { href: '/admin/audit-logs', label: 'Audit Logs', icon: Clock },
+  { href: '/admin/audit-logs', label: 'Logs', icon: Clock },
+];
+
+const locales = [
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { theme, toggleTheme } = useTheme();
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -79,18 +86,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     try {
       const supabase = createClient();
       await supabase.auth.signOut();
-      // Clear any local storage
       if (typeof window !== 'undefined') {
         localStorage.clear();
       }
-      // Redirect to login page
       window.location.href = '/en/login';
     } catch (error) {
       console.error('Logout error:', error);
-      // Even if there's an error, try to redirect
       window.location.href = '/en/login';
     }
   };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
+  const switchLanguage = (locale: string) => {
+    const currentPath = pathname;
+    const newPath = currentPath.replace(/\/(en|fr)/, `/${locale}`);
+    router.push(newPath);
+    setIsLangMenuOpen(false);
+  };
+
+  // Get current locale from pathname
+  const currentLocale = pathname.includes('/fr/') ? 'fr' : 'en';
+  const currentLang = locales.find(l => l.code === currentLocale) || locales[0];
 
   if (isLoading) {
     return (
@@ -102,29 +121,153 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm fixed top-0 left-0 right-0 z-50">
+      {/* Mobile Header */}
+      <header className="bg-white dark:bg-gray-800 shadow-sm fixed top-0 left-0 right-0 z-50 lg:hidden">
         <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg lg:hidden"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
             <Link href="/en" className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold">P</span>
+              </div>
+              <span className="font-bold text-gray-900 dark:text-white">Admin</span>
+            </Link>
+          </div>
+          <div className="flex items-center gap-1">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+              aria-label="Toggle theme"
+            >
+              <AnimatePresence mode="wait">
+                {theme === 'light' ? (
+                  <Moon className="w-5 h-5" key="moon" />
+                ) : (
+                  <Sun className="w-5 h-5" key="sun" />
+                )}
+              </AnimatePresence>
+            </button>
+            
+            {/* Language Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg flex items-center gap-1"
+              >
+                <Globe className="w-5 h-5" />
+                <span className="text-sm">{currentLang.code.toUpperCase()}</span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <AnimatePresence>
+                {isLangMenuOpen && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setIsLangMenuOpen(false)}
+                    />
+                    <div className="absolute right-0 top-full mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border dark:border-gray-700 z-50">
+                      {locales.map((lang) => (
+                        <button
+                          key={lang.code}
+                          onClick={() => switchLanguage(lang.code)}
+                          className={`w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg ${
+                            currentLocale === lang.code ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600' : ''
+                          }`}
+                        >
+                          <span className="mr-2">{lang.flag}</span>
+                          {lang.label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <Link href="/en">
+              <Button variant="ghost" size="sm" className="text-xs">
+                <Home className="w-4 h-4" />
+              </Button>
+            </Link>
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="text-xs">
+              <LogOut className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      {/* Desktop Header */}
+      <header className="bg-white dark:bg-gray-800 shadow-sm fixed top-0 left-0 right-0 z-50 hidden lg:block">
+        <div className="flex items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-4">
+            <Link href="/en" className="flex items-center gap-3">
               <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">P</span>
               </div>
-              <span className="font-heading text-xl font-bold text-gray-900 dark:text-white hidden sm:block">
+              <span className="font-heading text-xl font-bold text-gray-900 dark:text-white">
                 Admin Panel
               </span>
             </Link>
-            <Badge variant="secondary" className="hidden md:inline-flex">{user?.email}</Badge>
+            <Badge variant="secondary">{user?.email}</Badge>
           </div>
           <div className="flex items-center gap-2">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+              aria-label="Toggle theme"
+            >
+              <AnimatePresence mode="wait">
+                {theme === 'light' ? (
+                  <Moon className="w-5 h-5" key="moon" />
+                ) : (
+                  <Sun className="w-5 h-5" key="sun" />
+                )}
+              </AnimatePresence>
+            </button>
+            
+            {/* Language Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg flex items-center gap-1"
+              >
+                <Globe className="w-5 h-5" />
+                <span className="text-sm font-medium">{currentLang.code.toUpperCase()}</span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <AnimatePresence>
+                {isLangMenuOpen && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setIsLangMenuOpen(false)}
+                    />
+                    <div className="absolute right-0 top-full mt-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border dark:border-gray-700 z-50">
+                      {locales.map((lang) => (
+                        <button
+                          key={lang.code}
+                          onClick={() => switchLanguage(lang.code)}
+                          className={`w-full px-4 py-3 text-left hover:bg-gray-100 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg flex items-center gap-2 ${
+                            currentLocale === lang.code ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600' : ''
+                          }`}
+                        >
+                          <span className="text-xl">{lang.flag}</span>
+                          <span className="font-medium">{lang.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
             <Link href="/en">
               <Button variant="ghost" size="sm">
                 <Home className="mr-2 h-4 w-4" />View Site
@@ -137,57 +280,85 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </header>
 
-      <div className="flex pt-16">
-        {/* Sidebar */}
-        <aside className={`bg-white dark:bg-gray-800 shadow-lg fixed left-0 top-16 bottom-0 overflow-y-auto transition-all duration-300 z-40 ${
-          isSidebarOpen ? 'w-64' : 'w-0 lg:w-64'
-        }`}>
-          <div className="p-4">
-            <nav className="space-y-1">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
-                      isActive
-                        ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
-                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                    }`}
-                    onClick={() => setIsSidebarOpen(false)}
-                  >
-                    <Icon className="h-5 w-5 flex-shrink-0" />
-                    <span className="font-medium">{item.label}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
-        </aside>
-
-        {/* Overlay for mobile */}
-        {isSidebarOpen && (
+      {/* Mobile Sidebar - Overlay */}
+      {isSidebarOpen && (
+        <>
           <div 
-            className="fixed inset-0 bg-black/50 z-30 lg:hidden" 
-            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
+            onClick={closeSidebar}
           />
-        )}
+          <aside className="fixed left-0 top-0 bottom-0 w-72 bg-white dark:bg-gray-800 shadow-xl z-50 lg:hidden overflow-y-auto">
+            <div className="pt-16 p-4">
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b dark:border-gray-700">
+                <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold">P</span>
+                </div>
+                <span className="font-bold text-lg">Admin Menu</span>
+              </div>
+              <nav className="space-y-1">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                        isActive
+                          ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      }`}
+                      onClick={closeSidebar}
+                    >
+                      <Icon className="h-5 w-5 flex-shrink-0" />
+                      <span className="font-medium">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
+          </aside>
+        </>
+      )}
 
-        {/* Main Content */}
-        <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'ml-0'}`}>
-          <div className="p-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {children}
-            </motion.div>
-          </div>
-        </main>
-      </div>
+      {/* Desktop Sidebar - Fixed on left */}
+      <aside className="hidden lg:block fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-lg overflow-y-auto z-30">
+        <div className="p-4">
+          <nav className="space-y-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                    isActive
+                      ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  <Icon className="h-5 w-5 flex-shrink-0" />
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      </aside>
+
+      {/* Main Content - Full width on all screens */}
+      <main className="pt-16 lg:ml-64 min-h-screen">
+        <div className="p-4 sm:p-6 lg:p-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {children}
+          </motion.div>
+        </div>
+      </main>
     </div>
   );
 }
