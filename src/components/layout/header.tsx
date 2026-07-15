@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { Locale } from '@/i18n';
 import { useTheme } from '@/components/providers/theme-provider';
+import { UserMenu } from '@/components/layout/user-menu';
 
 const locales: Locale[] = ['en', 'fr'];
 
@@ -303,10 +304,8 @@ export function Header({ locale }: HeaderProps) {
               )} />
             </button>
 
-            {/* Login Button */}
-            <Button asChild className="hidden md:inline-flex">
-              <Link href={`/${locale}/login`}>{t('login')}</Link>
-            </Button>
+            {/* User Menu */}
+            <UserMenu locale={locale} />
 
             {/* Mobile Menu Button */}
             <button
@@ -366,10 +365,13 @@ export function Header({ locale }: HeaderProps) {
                   )}
                 </div>
               ))}
-              <div className="pt-4">
-                <Button asChild className="w-full">
-                  <Link href={`/${locale}/login`}>{t('login')}</Link>
-                </Button>
+              <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                <div className="flex flex-col gap-2">
+                  <UserMenu locale={locale} />
+                  <Link href={`/${locale}/login`}>
+                    <Button variant="outline" className="w-full">{t('login')}</Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </motion.div>

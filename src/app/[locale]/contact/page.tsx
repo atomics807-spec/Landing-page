@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
@@ -12,7 +13,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { contactFormSchema, type ContactFormData } from '@/lib/utils';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2, Briefcase } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2, Briefcase, Lock } from 'lucide-react';
+import { getUserProfile } from '@/app/actions/auth';
 
 function ContactForm() {
   const locale = useLocale();
@@ -22,6 +24,8 @@ function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [propertyInquiry, setPropertyInquiry] = useState<{ id: string; title: string } | null>(null);
   const [jobInquiry, setJobInquiry] = useState<{ id: string; title: string } | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     register,
@@ -42,6 +46,15 @@ function ContactForm() {
     if (property) setPropertyInquiry({ id: property, title: subject || 'Property Inquiry' });
     if (position) setJobInquiry({ id: position, title: subject || 'Job Application' });
   }, [searchParams, setValue]);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { user: userData } = await getUserProfile();
+      setUser(userData);
+      setIsLoading(false);
+    };
+    checkAuth();
+  }, []);
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
@@ -103,7 +116,37 @@ function ContactForm() {
         </div>
       </section>
 
+      {/* Login Required Gate */}
+      {!isLoading && !user && (
+        <section className="py-20 bg-gray-50 dark:bg-gray-800">
+          <div className="container mx-auto px-4">
+            <Card className="max-w-lg mx-auto">
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mx-auto mb-6">
+                  <Lock className="w-8 h-8 text-primary-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                  Login Required
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                  You need to be logged in to contact us. Please create an account or sign in to continue.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button asChild>
+                    <Link href={`/${locale}/register`}>Create Account</Link>
+                  </Button>
+                  <Button variant="outline" asChild>
+                    <Link href={`/${locale}/login`}>Sign In</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
+
       {/* Contact Section */}
+      {user && (
       <section className="py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16">
@@ -302,6 +345,7 @@ function ContactForm() {
           </div>
         </div>
       </section>
+      )}
     </div>
   );
 }
