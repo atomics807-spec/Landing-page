@@ -1,16 +1,14 @@
-import { setRequestLocale } from 'next-intl/server';
-import { motion } from 'framer-motion';
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Building, Cog, Construction, Truck, TrendingUp, Users, ArrowRight, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CTASection } from '@/components/home/cta-section';
 import type { Locale } from '@/i18n';
-
-interface ServicesPageProps {
-  params: Promise<{ locale: string }>;
-}
 
 const iconMap = {
   realEstate: Building,
@@ -21,10 +19,8 @@ const iconMap = {
   consultancy: Users,
 };
 
-export default async function ServicesPage({ params }: ServicesPageProps) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-
+export default function ServicesPage() {
+  const locale = useLocale() as Locale;
   const t = useTranslations('services');
 
   const services = [
@@ -93,9 +89,9 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
                           </li>
                         ))}
                       </ul>
-                      <Button variant="outline" className="w-full group">
-                        <Link href={`/${locale}/services/${service.key}`} className="flex items-center">
-                          Learn More
+                      <Button variant="outline" className="w-full group" asChild>
+                        <Link href={`/${locale}/contact`}>
+                          Contact Us
                           <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                       </Button>
@@ -154,7 +150,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
         </div>
       </section>
 
-      <CTASection locale={locale as Locale} />
+      <CTASection locale={locale} />
     </div>
   );
 }

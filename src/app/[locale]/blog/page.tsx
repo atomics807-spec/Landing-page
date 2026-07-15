@@ -13,7 +13,7 @@ import { Search } from 'lucide-react';
 // Mock blog data
 const mockPosts = [
   {
-    id: '1',
+    slug: '1',
     title: 'Investment Opportunities in Cameroon Real Estate 2024',
     excerpt: 'Explore the growing real estate market in Cameroon and discover profitable investment opportunities for foreign investors.',
     category: 'Insights',
@@ -23,7 +23,7 @@ const mockPosts = [
     image: '/placeholder.jpg',
   },
   {
-    id: '2',
+    slug: '2',
     title: 'Understanding Business Regulations in Cameroon',
     excerpt: 'A comprehensive guide to navigating business regulations, licensing requirements, and legal frameworks for foreign businesses.',
     category: 'Guide',
@@ -33,7 +33,7 @@ const mockPosts = [
     image: '/placeholder.jpg',
   },
   {
-    id: '3',
+    slug: '3',
     title: 'Infrastructure Development Trends in Central Africa',
     excerpt: 'Analysis of current infrastructure projects and future development plans across the Central African region.',
     category: 'News',
@@ -104,13 +104,13 @@ export default function BlogPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {mockPosts.map((post, index) => (
               <motion.div
-                key={post.id}
+                key={post.slug}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Link href={`/${locale}/blog/${post.id}`}>
-                  <Card className="h-full overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <Link href={`/${locale}/blog/${post.slug}`}>
+                  <Card className="h-full overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
                     <div className="aspect-[16/9] bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 relative">
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-primary-600 dark:text-primary-300">
@@ -132,7 +132,7 @@ export default function BlogPage() {
                           {post.readingTime} {t('readTime')}
                         </span>
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2 hover:text-primary-600 transition-colors">
                         {post.title}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
@@ -143,10 +143,10 @@ export default function BlogPage() {
                           <User className="h-4 w-4 mr-1" />
                           {post.author}
                         </div>
-                        <Button variant="ghost" size="sm" className="group">
+                        <span className="flex items-center text-primary-600 text-sm font-medium group">
                           Read More
                           <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </Button>
+                        </span>
                       </div>
                     </CardContent>
                   </Card>

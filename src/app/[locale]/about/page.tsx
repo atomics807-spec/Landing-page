@@ -5,9 +5,10 @@ import { motion } from 'framer-motion';
 import { Shield, Sparkles, Target, Eye, Users, Globe, Award, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { CTASection } from '@/components/home/cta-section';
+import type { Locale } from '@/i18n';
 
 export default function AboutPage() {
-  const locale = useLocale();
+  const locale = useLocale() as Locale;
   const t = useTranslations('about');
 
   const values = [
