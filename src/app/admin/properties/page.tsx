@@ -40,6 +40,9 @@ export default function PropertiesPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     title: '', description: '', property_type: 'residential', status: 'available',
     price: '', location: '', address: '', bedrooms: '', bathrooms: '', area_sqm: '',
@@ -66,6 +69,39 @@ export default function PropertiesPage() {
     return data.publicUrl;
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    const newImages: string[] = [];
+    const newPreviews: string[] = [];
+
+    for (const file of Array.from(files)) {
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviews(prev => [...prev, reader.result as string]);
+      };
+      reader.readAsDataURL(file);
+
+      // Upload to Supabase
+      const url = await uploadImage(file);
+      if (url) {
+        newImages.push(url);
+        newPreviews.push(url);
+      }
+    }
+
+    setUploadedImages(prev => [...prev, ...newImages]);
+    setIsUploading(false);
+  };
+
+  const removeImage = (index: number) => {
+    setUploadedImages(prev => prev.filter((_, i) => i !== index));
+    setImagePreviews(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
     const supabase = createClient();
@@ -81,6 +117,7 @@ export default function PropertiesPage() {
       bathrooms: parseInt(formData.bathrooms) || 0,
       area_sqm: parseFloat(formData.area_sqm) || 0,
       features: formData.features ? formData.features.split(',').map(f => f.trim()).filter(Boolean) : [],
+      images: uploadedImages,
       is_featured: formData.is_featured,
       is_active: true,
     };
@@ -102,6 +139,8 @@ export default function PropertiesPage() {
     setFormData({ title: '', description: '', property_type: 'residential', status: 'available',
       price: '', location: '', address: '', bedrooms: '', bathrooms: '', area_sqm: '',
       features: '', is_featured: false });
+    setUploadedImages([]);
+    setImagePreviews([]);
   };
 
   const handleEdit = (property: Property) => {
@@ -113,6 +152,8 @@ export default function PropertiesPage() {
       bathrooms: property.bathrooms?.toString() || '', area_sqm: property.area_sqm?.toString() || '',
       features: property.features?.join(', ') || '', is_featured: property.is_featured,
     });
+    setUploadedImages(property.images || []);
+    setImagePreviews(property.images || []);
     setShowModal(true);
   };
 
@@ -219,6 +260,43 @@ export default function PropertiesPage() {
               <button onClick={() => setShowModal(false)} className="p-2 hover:bg-gray-100 rounded-lg"><X className="h-5 w-5" /></button>
             </div>
             <div className="p-6 overflow-y-auto flex-1 space-y-4">
+              {/* Image Upload Section */}
+              <FormField label="Property Images">
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                  {imagePreviews.length > 0 && (
+                    <div className="grid grid-cols-4 gap-2 mb-4">
+                      {imagePreviews.map((preview, index) => (
+                        <div key={index} className="relative group">
+                          <img src={preview} alt={`Preview ${index + 1}`} className="w-full h-20 object-cover rounded" />
+                          <button
+                            type="button"
+                            onClick={() => removeImage(index)}
+                            className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div className="text-center">
+                    <input
+                      type="file"
+                      id="property-images"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <label htmlFor="property-images" className="cursor-pointer">
+                      <Upload className="w-8 h-8 mx-auto text-gray-400 mb-2" />
+                      <p className="text-sm text-gray-500">Click to upload images</p>
+                    </label>
+                  </div>
+                  {isUploading && <p className="text-sm text-primary-600 mt-2 text-center">Uploading...</p>}
+                </div>
+              </FormField>
+
               <FormField label="Title" required>
                 <Input value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} />
               </FormField>
@@ -268,7 +346,7 @@ export default function PropertiesPage() {
             </div>
             <div className="p-6 border-t flex gap-4">
               <Button variant="outline" onClick={() => setShowModal(false)} className="flex-1">Cancel</Button>
-              <Button onClick={handleSave} disabled={isSaving} className="flex-1">{isSaving ? 'Saving...' : 'Save'}</Button>
+              <Button onClick={handleSave} disabled={isSaving || !formData.title} className="flex-1">{isSaving ? 'Saving...' : 'Save'}</Button>
             </div>
           </div>
         </div>

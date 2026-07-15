@@ -21,20 +21,27 @@ export const metadata: Metadata = {
     template: '%s | Paraysco Consulting Inc.',
   },
   description:
-    'Paraysco Consulting Inc. provides innovative consultancy solutions that bridge the gap between ideas and implementation, investment and opportunity, and ambition and sustainable growth.',
+    'Paraysco Consulting Inc. provides innovative consultancy solutions that bridge the gap between ideas and implementation, investment and opportunity, and ambition and sustainable growth. Expert services in real estate, engineering, construction, and business consultancy across Africa.',
   keywords: [
-    'consulting',
-    'real estate',
+    'consulting firm Cameroon',
+    'real estate advisory Africa',
     'investment advisory',
     'project management',
-    'Cameroon',
     'business consultancy',
-    'engineering',
-    'construction',
+    'engineering services',
+    'construction management',
+    'procurement services',
+    'Limbe Cameroon',
+    'Lagos Nigeria',
+    'Abuja Nigeria',
+    'Paraysco',
+    'sustainable development Africa',
   ],
-  authors: [{ name: 'Paraysco Consulting Inc.' }],
+  authors: [{ name: 'Paraysco Consulting Inc.', url: 'https://paraysco.com' }],
   creator: 'Paraysco Consulting Inc.',
   publisher: 'Paraysco Consulting Inc.',
+  category: 'Business Consulting',
+  classification: 'Professional Services',
   formatDetection: {
     email: false,
     address: false,
@@ -47,23 +54,36 @@ export const metadata: Metadata = {
     siteName: 'Paraysco Consulting Inc.',
     title: 'Paraysco Consulting Inc. | Professional Solutions, Sustainable Growth',
     description:
-      'Paraysco Consulting Inc. provides innovative consultancy solutions for sustainable growth.',
+      'Expert multidisciplinary consulting firm providing integrated solutions in real estate, engineering, construction, and business consultancy across Africa.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Paraysco Consulting Inc.',
+        alt: 'Paraysco Consulting Inc. - Professional Solutions for Sustainable Growth',
+      },
+      {
+        url: '/og-image-square.png',
+        width: 1200,
+        height: 1200,
+        alt: 'Paraysco Consulting Inc. Logo',
       },
     ],
+    siteName: 'Paraysco Consulting Inc.',
+    locale: 'en_US',
+    alternateLocale: ['fr_FR'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Paraysco Consulting Inc.',
+    title: 'Paraysco Consulting Inc. | Professional Solutions, Sustainable Growth',
     description:
-      'Professional Solutions, Sustainable Growth. Innovative consultancy solutions for governments, institutions, and businesses.',
+      'Expert multidisciplinary consulting firm providing integrated solutions across Africa. Real estate, engineering, construction, and business consultancy.',
     images: ['/og-image.png'],
     creator: '@paraysco',
+    site: '@paraysco',
+  },
+  facebook: {
+    appId: 'your-facebook-app-id',
   },
   robots: {
     index: true,
@@ -75,9 +95,24 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+    bingbot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://paraysco.com',
+    languages: {
+      'en': 'https://paraysco.com/en',
+      'fr': 'https://paraysco.com/fr',
+    },
   },
   verification: {
     google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
+   bing: 'your-bing-verification-code',
   },
 };
 
