@@ -76,9 +76,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   const handleLogout = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push('/en/login');
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      // Clear any local storage
+      if (typeof window !== 'undefined') {
+        localStorage.clear();
+      }
+      // Redirect to login page
+      window.location.href = '/en/login';
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if there's an error, try to redirect
+      window.location.href = '/en/login';
+    }
   };
 
   if (isLoading) {
