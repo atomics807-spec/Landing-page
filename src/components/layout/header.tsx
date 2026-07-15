@@ -141,18 +141,19 @@ export function Header({ locale }: HeaderProps) {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">P</span>
+          <Link href={`/${locale}`} className="flex items-center space-x-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-600/30">
+              <span className="text-white font-bold text-2xl">P</span>
             </div>
             <div className="hidden sm:block">
-              <span className="font-heading text-xl font-bold text-gray-900 dark:text-white">
-                PARAYSCO
-              </span>
-              <span className="text-primary-600 font-heading text-xl font-bold">
-                {' '}
-                PCI
-              </span>
+              <div className="flex items-baseline gap-1">
+                <span className="font-heading text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+                  PARAYSCO
+                </span>
+                <span className="text-primary-600 font-heading text-2xl font-bold">
+                  PCI
+                </span>
+              </div>
             </div>
           </Link>
 
