@@ -8,7 +8,8 @@ import {
   LogOut, Home, LayoutDashboard, Building2, FileText, 
   Briefcase, Users as UsersIcon, Mail, Settings,
   Image, MessageSquare, HelpCircle, Briefcase as CareerIcon,
-  Star, Users, Cog, Clock, Menu, X, Sun, Moon, Globe, ChevronDown
+  Star, Users, Cog, Clock, Menu, X, Sun, Moon, Globe, ChevronDown,
+  BarChart3
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +18,7 @@ import { useTheme } from '@/components/providers/theme-provider';
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/admin/profile', label: 'Profile', icon: UsersIcon },
   { href: '/admin/users', label: 'Users', icon: UsersIcon },
   { href: '/admin/properties', label: 'Properties', icon: Building2 },

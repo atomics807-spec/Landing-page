@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -11,22 +12,32 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { contactFormSchema, type ContactFormData } from '@/lib/utils';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2 } from 'lucide-react';
 
-export default function ContactPage() {
+function ContactForm() {
   const locale = useLocale();
   const t = useTranslations('contact');
+  const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [propertyInquiry, setPropertyInquiry] = useState<{ id: string; title: string } | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
   });
+
+  useEffect(() => {
+    const subject = searchParams.get('subject');
+    const property = searchParams.get('property');
+    if (subject) setValue('subject', subject);
+    if (property) setPropertyInquiry({ id: property, title: subject || 'Property Inquiry' });
+  }, [searchParams, setValue]);
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
@@ -114,6 +125,18 @@ export default function ContactPage() {
                       <Button onClick={() => setSubmitted(false)}>Send Another Message</Button>
                     </div>
                   ) : (
+                    <>
+                      {propertyInquiry && (
+                        <div className="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg">
+                          <div className="flex items-center gap-2 text-primary-700 dark:text-primary-300">
+                            <Building2 className="w-5 h-5" />
+                            <span className="font-medium">Property Inquiry</span>
+                          </div>
+                          <p className="text-sm text-primary-600 dark:text-primary-400 mt-1">
+                            You are inquiring about: {propertyInquiry.title}
+                          </p>
+                        </div>
+                      )}
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
@@ -195,6 +218,7 @@ export default function ContactPage() {
                         )}
                       </Button>
                     </form>
+                    </>
                   )}
                 </CardContent>
               </Card>
@@ -264,5 +288,13 @@ export default function ContactPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center p-8"><div className="animate-spin h-8 w-8 border-4 border-primary-600 border-t-transparent rounded-full" /></div>}>
+      <ContactForm />
+    </Suspense>
   );
 }

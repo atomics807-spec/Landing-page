@@ -212,12 +212,16 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                   Contact us today to schedule a viewing or get more information.
                 </p>
                 <div className="space-y-3">
-                  <Button className="w-full" size="lg">
-                    Contact Agent
-                  </Button>
-                  <Button variant="outline" className="w-full" size="lg">
-                    Request Viewing
-                  </Button>
+                  <Link href={`/${locale}/contact?subject=Inquiry about ${property.title}&property=${property.id}`} className="block">
+                    <Button className="w-full" size="lg">
+                      Contact Agent
+                    </Button>
+                  </Link>
+                  <Link href={`/${locale}/contact?subject=Viewing Request for ${property.title}&property=${property.id}`} className="block">
+                    <Button variant="outline" className="w-full" size="lg">
+                      Request Viewing
+                    </Button>
+                  </Link>
                 </div>
                 <div className="mt-6 pt-6 border-t dark:border-gray-700">
                   <p className="text-sm text-gray-500 text-center">Or call us directly</p>
