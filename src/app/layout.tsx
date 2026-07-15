@@ -69,9 +69,6 @@ export const metadata: Metadata = {
         alt: 'Paraysco Consulting Inc. Logo',
       },
     ],
-    siteName: 'Paraysco Consulting Inc.',
-    locale: 'en_US',
-    alternateLocale: ['fr_FR'],
   },
   twitter: {
     card: 'summary_large_image',
