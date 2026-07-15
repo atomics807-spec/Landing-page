@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
@@ -14,7 +14,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { contactFormSchema, type ContactFormData } from '@/lib/utils';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2 } from 'lucide-react';
 
-export default function ContactPage() {
+function ContactForm() {
   const locale = useLocale();
   const t = useTranslations('contact');
   const searchParams = useSearchParams();
@@ -32,17 +32,11 @@ export default function ContactPage() {
     resolver: zodResolver(contactFormSchema),
   });
 
-  // Handle URL params for property inquiries
   useEffect(() => {
     const subject = searchParams.get('subject');
     const property = searchParams.get('property');
-    
-    if (subject) {
-      setValue('subject', subject);
-    }
-    if (property) {
-      setPropertyInquiry({ id: property, title: subject || 'Property Inquiry' });
-    }
+    if (subject) setValue('subject', subject);
+    if (property) setPropertyInquiry({ id: property, title: subject || 'Property Inquiry' });
   }, [searchParams, setValue]);
 
   const onSubmit = async (data: ContactFormData) => {
@@ -294,5 +288,13 @@ export default function ContactPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center p-8"><div className="animate-spin h-8 w-8 border-4 border-primary-600 border-t-transparent rounded-full" /></div>}>
+      <ContactForm />
+    </Suspense>
   );
 }
