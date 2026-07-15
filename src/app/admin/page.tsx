@@ -147,31 +147,41 @@ export default function AdminPage() {
   const loadData = async () => {
     const supabase = createClient();
     
-    switch (activeTab) {
-      case 'team':
-        const { data: team } = await supabase.from('team_members').select('*').order('sort_order', { ascending: true });
-        setTeamMembers(team || []);
-        break;
-      case 'consultants':
-        const { data: cons } = await supabase.from('consultants').select('*').order('sort_order', { ascending: true });
-        setConsultants(cons || []);
-        break;
-      case 'properties':
-        const { data: props } = await supabase.from('properties').select('*').order('created_at', { ascending: false });
-        setProperties(props || []);
-        break;
-      case 'newsletters':
-        const { data: news } = await supabase.from('newsletters').select('*').order('created_at', { ascending: false });
-        setNewsletters(news || []);
-        break;
-      case 'subscribers':
-        const { data: subs } = await supabase.from('newsletter_subscribers').select('*').order('subscribed_at', { ascending: false });
-        setSubscribers(subs || []);
-        break;
-      case 'users':
-        const { data: usrs } = await supabase.from('users').select('*').order('created_at', { ascending: false });
-        setUsers(usrs || []);
-        break;
+    try {
+      switch (activeTab) {
+        case 'team':
+          const { data: team, error: teamErr } = await supabase.from('team_members').select('*').order('sort_order', { ascending: true });
+          if (teamErr) console.error('Team error:', teamErr);
+          setTeamMembers(team || []);
+          break;
+        case 'consultants':
+          const { data: cons, error: consErr } = await supabase.from('consultants').select('*').order('sort_order', { ascending: true });
+          if (consErr) console.error('Consultants error:', consErr);
+          setConsultants(cons || []);
+          break;
+        case 'properties':
+          const { data: props, error: propsErr } = await supabase.from('properties').select('*').order('created_at', { ascending: false });
+          if (propsErr) console.error('Properties error:', propsErr);
+          setProperties(props || []);
+          break;
+        case 'newsletters':
+          const { data: news, error: newsErr } = await supabase.from('newsletters').select('*').order('created_at', { ascending: false });
+          if (newsErr) console.error('Newsletters error:', newsErr);
+          setNewsletters(news || []);
+          break;
+        case 'subscribers':
+          const { data: subs, error: subsErr } = await supabase.from('newsletter_subscribers').select('*').order('subscribed_at', { ascending: false });
+          if (subsErr) console.error('Subscribers error:', subsErr);
+          setSubscribers(subs || []);
+          break;
+        case 'users':
+          const { data: usrs, error: usrsErr } = await supabase.from('users').select('*').order('created_at', { ascending: false });
+          if (usrsErr) console.error('Users error:', usrsErr);
+          setUsers(usrs || []);
+          break;
+      }
+    } catch (err) {
+      console.error('Load data error:', err);
     }
   };
 
@@ -183,35 +193,60 @@ export default function AdminPage() {
 
   const toggleActive = async (table: string, id: string, currentStatus: boolean) => {
     const supabase = createClient();
-    await supabase.from(table).update({ is_active: !currentStatus }).eq('id', id);
+    const { error } = await supabase.from(table).update({ is_active: !currentStatus }).eq('id', id);
+    if (error) {
+      alert(`Error: ${error.message}`);
+      console.error('Toggle error:', error);
+      return;
+    }
     loadData();
   };
 
   const toggleFeatured = async (id: string, currentStatus: boolean) => {
     const supabase = createClient();
-    await supabase.from('properties').update({ is_featured: !currentStatus }).eq('id', id);
+    const { error } = await supabase.from('properties').update({ is_featured: !currentStatus }).eq('id', id);
+    if (error) {
+      alert(`Error: ${error.message}`);
+      console.error('Toggle error:', error);
+      return;
+    }
     loadData();
   };
 
   const updatePropertyStatus = async (id: string, newStatus: string) => {
     const supabase = createClient();
-    await supabase.from('properties').update({ status: newStatus }).eq('id', id);
+    const { error } = await supabase.from('properties').update({ status: newStatus }).eq('id', id);
+    if (error) {
+      alert(`Error: ${error.message}`);
+      console.error('Update error:', error);
+      return;
+    }
     loadData();
   };
 
   const deleteItem = async (table: string, id: string) => {
     if (!confirm('Are you sure you want to delete this item?')) return;
     const supabase = createClient();
-    await supabase.from(table).delete().eq('id', id);
+    const { error } = await supabase.from(table).delete().eq('id', id);
+    if (error) {
+      alert(`Error: ${error.message}`);
+      console.error('Delete error:', error);
+      return;
+    }
     loadData();
   };
 
   const togglePublish = async (id: string, currentStatus: boolean) => {
     const supabase = createClient();
-    await supabase.from('newsletters').update({ 
+    const { error } = await supabase.from('newsletters').update({ 
       is_published: !currentStatus,
       published_at: !currentStatus ? new Date().toISOString() : null
     }).eq('id', id);
+    if (error) {
+      alert(`Error: ${error.message}`);
+      console.error('Toggle error:', error);
+      return;
+    }
     loadData();
   };
 
@@ -261,17 +296,29 @@ export default function AdminPage() {
         is_active: true,
       };
 
+      let error;
       if (editingItem) {
-        await supabase.from('properties').update(propertyData).eq('id', editingItem.id);
+        const result = await supabase.from('properties').update(propertyData).eq('id', editingItem.id);
+        error = result.error;
       } else {
-        await supabase.from('properties').insert(propertyData);
+        const result = await supabase.from('properties').insert(propertyData);
+        error = result.error;
       }
 
+      if (error) {
+        alert(`Error saving property: ${error.message}`);
+        console.error('Save error:', error);
+        setIsSaving(false);
+        return;
+      }
+
+      alert('Property saved successfully!');
       setShowModal(null);
       setEditingItem(null);
       loadData();
     } catch (error) {
       console.error('Save error:', error);
+      alert('An error occurred while saving.');
     } finally {
       setIsSaving(false);
     }
@@ -288,7 +335,7 @@ export default function AdminPage() {
         if (url) image_url = url;
       }
 
-      await supabase.from('team_members').insert({
+      const { error } = await supabase.from('team_members').insert({
         name: formData.name,
         position: formData.position,
         bio: formData.bio,
@@ -297,10 +344,19 @@ export default function AdminPage() {
         is_active: true,
       });
 
+      if (error) {
+        alert(`Error saving team member: ${error.message}`);
+        console.error('Save error:', error);
+        setIsSaving(false);
+        return;
+      }
+
+      alert('Team member added successfully!');
       setShowModal(null);
       loadData();
     } catch (error) {
       console.error('Save error:', error);
+      alert('An error occurred while saving.');
     } finally {
       setIsSaving(false);
     }
@@ -317,7 +373,7 @@ export default function AdminPage() {
         if (url) image_url = url;
       }
 
-      await supabase.from('consultants').insert({
+      const { error } = await supabase.from('consultants').insert({
         name: formData.name,
         title: formData.title,
         specialization: formData.specialization,
@@ -330,10 +386,19 @@ export default function AdminPage() {
         is_active: true,
       });
 
+      if (error) {
+        alert(`Error saving consultant: ${error.message}`);
+        console.error('Save error:', error);
+        setIsSaving(false);
+        return;
+      }
+
+      alert('Consultant added successfully!');
       setShowModal(null);
       loadData();
     } catch (error) {
       console.error('Save error:', error);
+      alert('An error occurred while saving.');
     } finally {
       setIsSaving(false);
     }
@@ -352,7 +417,7 @@ export default function AdminPage() {
 
       const slug = formData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 
-      await supabase.from('newsletters').insert({
+      const { error } = await supabase.from('newsletters').insert({
         title: formData.title,
         slug: slug,
         excerpt: formData.excerpt,
@@ -363,10 +428,19 @@ export default function AdminPage() {
         published_at: formData.is_published ? new Date().toISOString() : null,
       });
 
+      if (error) {
+        alert(`Error saving newsletter: ${error.message}`);
+        console.error('Save error:', error);
+        setIsSaving(false);
+        return;
+      }
+
+      alert('Newsletter created successfully!');
       setShowModal(null);
       loadData();
     } catch (error) {
       console.error('Save error:', error);
+      alert('An error occurred while saving.');
     } finally {
       setIsSaving(false);
     }
