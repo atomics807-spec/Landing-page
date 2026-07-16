@@ -1,6 +1,22 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
+// Custom fetch with timeout for Supabase requests
+const customFetch = async (url: string, options: RequestInit) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    return response;
+  } finally {
+    clearTimeout(timeout);
+  }
+};
+
 export async function createClient() {
   const cookieStore = await cookies();
 
@@ -8,6 +24,14 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+      },
+      global: {
+        fetch: customFetch,
+      },
       cookies: {
         getAll() {
           return cookieStore.getAll();
@@ -34,6 +58,13 @@ export async function createAdminClient() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+      global: {
+        fetch: customFetch,
+      },
       cookies: {
         getAll() {
           return cookieStore.getAll();
