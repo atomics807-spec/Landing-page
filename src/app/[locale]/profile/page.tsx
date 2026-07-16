@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
-import { User, Mail, Phone, Lock, LogOut, Save, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { User, Mail, Phone, Lock, LogOut, Save, Eye, EyeOff, Loader2, Settings, Shield, Bell, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { logoutUser, updateProfile, updatePassword, getUserProfile } from '@/app/actions/auth';
+import { createClient } from '@/lib/supabase/client';
 
 interface ProfileFormData {
   full_name: string;
@@ -56,16 +56,31 @@ export default function ProfilePage() {
 
   const loadProfile = async () => {
     setIsLoading(true);
-    const { user: userData } = await getUserProfile();
+    const supabase = createClient();
     
-    if (!userData) {
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    
+    if (!authUser) {
       router.push(`/${locale}/login`);
       return;
     }
 
+    // Get user profile from users table
+    const { data: profile } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', authUser.id)
+      .single();
+
+    const userData = {
+      ...authUser,
+      ...profile,
+      full_name: profile?.full_name || authUser.user_metadata?.full_name || '',
+    };
+
     setUser(userData);
     profileForm.reset({
-      full_name: userData.full_name || userData.user_metadata?.full_name || '',
+      full_name: userData.full_name || '',
       phone: userData.phone || '',
     });
     setIsLoading(false);
@@ -76,12 +91,33 @@ export default function ProfilePage() {
     setSuccessMessage('');
     setErrorMessage('');
 
-    const result = await updateProfile(data);
+    const supabase = createClient();
+    const { data: { user: authUser } } = await supabase.auth.getUser();
 
-    if (result.error) {
-      setErrorMessage(result.error);
+    if (!authUser) {
+      setErrorMessage('Not authenticated');
+      setIsSaving(false);
+      return;
+    }
+
+    // Update profile in users table
+    const { error: profileError } = await supabase
+      .from('users')
+      .update({
+        full_name: data.full_name,
+        phone: data.phone,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', authUser.id);
+
+    if (profileError) {
+      setErrorMessage(profileError.message);
     } else {
-      setSuccessMessage(t('profileUpdated'));
+      // Also update auth metadata
+      await supabase.auth.updateUser({
+        data: { full_name: data.full_name }
+      });
+      setSuccessMessage(t('profileUpdated') || 'Profile updated successfully!');
       loadProfile();
     }
 
@@ -103,12 +139,15 @@ export default function ProfilePage() {
     setSuccessMessage('');
     setErrorMessage('');
 
-    const result = await updatePassword(data.new_password);
+    const supabase = createClient();
+    const { error } = await supabase.auth.updateUser({
+      password: data.new_password
+    });
 
-    if (result.error) {
-      setErrorMessage(result.error);
+    if (error) {
+      setErrorMessage(error.message);
     } else {
-      setSuccessMessage(t('passwordChanged'));
+      setSuccessMessage(t('passwordChanged') || 'Password changed successfully!');
       passwordForm.reset();
     }
 
@@ -116,28 +155,37 @@ export default function ProfilePage() {
   };
 
   const handleLogout = async () => {
-    setIsSaving(true); // Use as loading state
-    
-    // Force logout with timeout fallback
-    const logoutPromise = logoutUser();
-    const timeoutPromise = new Promise((resolve) => 
-      setTimeout(() => resolve({ success: true }), 2000)
-    );
+    setIsSaving(true);
     
     try {
-      await Promise.race([logoutPromise, timeoutPromise]);
-    } catch (e) {
-      console.error('Logout error:', e);
-    }
-    
-    // Clear local storage and force full page reload
-    if (typeof window !== 'undefined') {
+      const supabase = createClient();
+      
+      // Clear all auth data from browser
+      await supabase.auth.signOut({ scope: 'global' });
+      
+      // Clear all storage
       localStorage.clear();
       sessionStorage.clear();
+      
+      // Clear all cookies
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+      
+      // Full page reload to reset everything
+      window.location.href = `/${locale}`;
+    } catch (e) {
+      console.error('Logout error:', e);
+      
+      // Force logout anyway
+      localStorage.clear();
+      sessionStorage.clear();
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+      
+      window.location.href = `/${locale}`;
     }
-    
-    // Full page reload to clear all state
-    window.location.href = `/${locale}`;
   };
 
   if (isLoading) {
