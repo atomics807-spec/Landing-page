@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { User, Mail, Phone, Lock, LogOut, Save, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,6 +26,7 @@ interface PasswordFormData {
 export default function ProfilePage() {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations('profile');
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -81,7 +81,7 @@ export default function ProfilePage() {
     if (result.error) {
       setErrorMessage(result.error);
     } else {
-      setSuccessMessage('Profile updated successfully!');
+      setSuccessMessage(t('profileUpdated'));
       loadProfile();
     }
 
@@ -90,7 +90,7 @@ export default function ProfilePage() {
 
   const handlePasswordChange = async (data: PasswordFormData) => {
     if (data.new_password !== data.confirm_password) {
-      setErrorMessage('Passwords do not match');
+      setErrorMessage(t('passwordMatch') || 'Passwords do not match');
       return;
     }
 
@@ -108,7 +108,7 @@ export default function ProfilePage() {
     if (result.error) {
       setErrorMessage(result.error);
     } else {
-      setSuccessMessage('Password changed successfully!');
+      setSuccessMessage(t('passwordChanged'));
       passwordForm.reset();
     }
 
@@ -139,12 +139,12 @@ export default function ProfilePage() {
         >
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Profile</h1>
-              <p className="text-gray-500 mt-1">Manage your account settings</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+              <p className="text-gray-500 mt-1">{t('subtitle')}</p>
             </div>
             <Button variant="outline" onClick={handleLogout} className="text-red-600 border-red-200 hover:bg-red-50">
               <LogOut className="w-4 h-4 mr-2" />
-              Logout
+              {t('logout')}
             </Button>
           </div>
 
@@ -166,14 +166,14 @@ export default function ProfilePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <User className="w-5 h-5" />
-                  Personal Information
+                  {t('personalInfo')}
                 </CardTitle>
-                <CardDescription>Update your personal details</CardDescription>
+                <CardDescription>{t('updatePersonal')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={profileForm.handleSubmit(handleProfileUpdate)} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t('email')}</Label>
                     <Input
                       id="email"
                       type="email"
@@ -181,20 +181,20 @@ export default function ProfilePage() {
                       disabled
                       className="bg-gray-50"
                     />
-                    <p className="text-xs text-gray-500">Email cannot be changed</p>
+                    <p className="text-xs text-gray-500">{t('emailNote')}</p>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="full_name">Full Name</Label>
+                    <Label htmlFor="full_name">{t('fullName')}</Label>
                     <Input
                       id="full_name"
                       {...profileForm.register('full_name')}
-                      placeholder="Enter your full name"
+                      placeholder={t('fullName')}
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="phone">{t('phone')}</Label>
                     <Input
                       id="phone"
                       type="tel"
@@ -207,12 +207,12 @@ export default function ProfilePage() {
                     {isSaving ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Saving...
+                        {t('saving')}
                       </>
                     ) : (
                       <>
                         <Save className="mr-2 h-4 w-4" />
-                        Save Changes
+                        {t('saveChanges')}
                       </>
                     )}
                   </Button>
@@ -225,20 +225,20 @@ export default function ProfilePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Lock className="w-5 h-5" />
-                  Change Password
+                  {t('changePassword')}
                 </CardTitle>
-                <CardDescription>Update your password to keep your account secure</CardDescription>
+                <CardDescription>{t('changePasswordDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={passwordForm.handleSubmit(handlePasswordChange)} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="new_password">New Password</Label>
+                    <Label htmlFor="new_password">{t('newPassword')}</Label>
                     <div className="relative">
                       <Input
                         id="new_password"
                         type={showPassword ? 'text' : 'password'}
                         {...passwordForm.register('new_password')}
-                        placeholder="Enter new password"
+                        placeholder={t('newPassword')}
                         className="pr-10"
                       />
                       <button
@@ -252,12 +252,12 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirm_password">Confirm New Password</Label>
+                    <Label htmlFor="confirm_password">{t('confirmPassword')}</Label>
                     <Input
                       id="confirm_password"
                       type={showPassword ? 'text' : 'password'}
                       {...passwordForm.register('confirm_password')}
-                      placeholder="Confirm new password"
+                      placeholder={t('confirmPassword')}
                     />
                   </div>
 
@@ -265,12 +265,12 @@ export default function ProfilePage() {
                     {isChangingPassword ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Changing...
+                        {t('saving')}
                       </>
                     ) : (
                       <>
                         <Lock className="mr-2 h-4 w-4" />
-                        Change Password
+                        {t('changePassword')}
                       </>
                     )}
                   </Button>
@@ -283,26 +283,26 @@ export default function ProfilePage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Mail className="w-5 h-5" />
-                  Account Information
+                  {t('accountInfo')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center py-2 border-b dark:border-gray-700">
-                  <span className="text-gray-500">Account ID</span>
+                  <span className="text-gray-500">{t('accountId')}</span>
                   <span className="text-gray-900 dark:text-white font-mono text-sm">{user?.id}</span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b dark:border-gray-700">
-                  <span className="text-gray-500">Role</span>
+                  <span className="text-gray-500">{t('role')}</span>
                   <span className="text-gray-900 dark:text-white capitalize">{user?.role || 'user'}</span>
                 </div>
                 <div className="flex justify-between items-center py-2 border-b dark:border-gray-700">
-                  <span className="text-gray-500">Email Verified</span>
+                  <span className="text-gray-500">{t('emailVerified')}</span>
                   <span className={user?.email_confirmed_at ? 'text-green-600' : 'text-yellow-600'}>
                     {user?.email_confirmed_at ? 'Yes' : 'No'}
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-500">Member Since</span>
+                  <span className="text-gray-500">{t('memberSince')}</span>
                   <span className="text-gray-900 dark:text-white">
                     {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
                   </span>

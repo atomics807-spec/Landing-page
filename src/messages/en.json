@@ -482,5 +482,59 @@
       "description": "We're experiencing technical difficulties. Please try again later.",
       "cta": "Try Again"
     }
+  },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your account settings",
+    "personalInfo": "Personal Information",
+    "updatePersonal": "Update your personal details",
+    "email": "Email",
+    "emailNote": "Email cannot be changed",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "changePassword": "Change Password",
+    "changePasswordDesc": "Update your password to keep your account secure",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "passwordChanged": "Password changed successfully!",
+    "accountInfo": "Account Information",
+    "accountId": "Account ID",
+    "role": "Role",
+    "emailVerified": "Email Verified",
+    "memberSince": "Member Since",
+    "logout": "Logout",
+    "profileUpdated": "Profile updated successfully!"
+  },
+  "team": {
+    "title": "Our Team",
+    "subtitle": "Meet the dedicated professionals behind our success",
+    "noMembers": "Team members coming soon",
+    "ctaTitle": "Join Our Team",
+    "ctaText": "We are always looking for talented professionals to join our growing team. Check out our career opportunities.",
+    "viewCareers": "View Careers"
+  },
+  "consultants": {
+    "title": "Our Consultants",
+    "subtitle": "Expert advice from industry professionals",
+    "expertise": "Expertise",
+    "availability": "Availability",
+    "available": "Available",
+    "contactConsultant": "Contact Consultant",
+    "noConsultants": "Our consultants will be announced soon"
+  },
+  "careers": {
+    "title": "Careers",
+    "subtitle": "Join our team of professionals and contribute to meaningful projects across Africa",
+    "openPositions": "Open Positions",
+    "department": "Department",
+    "location": "Location",
+    "type": "Type",
+    "requirements": "Requirements",
+    "applyNow": "Apply Now",
+    "dontSeePosition": "Do not See Your Position?",
+    "openApplicationText": "We are always looking for talented individuals to join our team. Send us your CV and we will keep it on file for future opportunities.",
+    "sendOpenApplication": "Send Open Application"
   }
 }

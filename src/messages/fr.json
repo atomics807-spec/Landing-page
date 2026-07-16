@@ -482,5 +482,60 @@
       "description": "Nous rencontrons des difficultés techniques. Veuillez réessayer plus tard.",
       "cta": "Réessayer"
     }
+  },
+  "profile": {
+    "title": "Mon Profil",
+    "subtitle": "Gérez les paramètres de votre compte",
+    "personalInfo": "Informations Personnelles",
+    "updatePersonal": "Mettez à jour vos informations personnelles",
+    "email": "Email",
+    "emailNote": "L'email ne peut pas être modifié",
+    "fullName": "Nom Complet",
+    "phone": "Numéro de Téléphone",
+    "saveChanges": "Enregistrer les Modifications",
+    "saving": "Enregistrement...",
+    "changePassword": "Changer le Mot de Passe",
+    "changePasswordDesc": "Mettez à jour votre mot de passe pour sécuriser votre compte",
+    "currentPassword": "Mot de Passe Actuel",
+    "newPassword": "Nouveau Mot de Passe",
+    "confirmPassword": "Confirmer le Nouveau Mot de Passe",
+    "passwordChanged": "Mot de passe changé avec succès !",
+    "accountInfo": "Informations du Compte",
+    "accountId": "ID du Compte",
+    "role": "Rôle",
+    "emailVerified": "Email Vérifié",
+    "memberSince": "Membre Depuis",
+    "logout": "Déconnexion",
+    "profileUpdated": "Profil mis à jour avec succès !"
+  },
+  "team": {
+    "title": "Notre Équipe",
+    "subtitle": "Rencontrez les professionnels dédiés derrière notre succès",
+    "noMembers": "Membres de l'équipe à venir",
+    "ctaTitle": "Rejoignez Notre Équipe",
+    "ctaText": "Nous sommes toujours à la recherche de professionnels talentueux pour rejoindre notre équipe croissante. Découvrez nos opportunités de carrière.",
+    "viewCareers": "Voir les Carrieres"
+  },
+  "consultants": {
+    "title": "Nos Consultants",
+    "subtitle": "Conseils d'experts de professionnels de l'industrie",
+    "expertise": "Expertise",
+    "availability": "Disponibilité",
+    "available": "Disponible",
+    "contactConsultant": "Contacter le Consultant",
+    "noConsultants": "Nos consultants seront annoncés bientôt"
+  },
+  "careers": {
+    "title": "Carrieres",
+    "subtitle": "Rejoignez notre équipe de professionnels et contribuez à des projets significatifs à travers l'Afrique",
+    "openPositions": "Postes Ouverts",
+    "department": "Département",
+    "location": "Localisation",
+    "type": "Type",
+    "requirements": "Exigences",
+    "applyNow": "Postuler Maintenant",
+    "dontSeePosition": "Vous ne Voyez Pas Votre Poste ?",
+    "openApplicationText": "Nous sommes toujours à la recherche de talents pour rejoindre notre équipe. Envoyez-nous votre CV et nous le conserverons pour de futures opportunités.",
+    "sendOpenApplication": "Envoyer une Candidature Spontanée"
   }
 }
