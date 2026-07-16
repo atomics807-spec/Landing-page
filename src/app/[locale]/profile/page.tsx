@@ -10,7 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { logoutUser, updateProfile, updatePassword, getUserProfile } from '@/app/actions/auth';
+import { updateProfile, updatePassword, getUserProfile } from '@/app/actions/auth';
+import { createClient } from '@/lib/supabase/client';
 
 interface ProfileFormData {
   full_name: string;
@@ -116,28 +117,37 @@ export default function ProfilePage() {
   };
 
   const handleLogout = async () => {
-    setIsSaving(true); // Use as loading state
-    
-    // Force logout with timeout fallback
-    const logoutPromise = logoutUser();
-    const timeoutPromise = new Promise((resolve) => 
-      setTimeout(() => resolve({ success: true }), 2000)
-    );
+    setIsSaving(true);
     
     try {
-      await Promise.race([logoutPromise, timeoutPromise]);
-    } catch (e) {
-      console.error('Logout error:', e);
-    }
-    
-    // Clear local storage and force full page reload
-    if (typeof window !== 'undefined') {
+      const supabase = createClient();
+      
+      // Clear all auth data from browser
+      await supabase.auth.signOut({ scope: 'global' });
+      
+      // Clear all storage
       localStorage.clear();
       sessionStorage.clear();
+      
+      // Clear all cookies
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+      
+      // Full page reload to reset everything
+      window.location.href = `/${locale}`;
+    } catch (e) {
+      console.error('Logout error:', e);
+      
+      // Force logout anyway
+      localStorage.clear();
+      sessionStorage.clear();
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+      
+      window.location.href = `/${locale}`;
     }
-    
-    // Full page reload to clear all state
-    window.location.href = `/${locale}`;
   };
 
   if (isLoading) {

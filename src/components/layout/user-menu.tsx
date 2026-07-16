@@ -1,16 +1,13 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, LogOut, Settings, ChevronDown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getUserProfile, logoutUser } from '@/app/actions/auth';
 import { createClient } from '@/lib/supabase/client';
 
 export function UserMenu({ locale }: { locale: string }) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,8 +15,19 @@ export function UserMenu({ locale }: { locale: string }) {
 
   const loadUser = useCallback(async () => {
     setIsLoading(true);
-    const { user: userData } = await getUserProfile();
-    setUser(userData);
+    const supabase = createClient();
+    
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session?.user) {
+      setUser({
+        ...session.user,
+        full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+        email: session.user.email,
+      });
+    } else {
+      setUser(null);
+    }
     setIsLoading(false);
   }, []);
 
@@ -30,9 +38,13 @@ export function UserMenu({ locale }: { locale: string }) {
     const supabase = createClient();
     
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event, session?.user?.email);
+      console.log('Auth state changed:', event);
       
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
+      }
+      
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
         loadUser();
       }
     });
@@ -45,26 +57,37 @@ export function UserMenu({ locale }: { locale: string }) {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     
-    // Force logout with timeout fallback
-    const logoutPromise = logoutUser();
-    const timeoutPromise = new Promise((resolve) => 
-      setTimeout(() => resolve({ success: true }), 2000)
-    );
-    
     try {
-      await Promise.race([logoutPromise, timeoutPromise]);
-    } catch (e) {
-      console.error('Logout error:', e);
-    }
-    
-    // Clear local storage and force full page reload
-    if (typeof window !== 'undefined') {
+      const supabase = createClient();
+      
+      // Clear all auth data from browser
+      await supabase.auth.signOut({ scope: 'global' });
+      
+      // Clear all storage
       localStorage.clear();
       sessionStorage.clear();
+      
+      // Clear all cookies
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+      
+      setUser(null);
+      
+      // Redirect to home page
+      window.location.href = `/${locale}`;
+    } catch (e) {
+      console.error('Logout error:', e);
+      
+      // Force logout anyway
+      localStorage.clear();
+      sessionStorage.clear();
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+      
+      window.location.href = `/${locale}`;
     }
-    
-    // Full page reload to clear all state
-    window.location.href = `/${locale}`;
   };
 
   if (isLoading) {
