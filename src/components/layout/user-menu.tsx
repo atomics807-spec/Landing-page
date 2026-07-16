@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, LogOut, Settings, ChevronDown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getUserProfile, logoutUser } from '@/app/actions/auth';
+import { createClient } from '@/lib/supabase/client';
 
 export function UserMenu({ locale }: { locale: string }) {
   const router = useRouter();
@@ -15,15 +16,31 @@ export function UserMenu({ locale }: { locale: string }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  useEffect(() => {
-    loadUser();
-  }, []);
-
-  const loadUser = async () => {
+  const loadUser = useCallback(async () => {
+    setIsLoading(true);
     const { user: userData } = await getUserProfile();
     setUser(userData);
     setIsLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    loadUser();
+
+    // Listen for auth state changes
+    const supabase = createClient();
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state changed:', event, session?.user?.email);
+      
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+        loadUser();
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [loadUser]);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
