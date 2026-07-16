@@ -93,10 +93,21 @@ export async function loginUser(formData: { email: string; password: string }) {
 }
 
 export async function logoutUser() {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  revalidatePath('/');
-  return { success: true };
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      console.error('Logout error:', error);
+      return { error: error.message };
+    }
+    
+    revalidatePath('/');
+    return { success: true };
+  } catch (e: any) {
+    console.error('Logout exception:', e);
+    return { error: e.message || 'Logout failed' };
+  }
 }
 
 export async function updatePassword(newPassword: string) {
