@@ -27,9 +27,27 @@ export function UserMenu({ locale }: { locale: string }) {
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
-    await logoutUser();
-    router.push(`/${locale}`);
-    router.refresh();
+    
+    // Force logout with timeout fallback
+    const logoutPromise = logoutUser();
+    const timeoutPromise = new Promise((resolve) => 
+      setTimeout(() => resolve({ success: true }), 2000)
+    );
+    
+    try {
+      await Promise.race([logoutPromise, timeoutPromise]);
+    } catch (e) {
+      console.error('Logout error:', e);
+    }
+    
+    // Clear local storage and force full page reload
+    if (typeof window !== 'undefined') {
+      localStorage.clear();
+      sessionStorage.clear();
+    }
+    
+    // Full page reload to clear all state
+    window.location.href = `/${locale}`;
   };
 
   if (isLoading) {

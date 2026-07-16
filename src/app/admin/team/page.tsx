@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Eye, EyeOff, Image as ImageIcon, X, Upload, User } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, EyeOff, X, Upload, User, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,6 +27,7 @@ export default function TeamPage() {
   const [showModal, setShowModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -43,24 +44,46 @@ export default function TeamPage() {
     setIsLoading(false);
   };
 
-  const uploadImage = async (file: File): Promise<string | null> => {
+  const uploadImage = async (file: File): Promise<{ url: string | null; error: string | null }> => {
     const supabase = createClient();
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
-    const { error } = await supabase.storage.from('images').upload(`team/${fileName}`, file);
-    if (error) {
-      console.error('Upload error:', error);
-      return null;
+    const fileExt = file.name.split('.').pop()?.toLowerCase();
+    const allowedExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    
+    if (!fileExt || !allowedExts.includes(fileExt)) {
+      return { url: null, error: 'Invalid file type. Please use JPG, PNG, GIF, or WebP.' };
     }
-    const { data } = supabase.storage.from('images').getPublicUrl(`team/${fileName}`);
-    return data.publicUrl;
+    
+    if (file.size > 5 * 1024 * 1024) {
+      return { url: null, error: 'File too large. Maximum size is 5MB.' };
+    }
+
+    const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+
+    try {
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(`team/${fileName}`, file, { cacheControl: '3600', upsert: false });
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        return { url: null, error: `Upload failed: ${uploadError.message}` };
+      }
+
+      const { data: urlData } = supabase.storage.from('images').getPublicUrl(`team/${fileName}`);
+      return { url: urlData.publicUrl, error: null };
+    } catch (err: any) {
+      console.error('Upload exception:', err);
+      return { url: null, error: err.message || 'Upload failed' };
+    }
   };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Show preview
+    setUploadError(null);
+
+    // Show preview immediately
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result as string);
@@ -69,21 +92,27 @@ export default function TeamPage() {
 
     // Upload to Supabase
     setIsUploading(true);
-    const url = await uploadImage(file);
-    if (url) {
-      setFormData({ ...formData, image_url: url });
+    const result = await uploadImage(file);
+    
+    if (result.error) {
+      setUploadError(result.error);
+      setImagePreview(null);
+    } else if (result.url) {
+      setFormData(prev => ({ ...prev, image_url: result.url! }));
     }
     setIsUploading(false);
   };
 
   const handleSave = async () => {
+    if (!formData.name || !formData.position) return;
+    
     setIsSaving(true);
     const supabase = createClient();
     
     const data = {
       name: formData.name,
       position: formData.position,
-      bio: formData.bio,
+      bio: formData.bio || null,
       image_url: formData.image_url || null,
       linkedin_url: formData.linkedin_url || null,
       twitter_url: formData.twitter_url || null,
@@ -92,9 +121,11 @@ export default function TeamPage() {
     };
 
     if (editingId) {
-      await supabase.from('team_members').update(data).eq('id', editingId);
+      const { error } = await supabase.from('team_members').update(data).eq('id', editingId);
+      if (error) alert('Failed to update: ' + error.message);
     } else {
-      await supabase.from('team_members').insert(data);
+      const { error } = await supabase.from('team_members').insert(data);
+      if (error) alert('Failed to create: ' + error.message);
     }
     
     setShowModal(false);
@@ -115,6 +146,7 @@ export default function TeamPage() {
       image_url: member.image_url || ''
     });
     setImagePreview(member.image_url);
+    setUploadError(null);
     setShowModal(true);
   };
 
@@ -122,18 +154,21 @@ export default function TeamPage() {
     setFormData({ name: '', position: '', bio: '', linkedin_url: '', twitter_url: '', sort_order: '0', image_url: '' });
     setEditingId(null);
     setImagePreview(null);
+    setUploadError(null);
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this team member?')) return;
     const supabase = createClient();
-    await supabase.from('team_members').delete().eq('id', id);
+    const { error } = await supabase.from('team_members').delete().eq('id', id);
+    if (error) alert('Failed to delete: ' + error.message);
     fetchMembers();
   };
 
   const handleToggle = async (member: TeamMember) => {
     const supabase = createClient();
-    await supabase.from('team_members').update({ is_active: !member.is_active }).eq('id', member.id);
+    const { error } = await supabase.from('team_members').update({ is_active: !member.is_active }).eq('id', member.id);
+    if (error) alert('Failed to update status: ' + error.message);
     fetchMembers();
   };
 
@@ -201,7 +236,7 @@ export default function TeamPage() {
                   {imagePreview ? (
                     <div className="relative inline-block">
                       <img src={imagePreview} alt="Preview" className="w-24 h-24 rounded-full object-cover mx-auto" />
-                      <button onClick={() => { setImagePreview(null); setFormData({ ...formData, image_url: '' }); }}
+                      <button onClick={() => { setImagePreview(null); setFormData(prev => ({ ...prev, image_url: '' })); }}
                         className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full">
                         <X className="w-4 h-4" />
                       </button>
@@ -209,22 +244,29 @@ export default function TeamPage() {
                   ) : (
                     <>
                       <input type="file" id="team-image" onChange={handleImageChange} accept="image/*" className="hidden" />
-                      <label htmlFor="team-image" className="cursor-pointer">
+                      <label htmlFor="team-image" className="cursor-pointer block">
                         <Upload className="w-8 h-8 mx-auto text-gray-400 mb-2" />
                         <p className="text-sm text-gray-500">Click to upload image</p>
+                        <p className="text-xs text-gray-400 mt-1">JPG, PNG, GIF, WebP (max 5MB)</p>
                       </label>
                     </>
                   )}
-                  {isUploading && <p className="text-sm text-primary-600 mt-2">Uploading...</p>}
+                  {isUploading && <p className="text-sm text-primary-600 mt-2 flex items-center justify-center gap-2"><div className="animate-spin h-4 w-4 border-2 border-primary-600 border-t-transparent rounded-full" /> Uploading...</p>}
+                  {uploadError && (
+                    <div className="mt-2 p-2 bg-red-50 text-red-600 rounded-lg text-sm flex items-start gap-2">
+                      <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <span>{uploadError}</span>
+                    </div>
+                  )}
                 </div>
               </div>
               
-              <div><Label>Name *</Label><Input value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="John Doe" /></div>
-              <div><Label>Position *</Label><Input value={formData.position} onChange={(e) => setFormData({...formData, position: e.target.value})} placeholder="CEO" /></div>
-              <div><Label>Bio</Label><Textarea value={formData.bio} onChange={(e) => setFormData({...formData, bio: e.target.value})} placeholder="Short biography..." /></div>
-              <div><Label>LinkedIn URL</Label><Input type="url" value={formData.linkedin_url} onChange={(e) => setFormData({...formData, linkedin_url: e.target.value})} placeholder="https://linkedin.com/in/..." /></div>
-              <div><Label>Twitter URL</Label><Input type="url" value={formData.twitter_url} onChange={(e) => setFormData({...formData, twitter_url: e.target.value})} placeholder="https://twitter.com/..." /></div>
-              <div><Label>Sort Order</Label><Input type="number" value={formData.sort_order} onChange={(e) => setFormData({...formData, sort_order: e.target.value})} /></div>
+              <div><Label>Name *</Label><Input value={formData.name} onChange={(e) => setFormData(prev => ({...prev, name: e.target.value}))} placeholder="John Doe" /></div>
+              <div><Label>Position *</Label><Input value={formData.position} onChange={(e) => setFormData(prev => ({...prev, position: e.target.value}))} placeholder="CEO" /></div>
+              <div><Label>Bio</Label><Textarea value={formData.bio} onChange={(e) => setFormData(prev => ({...prev, bio: e.target.value}))} placeholder="Short biography..." /></div>
+              <div><Label>LinkedIn URL</Label><Input type="url" value={formData.linkedin_url} onChange={(e) => setFormData(prev => ({...prev, linkedin_url: e.target.value}))} placeholder="https://linkedin.com/in/..." /></div>
+              <div><Label>Twitter URL</Label><Input type="url" value={formData.twitter_url} onChange={(e) => setFormData(prev => ({...prev, twitter_url: e.target.value}))} placeholder="https://twitter.com/..." /></div>
+              <div><Label>Sort Order</Label><Input type="number" value={formData.sort_order} onChange={(e) => setFormData(prev => ({...prev, sort_order: e.target.value}))} /></div>
             </div>
             <div className="p-6 border-t flex gap-4">
               <Button variant="outline" onClick={() => { setShowModal(false); resetForm(); }} className="flex-1">Cancel</Button>
