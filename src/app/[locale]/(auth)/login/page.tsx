@@ -56,10 +56,11 @@ function LoginForm() {
         return;
       }
 
+      // Force full page reload to update auth state everywhere
       if (result.isAdmin) {
-        router.push('/admin');
+        window.location.href = '/admin';
       } else {
-        router.push(`/${locale}`);
+        window.location.href = `/${locale}`;
       }
     } catch (err) {
       console.error('Login error:', err);
