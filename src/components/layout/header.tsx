@@ -147,14 +147,9 @@ export function Header({ locale }: HeaderProps) {
               <span className="text-white font-bold text-2xl">P</span>
             </div>
             <div className="hidden sm:block">
-              <div className="flex items-baseline gap-1">
-                <span className="font-heading text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-                  PARAYSCO
-                </span>
-                <span className="text-primary-600 font-heading text-2xl font-bold">
-                  PCI
-                </span>
-              </div>
+              <span className="font-heading text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+                PARAYSCO CONSULTING INC
+              </span>
             </div>
           </Link>
 

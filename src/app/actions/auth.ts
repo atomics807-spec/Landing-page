@@ -13,12 +13,11 @@ export async function registerUser(formData: {
   try {
     const supabase = await createClient();
 
-    // Sign up without sending the default Supabase email
+    // Sign up with Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
         data: {
           full_name: formData.full_name,
         },
@@ -48,14 +47,20 @@ export async function registerUser(formData: {
 
       if (profileError) {
         console.error('Profile creation error:', profileError);
-        return { error: 'Failed to create user profile' };
+        // Continue anyway - profile can be created later
       }
 
-      // Send verification email via Resend
-      if (authData.session?.access_token) {
-        // For email confirmation, we use Supabase's built-in confirmation process
-        // The user will receive an email from Supabase OR we can send custom
-        console.log('User registered, confirmation email sent via Supabase');
+      // Send verification email via Resend (Supabase will also send its own email if configured)
+      // The user might receive two emails - one from Supabase and one from Resend
+      // In production, you can disable Supabase's email and only use Resend
+      try {
+        // Generate a custom confirmation URL
+        const confirmationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?email=${encodeURIComponent(formData.email)}`;
+        await sendVerificationEmail(formData.email, confirmationUrl);
+        console.log('Verification email sent via Resend');
+      } catch (emailError) {
+        console.error('Failed to send verification email via Resend:', emailError);
+        // Continue anyway - Supabase will still send its default email
       }
     }
 

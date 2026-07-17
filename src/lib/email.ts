@@ -39,9 +39,7 @@ export async function sendEmail({ to, subject, html }: EmailOptions) {
   }
 }
 
-export async function sendVerificationEmail(email: string, token: string) {
-  const verifyUrl = `${APP_URL}/auth/callback?token=${token}`;
-  
+export async function sendVerificationEmail(email: string, confirmationUrl: string) {
   const html = `
     <!DOCTYPE html>
     <html>
@@ -51,7 +49,7 @@ export async function sendVerificationEmail(email: string, token: string) {
     </head>
     <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
       <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); padding: 30px; text-align: center; border-radius: 12px 12px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 24px;">Paraysco Consulting</h1>
+        <h1 style="color: white; margin: 0; font-size: 24px;">PARAYSCO CONSULTING INC</h1>
       </div>
       
       <div style="background: white; padding: 40px 30px; border: 1px solid #e0e0e0; border-top: none;">
@@ -60,11 +58,11 @@ export async function sendVerificationEmail(email: string, token: string) {
         <p style="margin-bottom: 20px;">Thank you for registering with Paraysco Consulting. Please verify your email address by clicking the button below:</p>
         
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${verifyUrl}" style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Verify Email Address</a>
+          <a href="${confirmationUrl}" style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Verify Email Address</a>
         </div>
         
         <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Or copy and paste this link into your browser:</p>
-        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px; word-break: break-all; font-size: 12px; color: #333;">${verifyUrl}</p>
+        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px; word-break: break-all; font-size: 12px; color: #333;">${confirmationUrl}</p>
         
         <p style="color: #666; font-size: 14px; margin-top: 30px;">This link will expire in 24 hours. If you didn't create an account with Paraysco Consulting, you can safely ignore this email.</p>
       </div>

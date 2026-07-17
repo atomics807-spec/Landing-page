@@ -10,8 +10,9 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
 import { loginFormSchema } from '@/lib/utils';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, AlertCircle } from 'lucide-react';
 import { loginUser } from '@/app/actions/auth';
 
 function LoginForm() {
@@ -22,6 +23,7 @@ function LoginForm() {
   const tErrors = useTranslations('auth.errors');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [errorType, setErrorType] = useState<'invalid' | 'unverified' | 'unknown'>('invalid');
   const [registered, setRegistered] = useState(false);
 
   useEffect(() => {
@@ -52,7 +54,17 @@ function LoginForm() {
       });
 
       if (result.error) {
-        setError(tErrors('invalidCredentials'));
+        // Check if it's an email verification error
+        if (result.error.includes('confirm your email') || result.error.includes('verify')) {
+          setError(result.error);
+          setErrorType('unverified');
+        } else if (result.error.includes('Invalid login credentials')) {
+          setError(tErrors('invalidCredentials'));
+          setErrorType('invalid');
+        } else {
+          setError(result.error);
+          setErrorType('unknown');
+        }
         return;
       }
 
@@ -65,6 +77,7 @@ function LoginForm() {
     } catch (err) {
       console.error('Login error:', err);
       setError(tErrors('unknownError'));
+      setErrorType('unknown');
     }
   };
 
@@ -83,7 +96,7 @@ function LoginForm() {
                 <span className="text-white font-bold text-xl">P</span>
               </div>
               <span className="font-heading text-xl font-bold text-gray-900 dark:text-white">
-                PARAYSCO PCI
+                PARAYSCO CONSULTING INC
               </span>
             </Link>
             <h1 className="text-2xl font-heading font-bold text-gray-900 dark:text-white">
@@ -93,10 +106,45 @@ function LoginForm() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm">
-                {error}
-              </div>
+            {/* Email Verification Error */}
+            {error && errorType === 'unverified' && (
+              <Card className="bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
+                <CardContent className="pt-4">
+                  <div className="flex items-start gap-3">
+                    <Mail className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium text-yellow-800 dark:text-yellow-200">
+                        Email Verification Required
+                      </p>
+                      <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+                        {error}
+                      </p>
+                      <p className="text-xs text-yellow-600 dark:text-yellow-400 mt-2">
+                        Check your spam folder or click the link in the verification email.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Other Errors */}
+            {error && errorType !== 'unverified' && (
+              <Card className="bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
+                <CardContent className="pt-4">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
+                    <div>
+                      <p className="font-medium text-red-800 dark:text-red-200">
+                        Login Failed
+                      </p>
+                      <p className="text-sm text-red-700 dark:text-red-300 mt-1">
+                        {error}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             )}
 
             {registered && (
