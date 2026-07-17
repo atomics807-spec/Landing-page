@@ -27,12 +27,12 @@ export function Footer({ locale }: FooterProps) {
   ];
 
   const services = [
-    { label: tServices('realEstate.title'), href: `/${locale}/services/real-estate` },
-    { label: tServices('engineering.title'), href: `/${locale}/services/engineering` },
-    { label: tServices('construction.title'), href: `/${locale}/services/construction` },
-    { label: tServices('procurement.title'), href: `/${locale}/services/procurement` },
-    { label: tServices('investment.title'), href: `/${locale}/services/investment` },
-    { label: tServices('consultancy.title'), href: `/${locale}/services/consultancy` },
+    { label: tServices('realEstate.title'), href: `/${locale}/services#real-estate` },
+    { label: tServices('engineering.title'), href: `/${locale}/services#engineering` },
+    { label: tServices('construction.title'), href: `/${locale}/services#construction` },
+    { label: tServices('procurement.title'), href: `/${locale}/services#procurement` },
+    { label: tServices('investment.title'), href: `/${locale}/services#investment` },
+    { label: tServices('consultancy.title'), href: `/${locale}/services#consultancy` },
   ];
 
   const socialLinks = [
