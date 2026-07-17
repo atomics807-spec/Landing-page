@@ -73,14 +73,9 @@ export function Footer({ locale }: FooterProps) {
                 <span className="text-white font-bold text-2xl">P</span>
               </div>
               <div>
-                <div className="flex items-baseline gap-1">
-                  <span className="font-heading text-2xl font-bold text-white">
-                    PARAYSCO
-                  </span>
-                  <span className="text-primary-400 font-heading text-2xl font-bold">
-                    PCI
-                  </span>
-                </div>
+                <span className="font-heading text-xl font-bold text-white">
+                  PARAYSCO CONSULTING INC
+                </span>
               </div>
             </div>
             <p className="text-sm leading-relaxed">{t('description')}</p>
