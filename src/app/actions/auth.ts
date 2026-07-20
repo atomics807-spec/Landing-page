@@ -11,6 +11,12 @@ export async function registerUser(formData: {
   full_name: string;
 }) {
   try {
+    // Validate environment
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.error('Missing Supabase environment variables');
+      return { error: 'Server configuration error. Please contact support.' };
+    }
+
     const supabase = await createClient();
 
     // Sign up with Supabase Auth
@@ -25,42 +31,41 @@ export async function registerUser(formData: {
     });
 
     if (authError) {
+      console.error('Auth signup error:', authError);
       return { error: authError.message };
     }
 
     if (authData.user) {
-      // Create user profile in users table
-      const supabaseAdmin = createSupabaseAdmin(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      );
+      // Create user profile in users table (optional - don't fail registration if this fails)
+      if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        try {
+          const supabaseAdmin = createSupabaseAdmin(
+            process.env.NEXT_PUBLIC_SUPABASE_URL,
+            process.env.SUPABASE_SERVICE_ROLE_KEY
+          );
 
-      const { error: profileError } = await supabaseAdmin
-        .from('users')
-        .insert({
-          id: authData.user.id,
-          email: formData.email,
-          full_name: formData.full_name,
-          role: 'user',
-          email_verified: false,
-        });
-
-      if (profileError) {
-        console.error('Profile creation error:', profileError);
-        // Continue anyway - profile can be created later
+          await supabaseAdmin
+            .from('users')
+            .insert({
+              id: authData.user.id,
+              email: formData.email,
+              full_name: formData.full_name,
+              role: 'user',
+              email_verified: false,
+            });
+        } catch (profileError) {
+          console.error('Profile creation error (non-fatal):', profileError);
+        }
       }
 
-      // Send verification email via Resend (Supabase will also send its own email if configured)
-      // The user might receive two emails - one from Supabase and one from Resend
-      // In production, you can disable Supabase's email and only use Resend
-      try {
-        // Generate a custom confirmation URL
-        const confirmationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?email=${encodeURIComponent(formData.email)}`;
-        await sendVerificationEmail(formData.email, confirmationUrl);
-        console.log('Verification email sent via Resend');
-      } catch (emailError) {
-        console.error('Failed to send verification email via Resend:', emailError);
-        // Continue anyway - Supabase will still send its default email
+      // Try to send verification email via Resend (optional)
+      if (process.env.RESEND_API_KEY) {
+        try {
+          const confirmationUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com'}/auth/callback?email=${encodeURIComponent(formData.email)}`;
+          await sendVerificationEmail(formData.email, confirmationUrl);
+        } catch (emailError) {
+          console.error('Email send error (non-fatal):', emailError);
+        }
       }
     }
 
@@ -70,12 +75,18 @@ export async function registerUser(formData: {
     };
   } catch (e: any) {
     console.error('Registration error:', e);
-    return { error: 'Connection failed. Please check your internet and try again.' };
+    return { error: e.message || 'Connection failed. Please try again.' };
   }
 }
 
 export async function loginUser(formData: { email: string; password: string }) {
   try {
+    // Validate environment
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.error('Missing Supabase environment variables');
+      return { error: 'Server configuration error. Please contact support.' };
+    }
+
     const supabase = await createClient();
 
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
@@ -117,7 +128,7 @@ export async function loginUser(formData: { email: string; password: string }) {
     return { success: true };
   } catch (e: any) {
     console.error('Login error:', e);
-    return { error: 'Unable to connect to server. Please check your internet connection and try again.' };
+    return { error: e.message || 'Unable to connect to server. Please try again.' };
   }
 }
 
