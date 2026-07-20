@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Loader2, Package, X } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Plus, Edit, Trash2, Loader2, Package, X, Upload, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -26,6 +26,7 @@ export default function AdminProductsPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   
   // Form state
   const [name, setName] = useState('');
@@ -34,6 +35,9 @@ export default function AdminProductsPage() {
   const [category, setCategory] = useState('materials');
   const [stock, setStock] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [showMediaLibrary, setShowMediaLibrary] = useState(false);
+  const [mediaFiles, setMediaFiles] = useState<any[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchProducts();
@@ -48,6 +52,38 @@ export default function AdminProductsPage() {
       .order('created_at', { ascending: false });
     setProducts(data || []);
     setIsLoading(false);
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+      
+      if (result.error) {
+        alert(result.error);
+      } else {
+        setImageUrl(result.url);
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Failed to upload image');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
   };
 
   const openModal = (product?: Product) => {
@@ -74,6 +110,7 @@ export default function AdminProductsPage() {
   const closeModal = () => {
     setShowModal(false);
     setEditingProduct(null);
+    setShowMediaLibrary(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -281,15 +318,69 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Image URL</label>
-                  <Input
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="https://example.com/image.jpg"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Enter a URL to an image or upload an image to your media library first
-                  </p>
+                  <label className="block text-sm font-medium mb-1">Product Image</label>
+                  <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center">
+                    {imageUrl ? (
+                      <div className="relative">
+                        <img
+                          src={imageUrl}
+                          alt="Product preview"
+                          className="max-h-40 mx-auto rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setImageUrl('')}
+                          className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="py-4">
+                        {isUploading ? (
+                          <Loader2 className="w-8 h-8 mx-auto animate-spin text-primary-600" />
+                        ) : (
+                          <>
+                            <Upload className="w-8 h-8 mx-auto text-gray-400 mb-2" />
+                            <p className="text-sm text-gray-500 mb-2">
+                              Upload an image or paste a URL
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    )}
+                    
+                    {/* Upload buttons */}
+                    <div className="flex gap-2 justify-center mt-4">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                        id="product-upload"
+                      />
+                      <label
+                        htmlFor="product-upload"
+                        className="cursor-pointer inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+                      >
+                        <Upload className="w-4 h-4 mr-2" />
+                        Upload
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Or paste Image URL</label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={imageUrl}
+                      onChange={(e) => setImageUrl(e.target.value)}
+                      placeholder="https://example.com/image.jpg"
+                      className="flex-1"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex gap-4 pt-4">

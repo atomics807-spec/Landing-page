@@ -59,16 +59,17 @@ export default function RegisterPage() {
 
       if (result.error) {
         // Show the actual error message from the server
-        setError(result.error);
+        const errorMessage = result.error || 'Registration failed. Please try again.';
+        setError(errorMessage);
         return;
       }
 
       // Show email verification message instead of redirecting
       setRegistered(true);
       setRegisteredEmail(data.email);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Registration error:', err);
-      setError('An unexpected error occurred. Please try again.');
+      setError(err?.message || 'An unexpected error occurred. Please try again.');
     }
   };
 
