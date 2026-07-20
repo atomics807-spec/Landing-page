@@ -69,12 +69,12 @@ export function Footer({ locale }: FooterProps) {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-600/30">
-                <span className="text-white font-bold text-2xl">P</span>
+              <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-700 rounded-lg flex items-center justify-center shadow-lg shadow-primary-600/30">
+                <span className="text-white font-bold text-xl">P</span>
               </div>
               <div>
-                <span className="font-heading text-xl font-bold text-white">
-                  PARAYSCO CONSULTING INC
+                <span className="font-heading text-lg font-semibold text-white">
+                  PARAYSCO INC
                 </span>
               </div>
             </div>

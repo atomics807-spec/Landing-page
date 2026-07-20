@@ -95,8 +95,8 @@ function LoginForm() {
               <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">P</span>
               </div>
-              <span className="font-heading text-xl font-bold text-gray-900 dark:text-white">
-                PARAYSCO CONSULTING INC
+              <span className="font-heading text-lg font-semibold text-gray-900 dark:text-white">
+                PARAYSCO INC
               </span>
             </Link>
             <h1 className="text-2xl font-heading font-bold text-gray-900 dark:text-white">

@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { Search, Filter, MapPin, Bed, Bath, Square, ChevronDown } from 'lucide-react';
+import { Search, Filter, MapPin, Bed, Bath, Square, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -17,58 +17,20 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { formatCurrency } from '@/lib/utils';
+import { createClient } from '@/lib/supabase/client';
 
-// Mock data for properties
-const mockProperties = [
-  {
-    id: '1',
-    title: 'Luxury Beachfront Villa',
-    location: 'Limbe, Cameroon',
-    price: 250000,
-    bedrooms: 5,
-    bathrooms: 4,
-    area: 450,
-    status: 'available',
-    category: 'residential',
-    image: '/placeholder.jpg',
-  },
-  {
-    id: '2',
-    title: 'Modern Office Space',
-    location: 'Douala, Cameroon',
-    price: 180000,
-    bedrooms: 0,
-    bathrooms: 2,
-    area: 300,
-    status: 'available',
-    category: 'commercial',
-    image: '/placeholder.jpg',
-  },
-  {
-    id: '3',
-    title: 'Residential Land Plot',
-    location: 'Buea, Cameroon',
-    price: 75000,
-    bedrooms: 0,
-    bathrooms: 0,
-    area: 600,
-    status: 'sold',
-    category: 'land',
-    image: '/placeholder.jpg',
-  },
-  {
-    id: '4',
-    title: 'Commercial Building',
-    location: 'Kumba, Cameroon',
-    price: 350000,
-    bedrooms: 0,
-    bathrooms: 6,
-    area: 800,
-    status: 'reserved',
-    category: 'commercial',
-    image: '/placeholder.jpg',
-  },
-];
+interface Property {
+  id: string;
+  title: string;
+  location: string;
+  price: number;
+  bedrooms: number | null;
+  bathrooms: number | null;
+  area: number | null;
+  status: string;
+  category: string;
+  image_url: string | null;
+}
 
 export default function PropertiesPage() {
   const locale = useLocale();
@@ -76,6 +38,9 @@ export default function PropertiesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const statusColors: Record<string, string> = {
     available: 'available',
@@ -83,6 +48,41 @@ export default function PropertiesPage() {
     reserved: 'reserved',
     archived: 'archived',
   };
+
+  useEffect(() => {
+    async function fetchProperties() {
+      try {
+        const supabase = createClient();
+        const { data, error: fetchError } = await supabase
+          .from('properties')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (fetchError) {
+          console.error('Error fetching properties:', fetchError);
+          setError(fetchError.message);
+        } else {
+          setProperties(data || []);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        setError('Failed to load properties');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProperties();
+  }, []);
+
+  // Filter properties based on search and filters
+  const filteredProperties = properties.filter((property) => {
+    const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      property.location.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === 'all' || property.category === categoryFilter;
+    const matchesStatus = statusFilter === 'all' || property.status === statusFilter;
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
 
   return (
     <div className="min-h-screen">
@@ -156,67 +156,89 @@ export default function PropertiesPage() {
       {/* Properties Grid */}
       <section className="py-12 bg-gray-50 dark:bg-gray-800/50">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {mockProperties.map((property, index) => (
-              <motion.div
-                key={property.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Link href={`/${locale}/properties/${property.id}`}>
-                  <Card className="h-full overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                    <div className="aspect-[4/3] bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 relative">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-primary-600 dark:text-primary-300 text-lg">
-                          Property Image
-                        </span>
-                      </div>
-                      <Badge
-                        variant={statusColors[property.status] as 'available' | 'sold' | 'reserved' | 'archived'}
-                        className="absolute top-4 right-4"
-                      >
-                        {t(`status.${property.status}`)}
-                      </Badge>
-                    </div>
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-1">
-                        {property.title}
-                      </h3>
-                      <div className="flex items-center text-gray-500 dark:text-gray-400 mb-4">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        <span className="text-sm">{property.location}</span>
-                      </div>
-                      <div className="flex items-center justify-between mb-4">
-                        <p className="text-2xl font-bold text-primary-600">
-                          {formatCurrency(property.price)}
-                        </p>
-                        {property.bedrooms > 0 && (
-                          <div className="flex items-center space-x-4 text-sm text-gray-500">
-                            <span className="flex items-center">
-                              <Bed className="h-4 w-4 mr-1" />
-                              {property.bedrooms}
-                            </span>
-                            <span className="flex items-center">
-                              <Bath className="h-4 w-4 mr-1" />
-                              {property.bathrooms}
-                            </span>
-                            <span className="flex items-center">
-                              <Square className="h-4 w-4 mr-1" />
-                              {property.area}m²
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <p className="text-red-500">{error}</p>
+            </div>
+          ) : filteredProperties.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-gray-500 dark:text-gray-400">No properties found.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProperties.map((property, index) => (
+                <motion.div
+                  key={property.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Link href={`/${locale}/properties/${property.id}`}>
+                    <Card className="h-full overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                      <div className="aspect-[4/3] bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 relative">
+                        {property.image_url ? (
+                          <img
+                            src={property.image_url}
+                            alt={property.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-primary-600 dark:text-primary-300 text-lg">
+                              Property Image
                             </span>
                           </div>
                         )}
+                        <Badge
+                          variant={statusColors[property.status] as 'available' | 'sold' | 'reserved' | 'archived'}
+                          className="absolute top-4 right-4"
+                        >
+                          {t(`status.${property.status}`)}
+                        </Badge>
                       </div>
-                      <Button variant="outline" className="w-full">
-                        View Details
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                      <CardContent className="p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-1">
+                          {property.title}
+                        </h3>
+                        <div className="flex items-center text-gray-500 dark:text-gray-400 mb-4">
+                          <MapPin className="h-4 w-4 mr-1" />
+                          <span className="text-sm">{property.location}</span>
+                        </div>
+                        <div className="flex items-center justify-between mb-4">
+                          <p className="text-2xl font-bold text-primary-600">
+                            {formatCurrency(property.price)}
+                          </p>
+                          {property.bedrooms !== null && property.bedrooms > 0 && (
+                            <div className="flex items-center space-x-4 text-sm text-gray-500">
+                              <span className="flex items-center">
+                                <Bed className="h-4 w-4 mr-1" />
+                                {property.bedrooms}
+                              </span>
+                              <span className="flex items-center">
+                                <Bath className="h-4 w-4 mr-1" />
+                                {property.bathrooms}
+                              </span>
+                              <span className="flex items-center">
+                                <Square className="h-4 w-4 mr-1" />
+                                {property.area}m²
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <Button variant="outline" className="w-full">
+                          View Details
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>
