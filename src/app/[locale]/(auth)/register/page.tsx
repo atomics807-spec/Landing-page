@@ -58,13 +58,8 @@ export default function RegisterPage() {
       });
 
       if (result.error) {
-        if (result.error.includes('already registered') || result.error.includes('already exists')) {
-          setError(tErrors('emailExists'));
-        } else if (result.error.includes('weak password')) {
-          setError(tErrors('weakPassword'));
-        } else {
-          setError(tErrors('networkError'));
-        }
+        // Show the actual error message from the server
+        setError(result.error);
         return;
       }
 
@@ -73,7 +68,7 @@ export default function RegisterPage() {
       setRegisteredEmail(data.email);
     } catch (err) {
       console.error('Registration error:', err);
-      setError(tErrors('unknownError'));
+      setError('An unexpected error occurred. Please try again.');
     }
   };
 
