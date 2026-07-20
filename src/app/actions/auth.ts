@@ -24,16 +24,19 @@ export async function registerUser(formData: {
 
     if (authError) {
       console.error('Auth signup error:', authError);
-      return { error: authError.message };
+      // Return error as a string message
+      return { error: String(authError.message || 'Registration failed') };
     }
 
+    // If no error, registration was successful
     return { 
       success: true, 
       message: 'Registration successful! Please check your email to verify your account.' 
     };
   } catch (e: any) {
     console.error('Registration error:', e);
-    return { error: 'Unable to connect to server. Please try again later.' };
+    // Return error as a string message
+    return { error: String(e?.message || 'Unable to connect to server. Please try again later.') };
   }
 }
 

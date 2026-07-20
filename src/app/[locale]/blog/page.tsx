@@ -1,79 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { Calendar, Clock, User, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, User, ArrowRight, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
-// Mock blog data - in production, fetch from Supabase
-const mockPosts = [
-  {
-    slug: '1',
-    title: 'Investment Opportunities in Cameroon Real Estate 2024',
-    excerpt: 'Explore the growing real estate market in Cameroon and discover profitable investment opportunities for foreign investors.',
-    category: 'Insights',
-    author: 'Paraysco Team',
-    date: '2024-01-15',
-    readingTime: 8,
-    image: '/placeholder.jpg',
-  },
-  {
-    slug: '2',
-    title: 'Understanding Business Regulations in Cameroon',
-    excerpt: 'A comprehensive guide to navigating business regulations, licensing requirements, and legal frameworks for foreign businesses.',
-    category: 'Guide',
-    author: 'Paraysco Team',
-    date: '2024-01-10',
-    readingTime: 12,
-    image: '/placeholder.jpg',
-  },
-  {
-    slug: '3',
-    title: 'Infrastructure Development Trends in Central Africa',
-    excerpt: 'Analysis of current infrastructure projects and future development plans across the Central African region.',
-    category: 'News',
-    author: 'Paraysco Team',
-    date: '2024-01-05',
-    readingTime: 6,
-    image: '/placeholder.jpg',
-  },
-  {
-    slug: '4',
-    title: 'Sustainable Construction Practices in Africa',
-    excerpt: 'How sustainable building practices are reshaping the construction industry across the African continent.',
-    category: 'Updates',
-    author: 'Paraysco Team',
-    date: '2024-01-03',
-    readingTime: 5,
-    image: '/placeholder.jpg',
-  },
-  {
-    slug: '5',
-    title: 'Navigating Property Investment in Nigeria',
-    excerpt: 'Key insights for investors looking to enter the Nigerian real estate market in 2024.',
-    category: 'Insights',
-    author: 'Paraysco Team',
-    date: '2023-12-28',
-    readingTime: 7,
-    image: '/placeholder.jpg',
-  },
-  {
-    slug: '6',
-    title: 'Project Finance Structures for African Development',
-    excerpt: 'Understanding different financing models available for infrastructure projects in Africa.',
-    category: 'Guide',
-    author: 'Paraysco Team',
-    date: '2023-12-20',
-    readingTime: 10,
-    image: '/placeholder.jpg',
-  },
-];
+interface BlogPost {
+  id: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  image_url: string | null;
+  author_name: string;
+  is_published: boolean;
+  published_at: string | null;
+  created_at: string;
+}
 
 const categories = ['All', 'Insights', 'Guide', 'News', 'Updates'];
 const POSTS_PER_PAGE = 6;
@@ -81,16 +30,39 @@ const POSTS_PER_PAGE = 6;
 export default function BlogPage() {
   const locale = useLocale();
   const t = useTranslations('blog');
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
 
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    setIsLoading(true);
+    try {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from('newsletters')
+        .select('*')
+        .eq('is_published', true)
+        .order('published_at', { ascending: false });
+      setPosts(data || []);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+    setIsLoading(false);
+  };
+
   // Filter posts by category and search
-  const filteredPosts = mockPosts.filter(post => {
-    const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
+  const filteredPosts = posts.filter(post => {
+    const matchesCategory = selectedCategory === 'All' || 
+      post.title.toLowerCase().includes(selectedCategory.toLowerCase());
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+                         post.excerpt?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -110,6 +82,12 @@ export default function BlogPage() {
       setCurrentPage(page);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  const calculateReadingTime = (content: string) => {
+    const wordsPerMinute = 200;
+    const words = content?.split(/\s+/).length || 0;
+    return Math.ceil(words / wordsPerMinute);
   };
 
   return (
@@ -169,48 +147,57 @@ export default function BlogPage() {
       {/* Blog Grid */}
       <section className="py-12 bg-gray-50 dark:bg-gray-800/50">
         <div className="container mx-auto px-4">
-          {paginatedPosts.length > 0 ? (
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+            </div>
+          ) : paginatedPosts.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {paginatedPosts.map((post, index) => (
                 <motion.div
-                  key={post.slug}
+                  key={post.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <Link href={`/${locale}/blog/${post.slug}`}>
+                  <Link href={`/${locale}/blog/${post.id}`}>
                     <Card className="h-full overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
                       <div className="aspect-[16/9] bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 relative">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-primary-600 dark:text-primary-300">
-                            Article Image
-                          </span>
-                        </div>
-                        <Badge className="absolute top-4 left-4" variant="secondary">
-                          {post.category}
-                        </Badge>
+                        {post.image_url ? (
+                          <img
+                            src={post.image_url}
+                            alt={post.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-primary-600 dark:text-primary-300">
+                              Article Image
+                            </span>
+                          </div>
+                        )}
                       </div>
                       <CardContent className="p-6">
                         <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
                           <span className="flex items-center">
                             <Calendar className="h-4 w-4 mr-1" />
-                            {new Date(post.date).toLocaleDateString()}
+                            {post.published_at ? new Date(post.published_at).toLocaleDateString() : new Date(post.created_at).toLocaleDateString()}
                           </span>
                           <span className="flex items-center">
                             <Clock className="h-4 w-4 mr-1" />
-                            {post.readingTime} {t('readTime')}
+                            {calculateReadingTime(post.content)} {t('readTime')}
                           </span>
                         </div>
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2 hover:text-primary-600 transition-colors">
                           {post.title}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                          {post.excerpt}
+                          {post.excerpt || post.content?.substring(0, 150) + '...'}
                         </p>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                             <User className="h-4 w-4 mr-1" />
-                            {post.author}
+                            {post.author_name || 'Paraysco Team'}
                           </div>
                           <span className="flex items-center text-primary-600 text-sm font-medium group">
                             Read More
