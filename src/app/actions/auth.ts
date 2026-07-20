@@ -2,8 +2,6 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
-import { sendVerificationEmail, sendWelcomeEmail } from '@/lib/email';
-import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
 
 export async function registerUser(formData: {
   email: string;
@@ -11,12 +9,6 @@ export async function registerUser(formData: {
   full_name: string;
 }) {
   try {
-    // Validate environment
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      console.error('Missing Supabase environment variables');
-      return { error: 'Server configuration error. Please contact support.' };
-    }
-
     const supabase = await createClient();
 
     // Sign up with Supabase Auth
@@ -35,47 +27,13 @@ export async function registerUser(formData: {
       return { error: authError.message };
     }
 
-    if (authData.user) {
-      // Create user profile in users table (optional - don't fail registration if this fails)
-      if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        try {
-          const supabaseAdmin = createSupabaseAdmin(
-            process.env.NEXT_PUBLIC_SUPABASE_URL,
-            process.env.SUPABASE_SERVICE_ROLE_KEY
-          );
-
-          await supabaseAdmin
-            .from('users')
-            .insert({
-              id: authData.user.id,
-              email: formData.email,
-              full_name: formData.full_name,
-              role: 'user',
-              email_verified: false,
-            });
-        } catch (profileError) {
-          console.error('Profile creation error (non-fatal):', profileError);
-        }
-      }
-
-      // Try to send verification email via Resend (optional)
-      if (process.env.RESEND_API_KEY) {
-        try {
-          const confirmationUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com'}/auth/callback?email=${encodeURIComponent(formData.email)}`;
-          await sendVerificationEmail(formData.email, confirmationUrl);
-        } catch (emailError) {
-          console.error('Email send error (non-fatal):', emailError);
-        }
-      }
-    }
-
     return { 
       success: true, 
       message: 'Registration successful! Please check your email to verify your account.' 
     };
   } catch (e: any) {
     console.error('Registration error:', e);
-    return { error: e.message || 'Connection failed. Please try again.' };
+    return { error: 'Unable to connect to server. Please try again later.' };
   }
 }
 

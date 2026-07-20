@@ -9,7 +9,7 @@ import {
   Briefcase, Users as UsersIcon, Mail, Settings,
   Image, MessageSquare, HelpCircle, Briefcase as CareerIcon,
   Star, Users, Cog, Clock, Menu, X, Sun, Moon, Globe, ChevronDown,
-  BarChart3
+  BarChart3, Package
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +22,7 @@ const navItems = [
   { href: '/admin/profile', label: 'Profile', icon: UsersIcon },
   { href: '/admin/users', label: 'Users', icon: UsersIcon },
   { href: '/admin/properties', label: 'Properties', icon: Building2 },
+  { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/services', label: 'Services', icon: Briefcase },
   { href: '/admin/subcompanies', label: 'Subcompanies', icon: Building2 },
   { href: '/admin/team', label: 'Team', icon: Users },
