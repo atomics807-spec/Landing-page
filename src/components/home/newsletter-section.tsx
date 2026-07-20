@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Loader2 } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 export function NewsletterSection() {
   const t = useTranslations('newsletter');
@@ -17,17 +18,52 @@ export function NewsletterSection() {
     e.preventDefault();
     setStatus('loading');
 
-    // Simulate API call
-    setTimeout(() => {
-      if (email && email.includes('@')) {
+    try {
+      const supabase = createClient();
+      
+      // Check if already subscribed
+      const { data: existing } = await supabase
+        .from('newsletter_subscribers')
+        .select('id, is_active')
+        .eq('email', email)
+        .single();
+
+      if (existing) {
+        if (!existing.is_active) {
+          // Reactivate subscription
+          await supabase
+            .from('newsletter_subscribers')
+            .update({ is_active: true, subscribed_at: new Date().toISOString() })
+            .eq('id', existing.id);
+        }
         setStatus('success');
         setMessage(t('success'));
         setEmail('');
       } else {
-        setStatus('error');
-        setMessage(t('error'));
+        // Create new subscription
+        const { error } = await supabase
+          .from('newsletter_subscribers')
+          .insert({
+            email,
+            is_active: true,
+            subscribed_at: new Date().toISOString(),
+          });
+
+        if (error) {
+          console.error('Newsletter subscription error:', error);
+          setStatus('error');
+          setMessage(t('error'));
+        } else {
+          setStatus('success');
+          setMessage(t('success'));
+          setEmail('');
+        }
       }
-    }, 1000);
+    } catch (err) {
+      console.error('Newsletter error:', err);
+      setStatus('error');
+      setMessage(t('error'));
+    }
   };
 
   return (
@@ -72,7 +108,7 @@ export function NewsletterSection() {
                 className="bg-primary-600 hover:bg-primary-700"
               >
                 {status === 'loading' ? (
-                  <span className="animate-spin mr-2">⏳</span>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : null}
                 {t('button')}
               </Button>
