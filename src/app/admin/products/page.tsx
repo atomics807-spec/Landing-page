@@ -6,13 +6,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/supabase/client';
+import { currencies } from '@/lib/currencies';
 
 interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
+  currency: string;
   category: string;
   stock: number;
   image_url: string | null;
@@ -32,6 +35,7 @@ export default function AdminProductsPage() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [currency, setCurrency] = useState('USD');
   const [category, setCategory] = useState('materials');
   const [stock, setStock] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -92,6 +96,7 @@ export default function AdminProductsPage() {
       setName(product.name);
       setDescription(product.description || '');
       setPrice(product.price.toString());
+      setCurrency(product.currency || 'USD');
       setCategory(product.category || 'materials');
       setStock(product.stock?.toString() || '0');
       setImageUrl(product.image_url || '');
@@ -100,6 +105,7 @@ export default function AdminProductsPage() {
       setName('');
       setDescription('');
       setPrice('');
+      setCurrency('USD');
       setCategory('materials');
       setStock('0');
       setImageUrl('');
@@ -122,6 +128,7 @@ export default function AdminProductsPage() {
       name,
       description,
       price: parseFloat(price),
+      currency,
       category,
       stock: parseInt(stock) || 0,
       image_url: imageUrl || null,
@@ -156,11 +163,12 @@ export default function AdminProductsPage() {
     fetchProducts();
   };
 
-  const formatPrice = (price: number) => {
+  const formatPrice = (price: number, currencyCode: string = 'USD') => {
+    const currency = currencies.find(c => c.code === currencyCode) || currencies[0];
     return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(price);
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(price) + ' ' + currency.code;
   };
 
   return (
@@ -215,7 +223,7 @@ export default function AdminProductsPage() {
                 </p>
                 <div className="flex items-center justify-between mt-3">
                   <span className="text-lg font-bold text-primary-600">
-                    {formatPrice(product.price)}
+                    {formatPrice(product.price, product.currency)}
                   </span>
                   <Badge variant="outline">{product.stock} in stock</Badge>
                 </div>
@@ -278,9 +286,9 @@ export default function AdminProductsPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">Price (USD) *</label>
+                    <label className="block text-sm font-medium mb-1">Price *</label>
                     <Input
                       type="number"
                       step="0.01"
@@ -290,6 +298,18 @@ export default function AdminProductsPage() {
                       placeholder="0.00"
                       required
                     />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Currency</label>
+                    <select
+                      value={currency}
+                      onChange={(e) => setCurrency(e.target.value)}
+                      className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700"
+                    >
+                      {currencies.map(c => (
+                        <option key={c.code} value={c.code}>{c.code}</option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1">Stock Quantity</label>

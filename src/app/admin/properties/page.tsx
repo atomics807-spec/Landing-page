@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { createClient } from '@/lib/supabase/client';
 import { FormField } from '../components/table-components';
+import { currencies } from '@/lib/currencies';
 
 interface Property {
   id: string;
@@ -17,6 +18,7 @@ interface Property {
   property_type: string;
   status: string;
   price: number;
+  currency: string;
   location: string;
   address: string;
   bedrooms: number;
@@ -45,7 +47,7 @@ export default function PropertiesPage() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     title: '', description: '', property_type: 'residential', status: 'available',
-    price: '', location: '', address: '', bedrooms: '', bathrooms: '', area_sqm: '',
+    price: '', currency: 'USD', location: '', address: '', bedrooms: '', bathrooms: '', area_sqm: '',
     features: '', is_featured: false,
   });
 
@@ -111,6 +113,7 @@ export default function PropertiesPage() {
       property_type: formData.property_type,
       status: formData.status,
       price: parseFloat(formData.price) || 0,
+      currency: formData.currency,
       location: formData.location,
       address: formData.address,
       bedrooms: parseInt(formData.bedrooms) || 0,
@@ -137,7 +140,7 @@ export default function PropertiesPage() {
 
   const resetForm = () => {
     setFormData({ title: '', description: '', property_type: 'residential', status: 'available',
-      price: '', location: '', address: '', bedrooms: '', bathrooms: '', area_sqm: '',
+      price: '', currency: 'USD', location: '', address: '', bedrooms: '', bathrooms: '', area_sqm: '',
       features: '', is_featured: false });
     setUploadedImages([]);
     setImagePreviews([]);
@@ -147,7 +150,7 @@ export default function PropertiesPage() {
     setEditingProperty(property);
     setFormData({
       title: property.title, description: property.description || '', property_type: property.property_type,
-      status: property.status, price: property.price?.toString() || '', location: property.location,
+      status: property.status, price: property.price?.toString() || '', currency: property.currency || 'USD', location: property.location,
       address: property.address || '', bedrooms: property.bedrooms?.toString() || '',
       bathrooms: property.bathrooms?.toString() || '', area_sqm: property.area_sqm?.toString() || '',
       features: property.features?.join(', ') || '', is_featured: property.is_featured,
@@ -219,7 +222,7 @@ export default function PropertiesPage() {
                   </td>
                   <td className="px-6 py-4 font-medium">{p.title}</td>
                   <td className="px-6 py-4"><Badge variant="secondary">{p.property_type}</Badge></td>
-                  <td className="px-6 py-4">${p.price?.toLocaleString() || 'N/A'}</td>
+                  <td className="px-6 py-4">{currencies.find(c => c.code === p.currency)?.symbol || '$'}{p.price?.toLocaleString() || 'N/A'}</td>
                   <td className="px-6 py-4">{p.location}</td>
                   <td className="px-6 py-4">
                     <select value={p.status} onChange={(e) => handleStatusChange(p, e.target.value)}
@@ -319,9 +322,19 @@ export default function PropertiesPage() {
                   </select>
                 </FormField>
               </div>
-              <FormField label="Price (USD)" required>
-                <Input type="number" value={formData.price} onChange={(e) => setFormData({...formData, price: e.target.value})} />
-              </FormField>
+              <div className="grid grid-cols-2 gap-4">
+                <FormField label="Price" required>
+                  <Input type="number" value={formData.price} onChange={(e) => setFormData({...formData, price: e.target.value})} />
+                </FormField>
+                <FormField label="Currency">
+                  <select value={formData.currency} onChange={(e) => setFormData({...formData, currency: e.target.value})}
+                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700">
+                    {currencies.map(c => (
+                      <option key={c.code} value={c.code}>{c.code} - {c.name}</option>
+                    ))}
+                  </select>
+                </FormField>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <FormField label="Location" required>
                   <Input value={formData.location} onChange={(e) => setFormData({...formData, location: e.target.value})} />

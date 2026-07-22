@@ -16,14 +16,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { formatCurrency } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
+import { formatPrice } from '@/lib/currencies';
 
 interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
+  currency: string;
   category: string;
   stock: number;
   image_url: string | null;
@@ -180,7 +181,7 @@ export default function ProductsPage() {
                       </p>
                       <div className="flex items-center justify-between">
                         <p className="text-xl font-bold text-primary-600">
-                          {formatCurrency(product.price)}
+                          {formatPrice(product.price, product.currency)}
                         </p>
                         <Badge variant="outline" className="text-xs">
                           {product.category}
