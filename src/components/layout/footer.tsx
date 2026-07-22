@@ -69,9 +69,11 @@ export function Footer({ locale }: FooterProps) {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-700 rounded-lg flex items-center justify-center shadow-lg shadow-primary-600/30">
-                <span className="text-white font-bold text-xl">P</span>
-              </div>
+              <img 
+                src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
+                alt="Paraysco Logo" 
+                className="h-12 w-12 object-contain rounded-lg"
+              />
               <div>
                 <span className="font-heading text-lg font-semibold text-white">
                   PARAYSCO INC

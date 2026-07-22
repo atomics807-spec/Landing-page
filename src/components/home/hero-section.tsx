@@ -115,17 +115,12 @@ export function HeroSection({ locale }: HeroSectionProps) {
             className="relative"
           >
             <div className="relative aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-600 to-primary-800">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center text-white p-8">
-                    <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-white/10 flex items-center justify-center backdrop-blur">
-                      <span className="text-6xl font-bold">PCI</span>
-                    </div>
-                    <h2 className="text-2xl font-heading font-bold">Paraysco Consulting Inc.</h2>
-                    <p className="text-primary-200 mt-2">Professional Excellence</p>
-                  </div>
-                </div>
-              </div>
+              <img 
+                src="https://i0.wp.com/expertshouseuae.com/wp-content/uploads/2023/10/SmallBusiness6002.jpeg?fit=600%2C600&ssl=1" 
+                alt="Professional Building" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             </div>
 
             {/* Floating Cards */}

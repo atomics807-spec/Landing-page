@@ -38,18 +38,17 @@ export function FounderSection({ locale }: FounderSectionProps) {
             className="relative"
           >
             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-600 to-primary-800">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="w-48 h-48 mx-auto mb-6 rounded-full bg-white/10 backdrop-blur flex items-center justify-center">
-                      <span className="text-6xl font-bold text-white">MS</span>
-                    </div>
-                    <h3 className="text-2xl font-heading font-bold text-white">
-                      {t('name')}
-                    </h3>
-                    <p className="text-primary-200 mt-2">{t('role')}</p>
-                  </div>
-                </div>
+              <img 
+                src="https://i.postimg.cc/3xJQ0dM9/Whats-App-Image-2026-06-21-at-12-00-37.jpg" 
+                alt={t('name')} 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 className="text-2xl font-heading font-bold">
+                  {t('name')}
+                </h3>
+                <p className="text-primary-200 mt-1">{t('role')}</p>
               </div>
             </div>
 

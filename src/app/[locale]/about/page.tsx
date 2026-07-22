@@ -112,14 +112,12 @@ export default function AboutPage() {
               <p className="text-2xl font-heading font-bold text-gray-900 dark:text-white italic">{t('founder.signature')}</p>
             </div>
             <div className="order-1 lg:order-2">
-              <div className="aspect-[3/4] rounded-2xl bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center">
-                <div className="text-center text-white p-8">
-                  <div className="w-40 h-40 mx-auto mb-6 rounded-full bg-white/10 backdrop-blur flex items-center justify-center">
-                    <span className="text-5xl font-bold">MS</span>
-                  </div>
-                  <h3 className="text-2xl font-heading font-bold">{t('founder.name')}</h3>
-                  <p className="text-primary-200 mt-2">{t('founder.role')}</p>
-                </div>
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-xl">
+                <img 
+                  src="https://i.postimg.cc/3xJQ0dM9/Whats-App-Image-2026-06-21-at-12-00-37.jpg" 
+                  alt={t('founder.name')} 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
