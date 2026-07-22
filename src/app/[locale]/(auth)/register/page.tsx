@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations, useLocale } from 'next-intl';
@@ -14,23 +13,22 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
 import { registerFormSchema } from '@/lib/utils';
 import { Eye, EyeOff, Loader2, Mail, CheckCircle } from 'lucide-react';
-import { registerUser } from '@/app/actions/auth';
+import { createClient } from '@/lib/supabase/client';
 
 export default function RegisterPage() {
-  const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('auth.register');
-  const tErrors = useTranslations('auth.errors');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [registered, setRegistered] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -50,25 +48,36 @@ export default function RegisterPage() {
     privacy_policy: boolean;
   }) => {
     setError('');
+    setIsLoading(true);
     
     try {
-      const result = await registerUser({
+      const supabase = createClient();
+      
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
-        full_name: data.full_name,
+        options: {
+          data: {
+            full_name: data.full_name,
+          },
+        },
       });
 
-      if (!result?.success && result?.error) {
-        setError(result.error);
+      setIsLoading(false);
+
+      if (authError) {
+        console.error('Registration error:', authError);
+        setError(authError.message);
         return;
       }
 
-      // Show email verification message instead of redirecting
+      // Show email verification message
       setRegistered(true);
       setRegisteredEmail(data.email);
     } catch (err: any) {
+      setIsLoading(false);
       console.error('Registration error:', err);
-      setError('An unexpected error occurred. Please try again.');
+      setError(err?.message || 'An unexpected error occurred. Please try again.');
     }
   };
 
@@ -276,8 +285,8 @@ export default function RegisterPage() {
                 <p className="text-sm text-red-500">{errors.privacy_policy.message}</p>
               )}
 
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? (
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Creating account...
