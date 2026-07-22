@@ -82,9 +82,19 @@ export default function RegisterPage() {
       setIsLoading(false);
 
       if (authError) {
-        // Handle error properly
-        const errorMsg = authError.message || String(authError) || 'Registration failed';
-        console.error('Registration error:', errorMsg);
+        // Handle error properly - Supabase errors can have message as empty object
+        let errorMsg = 'Registration failed. Please try again.';
+        
+        if (authError.message && authError.message !== '{}') {
+          errorMsg = authError.message;
+        } else if (authError.status === 500) {
+          // Email sending failed - common when SMTP is not configured
+          errorMsg = 'Email service unavailable. Please contact support or try again later.';
+        } else if (authError.code) {
+          errorMsg = `Error: ${authError.code}`;
+        }
+        
+        console.error('Registration error:', authError);
         setError(errorMsg);
         return;
       }
