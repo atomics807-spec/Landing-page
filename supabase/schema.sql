@@ -147,6 +147,43 @@ CREATE INDEX IF NOT EXISTS idx_consultants_spec ON consultants(specialization);
 CREATE INDEX IF NOT EXISTS idx_consultants_sort ON consultants(sort_order);
 
 -- =====================================================
+-- PRODUCTS TABLE (Products Page Management)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS products (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    description TEXT,
+    price DECIMAL(15, 2) NOT NULL,
+    category TEXT DEFAULT 'materials',
+    stock INTEGER DEFAULT 0,
+    image_url TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
+CREATE INDEX IF NOT EXISTS idx_products_active ON products(is_active);
+
+-- =====================================================
+-- SERVICES TABLE (Services Page Management)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS services (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    description TEXT,
+    icon TEXT,
+    image_url TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    sort_order INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_services_active ON services(is_active);
+CREATE INDEX IF NOT EXISTS idx_services_sort ON services(sort_order);
+
+-- =====================================================
 -- ROW LEVEL SECURITY (RLS)
 -- =====================================================
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
@@ -156,6 +193,8 @@ ALTER TABLE newsletter_subscribers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE properties ENABLE ROW LEVEL SECURITY;
 ALTER TABLE newsletters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE consultants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies for clean re-run
 DROP POLICY IF EXISTS "Users can view own profile" ON users;
@@ -214,6 +253,14 @@ CREATE POLICY "Admins can manage newsletters" ON newsletters FOR ALL USING (is_a
 CREATE POLICY "Anyone can view active consultants" ON consultants FOR SELECT USING (is_active = TRUE OR is_admin());
 CREATE POLICY "Admins can manage consultants" ON consultants FOR ALL USING (is_admin());
 
+-- ============== PRODUCTS POLICIES ==============
+CREATE POLICY "Anyone can view active products" ON products FOR SELECT USING (is_active = TRUE OR is_admin());
+CREATE POLICY "Admins can manage products" ON products FOR ALL USING (is_admin());
+
+-- ============== SERVICES POLICIES ==============
+CREATE POLICY "Anyone can view active services" ON services FOR SELECT USING (is_active = TRUE OR is_admin());
+CREATE POLICY "Admins can manage services" ON services FOR ALL USING (is_admin());
+
 -- =====================================================
 -- FUNCTIONS AND TRIGGERS
 -- =====================================================
@@ -232,6 +279,8 @@ CREATE OR REPLACE TRIGGER update_team_updated_at BEFORE UPDATE ON team_members F
 CREATE OR REPLACE TRIGGER update_properties_updated_at BEFORE UPDATE ON properties FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE OR REPLACE TRIGGER update_newsletters_updated_at BEFORE UPDATE ON newsletters FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE OR REPLACE TRIGGER update_consultants_updated_at BEFORE UPDATE ON consultants FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE OR REPLACE TRIGGER update_products_updated_at BEFORE UPDATE ON products FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE OR REPLACE TRIGGER update_services_updated_at BEFORE UPDATE ON services FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- =====================================================
 -- ADMIN USER CREATION
