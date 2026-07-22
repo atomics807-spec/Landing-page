@@ -34,19 +34,18 @@ export function AboutSection({ locale }: AboutSectionProps) {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="relative aspect-square lg:aspect-[4/5] rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="w-40 h-40 mx-auto mb-6 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
-                      <span className="text-5xl font-bold text-white">PCI</span>
-                    </div>
-                    <h3 className="text-2xl font-heading font-bold text-white">
-                      Paraysco Consulting Inc.
-                    </h3>
-                    <p className="text-primary-100 mt-2">Since 2012</p>
-                  </div>
-                </div>
+            <div className="relative aspect-square lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-xl">
+              <img 
+                src="https://cdn.nishtyainfotech.com/content/learnings/data/blog/banner/68b98b1fd04231.13423553.webp" 
+                alt="Paraysco Consulting" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute bottom-8 left-8 right-8 text-white">
+                <h3 className="text-2xl font-heading font-bold">
+                  Paraysco Consulting Inc.
+                </h3>
+                <p className="text-primary-200 mt-1">Since 2012</p>
               </div>
             </div>
 
