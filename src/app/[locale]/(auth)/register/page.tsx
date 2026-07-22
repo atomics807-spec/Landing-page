@@ -50,6 +50,7 @@ export default function RegisterPage() {
     privacy_policy: boolean;
   }) => {
     setError('');
+    
     try {
       const result = await registerUser({
         email: data.email,
@@ -57,10 +58,8 @@ export default function RegisterPage() {
         full_name: data.full_name,
       });
 
-      if (result.error) {
-        // Show the actual error message from the server
-        const errorMessage = result.error || 'Registration failed. Please try again.';
-        setError(errorMessage);
+      if (!result?.success && result?.error) {
+        setError(result.error);
         return;
       }
 
@@ -69,7 +68,7 @@ export default function RegisterPage() {
       setRegisteredEmail(data.email);
     } catch (err: any) {
       console.error('Registration error:', err);
-      setError(err?.message || 'An unexpected error occurred. Please try again.');
+      setError('An unexpected error occurred. Please try again.');
     }
   };
 

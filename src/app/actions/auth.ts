@@ -11,8 +11,7 @@ export async function registerUser(formData: {
   try {
     const supabase = await createClient();
 
-    // Sign up with Supabase Auth
-    const { data: authData, error: authError } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
       options: {
@@ -22,21 +21,18 @@ export async function registerUser(formData: {
       },
     });
 
-    if (authError) {
-      console.error('Auth signup error:', authError);
-      // Return error as a string message
-      return { error: String(authError.message || 'Registration failed') };
+    if (error) {
+      console.error('Signup error:', error);
+      return { success: false, error: error.message };
     }
 
-    // If no error, registration was successful
     return { 
       success: true, 
       message: 'Registration successful! Please check your email to verify your account.' 
     };
   } catch (e: any) {
     console.error('Registration error:', e);
-    // Return error as a string message
-    return { error: String(e?.message || 'Unable to connect to server. Please try again later.') };
+    return { success: false, error: 'Unable to connect. Please try again.' };
   }
 }
 

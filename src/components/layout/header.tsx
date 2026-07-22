@@ -297,27 +297,59 @@ export function Header({ locale }: HeaderProps) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-gray-100 dark:border-gray-800"
+            className="lg:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900"
           >
-            <div className="container mx-auto px-4 py-4 space-y-2">
+            <div className="container mx-auto px-4 py-4 space-y-1">
               {navItems.map((item) => (
                 <div key={item.label}>
-                  <Link
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      'flex items-center space-x-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors',
-                      pathname === item.href
-                        ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
-                        : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300'
-                    )}
-                  >
-                    {item.icon && <item.icon className="h-5 w-5" />}
-                    <span>{item.label}</span>
-                  </Link>
+                  {/* Properties dropdown shows both Properties and Products */}
+                  {item.isDropdown ? (
+                    <div className="space-y-1">
+                      <Link
+                        href={`/${locale}/properties`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={cn(
+                          'flex items-center space-x-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors',
+                          pathname.includes('/properties')
+                            ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
+                            : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300'
+                        )}
+                      >
+                        <Building2 className="h-5 w-5" />
+                        <span>Properties</span>
+                      </Link>
+                      <Link
+                        href={`/${locale}/products`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={cn(
+                          'flex items-center space-x-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ml-4',
+                          pathname.includes('/products')
+                            ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
+                            : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400'
+                        )}
+                      >
+                        <Package className="h-5 w-5" />
+                        <span>Products</span>
+                      </Link>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        'flex items-center space-x-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors',
+                        pathname === item.href
+                          ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
+                          : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300'
+                      )}
+                    >
+                      {item.icon && <item.icon className="h-5 w-5" />}
+                      <span>{item.label}</span>
+                    </Link>
+                  )}
                 </div>
               ))}
-              <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+              <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
                 <div className="flex flex-col gap-2">
                   <UserMenu locale={locale} />
                   <Link href={`/${locale}/login`}>
