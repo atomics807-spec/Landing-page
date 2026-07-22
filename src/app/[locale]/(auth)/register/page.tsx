@@ -51,8 +51,19 @@ export default function RegisterPage() {
     setIsLoading(true);
     
     try {
+      // Check environment variables
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || !supabaseKey) {
+        setError('Server configuration error. Please contact the administrator.');
+        setIsLoading(false);
+        return;
+      }
+      
       const supabase = createClient();
       console.log('Starting registration for:', data.email);
+      console.log('Supabase URL:', supabaseUrl);
       
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
@@ -65,24 +76,47 @@ export default function RegisterPage() {
       });
 
       console.log('Supabase response:', { authData, authError });
+      console.log('Auth error message:', authError?.message);
+      console.log('Auth error type:', typeof authError);
 
       setIsLoading(false);
 
       if (authError) {
-        console.error('Registration error:', authError);
-        setError(authError.message);
+        // Handle error properly
+        const errorMsg = authError.message || String(authError) || 'Registration failed';
+        console.error('Registration error:', errorMsg);
+        setError(errorMsg);
         return;
       }
 
       // Show email verification message
       setRegistered(true);
       setRegisteredEmail(data.email);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setIsLoading(false);
       console.error('Registration error:', err);
       console.error('Error type:', typeof err);
-      console.error('Error string:', JSON.stringify(err));
-      setError(err?.message || 'An unexpected error occurred. Please try again.');
+      console.error('Error string:', String(err));
+      
+      // Handle different error formats safely
+      let errorMessage = 'An unexpected error occurred. Please try again.';
+      if (err) {
+        if (typeof err === 'string') {
+          errorMessage = err;
+        } else if (err instanceof Error) {
+          errorMessage = err.message;
+        } else {
+          try {
+            const errStr = JSON.stringify(err);
+            if (errStr && errStr !== '{}') {
+              errorMessage = errStr;
+            }
+          } catch {
+            // Ignore JSON stringify errors
+          }
+        }
+      }
+      setError(errorMessage);
     }
   };
 
