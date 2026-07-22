@@ -87,6 +87,13 @@ export default function ForgotPasswordPage() {
           </Link>
 
           <div className="text-center mb-8">
+            <Link href={`/${locale}`} className="inline-flex items-center justify-center space-x-2 mb-6">
+              <img 
+                src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
+                alt="Paraysco Logo" 
+                className="w-12 h-12 object-contain rounded-lg"
+              />
+            </Link>
             <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
               <Mail className="w-8 h-8 text-primary-600" />
             </div>

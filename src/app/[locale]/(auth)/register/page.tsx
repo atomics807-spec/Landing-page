@@ -142,9 +142,11 @@ export default function RegisterPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <Link href={`/${locale}`} className="inline-flex items-center space-x-2 mb-6">
-              <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">P</span>
-              </div>
+              <img 
+                src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
+                alt="Paraysco Logo" 
+                className="w-10 h-10 object-contain rounded-lg"
+              />
               <span className="font-heading text-lg font-semibold text-gray-900 dark:text-white">
                 PARAYSCO INC
               </span>
