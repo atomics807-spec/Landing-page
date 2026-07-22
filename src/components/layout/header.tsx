@@ -128,9 +128,11 @@ export function Header({ locale }: HeaderProps) {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-700 rounded-lg flex items-center justify-center shadow-lg shadow-primary-600/30">
-              <span className="text-white font-bold text-xl">P</span>
-            </div>
+            <img 
+              src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
+              alt="Paraysco Logo" 
+              className="h-10 w-10 object-contain rounded-lg"
+            />
             <div className="hidden sm:block">
               <span className="font-heading text-lg sm:text-xl font-semibold text-gray-900 dark:text-white tracking-tight">
                 PARAYSCO INC

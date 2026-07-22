@@ -114,8 +114,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" sizes="any" />
+        <link rel="apple-touch-icon" href="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -126,7 +126,7 @@ export default function RootLayout({
               description:
                 'Multidisciplinary professional consulting firm providing integrated solutions across real estate, engineering, construction, and business consultancy.',
               url: process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com',
-              logo: '/logo.png',
+              logo: 'https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg',
               contactPoint: {
                 '@type': 'ContactPoint',
                 telephone: '+237-676-914-581',
