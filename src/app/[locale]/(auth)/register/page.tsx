@@ -52,6 +52,7 @@ export default function RegisterPage() {
     
     try {
       const supabase = createClient();
+      console.log('Starting registration for:', data.email);
       
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
@@ -62,6 +63,8 @@ export default function RegisterPage() {
           },
         },
       });
+
+      console.log('Supabase response:', { authData, authError });
 
       setIsLoading(false);
 
@@ -77,6 +80,8 @@ export default function RegisterPage() {
     } catch (err: any) {
       setIsLoading(false);
       console.error('Registration error:', err);
+      console.error('Error type:', typeof err);
+      console.error('Error string:', JSON.stringify(err));
       setError(err?.message || 'An unexpected error occurred. Please try again.');
     }
   };
@@ -181,8 +186,8 @@ export default function RegisterPage() {
             /* Registration Form */
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm">
-                  {error}
+                <div className="bg-red-100 dark:bg-red-900/40 border border-red-300 dark:border-red-700 text-red-800 dark:text-red-200 p-4 rounded-lg text-sm font-medium">
+                  ⚠️ {error}
                 </div>
               )}
 
@@ -257,25 +262,28 @@ export default function RegisterPage() {
               </div>
 
               <div className="flex items-start space-x-3">
-                <Controller
-                  name="privacy_policy"
-                  control={control}
-                  render={({ field }) => (
-                    <Checkbox
-                      id="privacy_policy"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  )}
-                />
+                <div className="mt-0.5">
+                  <Controller
+                    name="privacy_policy"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox
+                        id="privacy_policy"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="h-5 w-5 border-2 border-gray-400 dark:border-gray-500"
+                      />
+                    )}
+                  />
+                </div>
                 <label
                   htmlFor="privacy_policy"
-                  className="text-sm text-gray-600 dark:text-gray-300 leading-tight"
+                  className="text-sm text-gray-600 dark:text-gray-300 leading-tight cursor-pointer"
                 >
                   {t('privacy')}{' '}
                   <Link
                     href={`/${locale}/privacy`}
-                    className="text-primary-600 hover:text-primary-700"
+                    className="text-primary-600 hover:text-primary-700 font-medium"
                   >
                     Privacy Policy
                   </Link>
