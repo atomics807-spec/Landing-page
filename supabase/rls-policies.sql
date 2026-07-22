@@ -1,4 +1,15 @@
 -- =====================================================
+-- ADD CURRENCY COLUMN TO TABLES
+-- Run this to add currency field to existing tables
+-- =====================================================
+
+-- Add currency column to properties table (if not exists)
+ALTER TABLE properties ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'USD';
+
+-- Add currency column to products table (if not exists)
+ALTER TABLE products ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'USD';
+
+-- =====================================================
 -- FIX RLS POLICIES FOR ALL TABLES
 -- Run this in your Supabase SQL Editor
 -- =====================================================

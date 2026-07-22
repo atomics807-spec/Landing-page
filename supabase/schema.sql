@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS properties (
     property_type TEXT NOT NULL, -- 'residential', 'commercial', 'land', 'industrial'
     status TEXT DEFAULT 'available', -- 'available', 'sold', 'rented'
     price DECIMAL(15, 2),
+    currency TEXT DEFAULT 'USD', -- Currency code: USD, EUR, GBP, XAF, NGN, etc.
     location TEXT NOT NULL,
     address TEXT,
     bedrooms INTEGER,
@@ -154,6 +155,7 @@ CREATE TABLE IF NOT EXISTS products (
     name TEXT NOT NULL,
     description TEXT,
     price DECIMAL(15, 2) NOT NULL,
+    currency TEXT DEFAULT 'USD', -- Currency code: USD, EUR, GBP, XAF, NGN, etc.
     category TEXT DEFAULT 'materials',
     stock INTEGER DEFAULT 0,
     image_url TEXT,

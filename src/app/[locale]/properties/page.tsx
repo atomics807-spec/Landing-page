@@ -16,14 +16,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { formatCurrency } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
+import { formatPrice } from '@/lib/currencies';
 
 interface Property {
   id: string;
   title: string;
   location: string;
   price: number;
+  currency: string;
   bedrooms: number | null;
   bathrooms: number | null;
   area: number | null;
@@ -210,7 +211,7 @@ export default function PropertiesPage() {
                         </div>
                         <div className="flex items-center justify-between mb-4">
                           <p className="text-2xl font-bold text-primary-600">
-                            {formatCurrency(property.price)}
+                            {formatPrice(property.price, property.currency)}
                           </p>
                           {property.bedrooms !== null && property.bedrooms > 0 && (
                             <div className="flex items-center space-x-4 text-sm text-gray-500">
