@@ -22,15 +22,20 @@ import { formatPrice } from '@/lib/currencies';
 interface Property {
   id: string;
   title: string;
-  location: string;
+  description: string;
+  property_type: string;
+  status: string;
   price: number;
   currency: string;
+  location: string;
+  address: string;
   bedrooms: number | null;
   bathrooms: number | null;
-  area: number | null;
-  status: string;
-  category: string;
-  image_url: string | null;
+  area_sqm: number | null;
+  features: string[];
+  images: string[];
+  is_featured: boolean;
+  is_active: boolean;
 }
 
 export default function PropertiesPage() {
@@ -80,7 +85,7 @@ export default function PropertiesPage() {
   const filteredProperties = properties.filter((property) => {
     const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       property.location.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || property.category === categoryFilter;
+    const matchesCategory = categoryFilter === 'all' || property.property_type === categoryFilter;
     const matchesStatus = statusFilter === 'all' || property.status === statusFilter;
     return matchesSearch && matchesCategory && matchesStatus;
   });
@@ -181,9 +186,9 @@ export default function PropertiesPage() {
                   <Link href={`/${locale}/properties/${property.id}`}>
                     <Card className="h-full overflow-hidden hover:shadow-xl transition-shadow duration-300">
                       <div className="aspect-[4/3] bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 relative">
-                        {property.image_url ? (
+                        {property.images && property.images.length > 0 ? (
                           <img
-                            src={property.image_url}
+                            src={property.images[0]}
                             alt={property.title}
                             className="w-full h-full object-cover"
                           />
@@ -225,7 +230,7 @@ export default function PropertiesPage() {
                               </span>
                               <span className="flex items-center">
                                 <Square className="h-4 w-4 mr-1" />
-                                {property.area}m²
+                                {property.area_sqm}m²
                               </span>
                             </div>
                           )}

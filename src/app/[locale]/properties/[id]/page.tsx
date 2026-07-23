@@ -1,102 +1,118 @@
-import { getTranslations } from 'next-intl/server';
-import { setRequestLocale } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { MapPin, Bed, Bath, Square, Check, ArrowLeft } from 'lucide-react';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { use } from 'react';
+import { MapPin, Bed, Bath, Square, Check, ArrowLeft, Share2, ChevronLeft, ChevronRight, Phone, Mail, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { createClient } from '@/lib/supabase/client';
+import { formatPrice } from '@/lib/currencies';
+import { Share } from 'lucide-react';
 
-interface PropertyDetailPageProps {
-  params: Promise<{ locale: string; id: string }>;
+interface Property {
+  id: string;
+  title: string;
+  description: string;
+  property_type: string;
+  status: string;
+  price: number;
+  currency: string;
+  location: string;
+  address: string;
+  bedrooms: number;
+  bathrooms: number;
+  area_sqm: number;
+  features: string[];
+  images: string[];
+  is_featured: boolean;
+  is_active: boolean;
 }
 
-// Mock data - in production, fetch from Supabase
-const properties = [
-  {
-    id: '1',
-    title: 'Luxury Beachfront Villa',
-    location: 'Lagos, Nigeria',
-    address: '15 Victoria Island, Lagos',
-    price: 2500000,
-    type: 'Villa',
-    status: 'available',
-    bedrooms: 5,
-    bathrooms: 4,
-    area: 450,
-    description: 'This stunning beachfront villa offers breathtaking ocean views and luxurious living spaces. Perfect for those seeking the ultimate coastal lifestyle.',
-    features: ['Beach Access', 'Swimming Pool', 'Garden', 'Garage', 'Security', 'Air Conditioning', 'Smart Home', 'Furnished'],
-    images: []
-  },
-  {
-    id: '2',
-    title: 'Modern Downtown Apartment',
-    location: 'Abuja, Nigeria',
-    address: 'Wuse District, Abuja',
-    price: 850000,
-    type: 'Apartment',
-    status: 'available',
-    bedrooms: 3,
-    bathrooms: 2,
-    area: 180,
-    description: 'Contemporary apartment in the heart of Abuja with stunning city views and premium finishes throughout.',
-    features: ['Gym Access', '24/7 Security', 'Parking', 'Elevator', 'Air Conditioning', 'Balcony'],
-    images: []
-  },
-  {
-    id: '3',
-    title: 'Executive Office Suite',
-    location: 'Port Harcourt, Nigeria',
-    address: 'Trans Amadi Industrial Layout',
-    price: 1200000,
-    type: 'Commercial',
-    status: 'reserved',
-    bedrooms: 0,
-    bathrooms: 2,
-    area: 320,
-    description: 'Premium office space perfect for corporate headquarters or investment purposes.',
-    features: ['Conference Room', 'Server Room', 'Kitchen', 'Parking', 'Security', 'Backup Power'],
-    images: []
-  },
-  {
-    id: '4',
-    title: 'Family Home in Gated Estate',
-    location: 'Ikeja, Nigeria',
-    address: 'Ojodu Berger Estate, Ikeja',
-    price: 1500000,
-    type: 'House',
-    status: 'available',
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 280,
-    description: 'Beautiful family home in a secure gated estate with excellent amenities and neighborhood.',
-    features: ['Estate Security', 'Children Play Area', 'Swimming Pool', 'Garden', 'BQ', 'Garage'],
-    images: []
+export default function PropertyDetailPage({ params }: { params: Promise<{ locale: string; id: string }> }) {
+  const { locale, id } = use(params);
+  const [property, setProperty] = useState<Property | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isSharing, setIsSharing] = useState(false);
+
+  useEffect(() => {
+    async function fetchProperty() {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('id', id)
+        .single();
+      
+      if (data) {
+        setProperty(data as Property);
+      }
+      setLoading(false);
+    }
+    fetchProperty();
+  }, [id]);
+
+  const handleShare = async () => {
+    setIsSharing(true);
+    const shareData = {
+      title: property?.title || 'Property',
+      text: `Check out this property: ${property?.title}`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        // User cancelled or error
+      }
+    } else {
+      // Fallback: copy to clipboard
+      await navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard!');
+    }
+    setIsSharing(false);
+  };
+
+  const nextImage = () => {
+    if (property && property.images.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % property.images.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (property && property.images.length > 0) {
+      setCurrentImageIndex((prev) => (prev - 1 + property.images.length) % property.images.length);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
+        <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+      </div>
+    );
   }
-];
-
-export default async function PropertyDetailPage({ params }: PropertyDetailPageProps) {
-  const { locale, id } = await params;
-  setRequestLocale(locale);
-  const t = await getTranslations('properties');
-
-  const property = properties.find(p => p.id === id);
 
   if (!property) {
-    notFound();
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Property not found</h1>
+          <Link href={`/${locale}/properties`}>
+            <Button className="mt-4">Back to Properties</Button>
+          </Link>
+        </div>
+      </div>
+    );
   }
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-    }).format(amount);
-  };
 
   const statusColors: Record<string, string> = {
     available: 'bg-green-100 text-green-800',
     sold: 'bg-red-100 text-red-800',
+    booked: 'bg-yellow-100 text-yellow-800',
     reserved: 'bg-yellow-100 text-yellow-800',
-    archived: 'bg-gray-100 text-gray-800',
   };
 
   return (
@@ -110,9 +126,9 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
           </Link>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${statusColors[property.status]}`}>
+              <Badge variant="secondary" className={`${statusColors[property.status] || 'bg-gray-100'} capitalize`}>
                 {property.status}
-              </span>
+              </Badge>
               <h1 className="text-3xl md:text-4xl font-bold mt-4">{property.title}</h1>
               <div className="flex items-center text-primary-100 mt-2">
                 <MapPin className="w-5 h-5 mr-2" />
@@ -120,18 +136,62 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               </div>
             </div>
             <div className="text-right">
-              <p className="text-3xl md:text-4xl font-bold">{formatCurrency(property.price)}</p>
-              <p className="text-primary-100 text-sm">{property.type}</p>
+              <p className="text-3xl md:text-4xl font-bold">{formatPrice(property.price, property.currency)}</p>
+              <p className="text-primary-100 text-sm capitalize">{property.property_type}</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Property Image */}
+      {/* Property Image Gallery */}
       <section className="py-8">
         <div className="container mx-auto px-4">
-          <div className="aspect-video bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 rounded-xl flex items-center justify-center">
-            <span className="text-primary-600 dark:text-primary-300 text-xl">Property Image</span>
+          <div className="relative aspect-video bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 rounded-xl overflow-hidden">
+            {property.images && property.images.length > 0 ? (
+              <>
+                <img
+                  src={property.images[currentImageIndex]}
+                  alt={`${property.title} - Image ${currentImageIndex + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                {property.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                      {property.images.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`w-2 h-2 rounded-full transition-colors ${index === currentImageIndex ? 'bg-white' : 'bg-white/50'}`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-primary-600 dark:text-primary-300 text-xl">No Images Available</span>
+              </div>
+            )}
+          </div>
+          {/* Share Button */}
+          <div className="mt-4 flex justify-end">
+            <Button onClick={handleShare} variant="outline" disabled={isSharing}>
+              <Share2 className="w-4 h-4 mr-2" />
+              {isSharing ? 'Sharing...' : 'Share Property'}
+            </Button>
           </div>
         </div>
       </section>
@@ -145,7 +205,9 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               {/* Description */}
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Description</h2>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{property.description}</p>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                  {property.description || 'No description available.'}
+                </p>
               </div>
 
               {/* Property Details */}
@@ -166,7 +228,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                   </div>
                   <div className="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <Square className="w-8 h-8 text-primary-600 mb-2" />
-                    <span className="text-2xl font-bold text-gray-900 dark:text-white">{property.area}</span>
+                    <span className="text-2xl font-bold text-gray-900 dark:text-white">{property.area_sqm || 0}</span>
                     <span className="text-sm text-gray-500">Square Meters</span>
                   </div>
                   <div className="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -181,12 +243,16 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features & Amenities</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {property.features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <Check className="w-5 h-5 text-primary-600" />
-                      <span className="text-gray-600 dark:text-gray-300">{feature}</span>
-                    </div>
-                  ))}
+                  {property.features && property.features.length > 0 ? (
+                    property.features.map((feature, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <Check className="w-5 h-5 text-primary-600" />
+                        <span className="text-gray-600 dark:text-gray-300">{feature}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">No features listed.</p>
+                  )}
                 </div>
               </div>
 

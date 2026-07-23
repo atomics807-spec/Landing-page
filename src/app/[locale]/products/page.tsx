@@ -28,6 +28,7 @@ interface Product {
   category: string;
   stock: number;
   image_url: string | null;
+  images: string[];
 }
 
 export default function ProductsPage() {
