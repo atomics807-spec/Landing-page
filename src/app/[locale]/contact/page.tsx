@@ -60,9 +60,84 @@ function ContactForm() {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Contact form data:', data);
+      // Get user's location from IP
+      let userLocation = 'Unknown';
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const geoRes = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (geoRes.ok) {
+          const geoData = await geoRes.json();
+          userLocation = `${geoData.city || ''}, ${geoData.country_name || ''}`.replace(/^, |, $/, '');
+        }
+      } catch (e) {
+        // Use default if geolocation fails
+      }
+
+      // Save to database
+      const { createClient } = await import('@/lib/supabase/client');
+      const supabase = createClient();
+      
+      const { error: dbError } = await supabase
+        .from('contact_messages')
+        .insert({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          subject: data.subject,
+          message: data.message,
+          property_id: propertyInquiry?.id || null,
+          status: 'unread',
+          user_location: userLocation,
+        });
+
+      if (dbError) {
+        console.error('Database error:', dbError);
+      }
+
+      // Send email notification to admin
+      const emailHtml = `
+        <h2>New Contact Message from Paraysco Website</h2>
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Phone:</strong> ${data.phone || 'Not provided'}</p>
+        <p><strong>Subject:</strong> ${data.subject}</p>
+        <p><strong>Location:</strong> ${userLocation}</p>
+        ${propertyInquiry ? `<p><strong>Property:</strong> ${propertyInquiry.title}</p>` : ''}
+        <hr/>
+        <p><strong>Message:</strong></p>
+        <p>${data.message}</p>
+        <hr/>
+        <p><em>This message was sent from the Paraysco Consulting website contact form.</em></p>
+      `;
+
+      // Use Resend API if available, otherwise log
+      if (process.env.RESEND_API_KEY) {
+        const resendRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: 'Paraysco Website <onboarding@resend.dev>',
+            to: ['paraysco@gmail.com'],
+            subject: `[Paraysco] New Contact: ${data.subject}`,
+            html: emailHtml,
+          }),
+        });
+        if (!resendRes.ok) {
+          console.error('Email send failed');
+        }
+      } else {
+        // Log for development
+        console.log('📧 Email notification (RESEND_API_KEY not set):', {
+          to: 'paraysco@gmail.com',
+          subject: `[Paraysco] New Contact: ${data.subject}`,
+        });
+      }
+
       setSubmitted(true);
       reset();
     } catch (error) {
@@ -148,7 +223,7 @@ function ContactForm() {
 
       {/* Contact Section */}
       {user && (
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section id="contact-form" className="py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16">
             {/* Contact Form */}

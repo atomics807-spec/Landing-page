@@ -188,9 +188,11 @@ export default function ProductsPage() {
                           {product.category}
                         </Badge>
                       </div>
-                      <Button variant="outline" className="w-full mt-4">
-                        Contact for Purchase
-                      </Button>
+                      <Link href={`/${locale}/contact#contact-form`}>
+                        <Button variant="outline" className="w-full mt-4">
+                          Contact for Purchase
+                        </Button>
+                      </Link>
                     </CardContent>
                   </Card>
                 </motion.div>
