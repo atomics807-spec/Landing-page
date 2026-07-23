@@ -48,7 +48,7 @@ export function Footer({ locale }: FooterProps) {
     { icon: Facebook, href: 'https://www.facebook.com/share/1B3A4oumdE/', label: 'Facebook' },
     { icon: Instagram, href: 'https://www.instagram.com/parayscoconsultinginc?igsh=NTc3cGg3YWd5emk0', label: 'Instagram' },
     { icon: TikTokIcon, href: 'https://www.tiktok.com/@parayscoconsultin?_r=1&_t=ZS-98GqbjxWyzF', label: 'TikTok' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/mola-scott-607760250', label: 'LinkedIn' },
   ];
 
   const contactInfo = [
