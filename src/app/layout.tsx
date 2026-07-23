@@ -116,6 +116,11 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" sizes="any" />
         <link rel="apple-touch-icon" href="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0d9488" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Paraysco" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

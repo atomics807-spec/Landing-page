@@ -126,19 +126,19 @@ export function Header({ locale }: HeaderProps) {
 
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo - properly aligned */}
-          <Link href={`/${locale}`} className="flex items-center gap-2 flex-shrink-0">
+          {/* Logo - larger and properly aligned */}
+          <Link href={`/${locale}`} className="flex items-center gap-3 flex-shrink-0">
             <img 
               src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
               alt="Paraysco Logo" 
-              className="h-10 w-10 object-contain rounded-lg"
+              className="h-12 w-12 object-contain rounded-lg"
             />
-            <span className="font-heading text-lg sm:text-xl font-semibold text-gray-900 dark:text-white tracking-tight whitespace-nowrap">
-              PARAYSCO INC
+            <span className="font-heading text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap">
+              PARAYSCO CONSULTING
             </span>
           </Link>
 
-          {/* Desktop Navigation - centered */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => (
               <div key={item.label} className="relative" ref={item.isDropdown ? propertiesDropdownRef : undefined}>
