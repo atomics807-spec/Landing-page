@@ -135,7 +135,7 @@ export default function RootLayout({
               contactPoint: {
                 '@type': 'ContactPoint',
                 telephone: '+237-676-914-581',
-                email: 'paraysco@gmail.com',
+                email: 'parayscoconsulting@gmail.com',
                 contactType: 'customer service',
                 availableLanguage: ['English', 'French'],
               },

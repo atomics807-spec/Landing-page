@@ -96,46 +96,23 @@ function ContactForm() {
         console.error('Database error:', dbError);
       }
 
-      // Send email notification to admin
-      const emailHtml = `
-        <h2>New Contact Message from Paraysco Website</h2>
-        <p><strong>Name:</strong> ${data.name}</p>
-        <p><strong>Email:</strong> ${data.email}</p>
-        <p><strong>Phone:</strong> ${data.phone || 'Not provided'}</p>
-        <p><strong>Subject:</strong> ${data.subject}</p>
-        <p><strong>Location:</strong> ${userLocation}</p>
-        ${propertyInquiry ? `<p><strong>Property:</strong> ${propertyInquiry.title}</p>` : ''}
-        <hr/>
-        <p><strong>Message:</strong></p>
-        <p>${data.message}</p>
-        <hr/>
-        <p><em>This message was sent from the Paraysco Consulting website contact form.</em></p>
-      `;
+      // Send email notification to admin via API route
+      const emailRes = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          subject: data.subject,
+          message: data.message,
+          propertyTitle: propertyInquiry?.title,
+          userLocation: userLocation,
+        }),
+      });
 
-      // Use Resend API if available, otherwise log
-      if (process.env.RESEND_API_KEY) {
-        const resendRes = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: 'Paraysco Website <onboarding@resend.dev>',
-            to: ['paraysco@gmail.com'],
-            subject: `[Paraysco] New Contact: ${data.subject}`,
-            html: emailHtml,
-          }),
-        });
-        if (!resendRes.ok) {
-          console.error('Email send failed');
-        }
-      } else {
-        // Log for development
-        console.log('📧 Email notification (RESEND_API_KEY not set):', {
-          to: 'paraysco@gmail.com',
-          subject: `[Paraysco] New Contact: ${data.subject}`,
-        });
+      if (!emailRes.ok) {
+        console.error('Email notification failed');
       }
 
       setSubmitted(true);
@@ -162,7 +139,7 @@ function ContactForm() {
     {
       icon: Mail,
       label: t('info.email'),
-      value: 'paraysco@gmail.com',
+      value: 'parayscoconsulting@gmail.com',
     },
     {
       icon: Clock,

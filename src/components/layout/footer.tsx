@@ -65,7 +65,7 @@ export function Footer({ locale }: FooterProps) {
     {
       icon: Mail,
       label: t('email'),
-      value: 'paraysco@gmail.com',
+      value: 'parayscoconsulting@gmail.com',
     },
   ];
 
