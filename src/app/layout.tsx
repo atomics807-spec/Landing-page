@@ -18,11 +18,11 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com'),
   title: {
-    default: 'Paraysco Consulting Inc. | Professional Solutions, Sustainable Growth',
-    template: '%s | Paraysco Consulting Inc.',
+    default: 'Paraysco Consulting | Professional Solutions, Sustainable Growth',
+    template: '%s | Paraysco Consulting',
   },
   description:
-    'Paraysco Consulting Inc. provides innovative consultancy solutions that bridge the gap between ideas and implementation, investment and opportunity, and ambition and sustainable growth. Expert services in real estate, engineering, construction, and business consultancy across Africa.',
+    'Paraysco Consulting provides innovative consultancy solutions that bridge the gap between ideas and implementation, investment and opportunity, and ambition and sustainable growth. Expert services in real estate, engineering, construction, and business consultancy across Africa.',
   keywords: [
     'consulting firm Cameroon',
     'real estate advisory Africa',
@@ -35,12 +35,14 @@ export const metadata: Metadata = {
     'Limbe Cameroon',
     'Lagos Nigeria',
     'Abuja Nigeria',
-    'Paraysco',
+    'Paraysco Consulting',
     'sustainable development Africa',
+    'multidisciplinary consulting',
+    'property management Africa',
   ],
-  authors: [{ name: 'Paraysco Consulting Inc.', url: 'https://paraysco.com' }],
-  creator: 'Paraysco Consulting Inc.',
-  publisher: 'Paraysco Consulting Inc.',
+  authors: [{ name: 'Paraysco Consulting', url: 'https://paraysco.com' }],
+  creator: 'Paraysco Consulting',
+  publisher: 'Paraysco Consulting',
   category: 'Business Consulting',
   classification: 'Professional Services',
   formatDetection: {
@@ -52,8 +54,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     alternateLocale: ['fr_FR'],
-    siteName: 'Paraysco Consulting Inc.',
-    title: 'Paraysco Consulting Inc. | Professional Solutions, Sustainable Growth',
+    siteName: 'Paraysco Consulting',
+    title: 'Paraysco Consulting | Professional Solutions, Sustainable Growth',
     description:
       'Expert multidisciplinary consulting firm providing integrated solutions in real estate, engineering, construction, and business consultancy across Africa.',
     images: [
@@ -61,24 +63,24 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Paraysco Consulting Inc. - Professional Solutions for Sustainable Growth',
+        alt: 'Paraysco Consulting - Professional Solutions for Sustainable Growth',
       },
       {
         url: '/og-image-square.png',
         width: 1200,
         height: 1200,
-        alt: 'Paraysco Consulting Inc. Logo',
+        alt: 'Paraysco Consulting Logo',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Paraysco Consulting Inc. | Professional Solutions, Sustainable Growth',
+    title: 'Paraysco Consulting | Professional Solutions, Sustainable Growth',
     description:
       'Expert multidisciplinary consulting firm providing integrated solutions across Africa. Real estate, engineering, construction, and business consultancy.',
     images: ['/og-image.png'],
-    creator: '@paraysco',
-    site: '@paraysco',
+    creator: '@parayscoconsultin',
+    site: '@parayscoconsultin',
   },
   facebook: {
     appId: 'your-facebook-app-id',
@@ -120,37 +122,182 @@ export default function RootLayout({
         <meta name="theme-color" content="#0d9488" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Paraysco" />
+        <meta name="apple-mobile-web-app-title" content="Paraysco Consulting" />
+        
+        {/* GEO: LocalBusiness Schema - Critical for local SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'LocalBusiness',
+              '@id': 'https://paraysco.com/#business',
+              name: 'Paraysco Consulting',
+              description: 'Multidisciplinary professional consulting firm providing integrated solutions in real estate, engineering, construction, procurement, investment advisory, and business consultancy across Africa.',
+              url: 'https://paraysco.com',
+              logo: 'https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg',
+              image: 'https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg',
+              telephone: '+237-676-914-581',
+              email: 'parayscoconsulting@gmail.com',
+              address: {
+                '@type': 'PostalAddress',
+                streetAddress: 'Bota Middle Farms',
+                addressLocality: 'Limbe',
+                addressRegion: 'South West Region',
+                postalCode: 'SWR',
+                addressCountry: 'CM',
+              },
+              geo: {
+                '@type': 'GeoCoordinates',
+                latitude: '4.0167',
+                longitude: '9.2000',
+              },
+              openingHoursSpecification: [
+                {
+                  '@type': 'OpeningHoursSpecification',
+                  dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                  opens: '08:00',
+                  closes: '17:00',
+                },
+              ],
+              priceRange: '$$',
+              areaServed: [
+                { '@type': 'Country', name: 'Cameroon' },
+                { '@type': 'Country', name: 'Nigeria' },
+                { '@type': 'Country', name: 'Ghana' },
+                { '@type': 'Country', name: 'Africa' },
+              ],
+              hasOfferCatalog: {
+                '@type': 'OfferCatalog',
+                name: 'Consulting Services',
+                itemListElement: [
+                  { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Real Estate Advisory' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Engineering Services' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Construction Management' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Procurement Services' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Investment Advisory' } },
+                  { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Business Consultancy' } },
+                ],
+              },
+              sameAs: [
+                'https://www.facebook.com/share/1B3A4oumdE/',
+                'https://www.instagram.com/parayscoconsultinginc',
+                'https://www.tiktok.com/@parayscoconsultin',
+                'https://www.linkedin.com/in/mola-scott-607760250',
+              ],
+            }),
+          }}
+        />
+
+        {/* SEO/AEO: Organization Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Organization',
-              name: 'Paraysco Consulting Inc.',
-              description:
-                'Multidisciplinary professional consulting firm providing integrated solutions across real estate, engineering, construction, and business consultancy.',
-              url: process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com',
+              '@id': 'https://paraysco.com/#organization',
+              name: 'Paraysco Consulting',
+              alternateName: ['Paraysco Consulting Inc.', 'Paraysco', 'PCI'],
+              description: 'Multidisciplinary professional consulting firm providing integrated solutions across real estate, engineering, construction, and business consultancy in Africa.',
+              url: 'https://paraysco.com',
               logo: 'https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg',
+              foundingDate: '2020',
+              foundingLocation: 'Limbe, Cameroon',
               contactPoint: {
                 '@type': 'ContactPoint',
                 telephone: '+237-676-914-581',
-                email: 'paraysco@gmail.com',
+                email: 'parayscoconsulting@gmail.com',
                 contactType: 'customer service',
                 availableLanguage: ['English', 'French'],
               },
               address: {
                 '@type': 'PostalAddress',
-                streetAddress: 'Bota Middle Farms, Limbe',
+                streetAddress: 'Bota Middle Farms',
                 addressLocality: 'Limbe',
                 addressRegion: 'South West Region',
                 addressCountry: 'CM',
               },
               sameAs: [
-                'https://facebook.com/paraysco',
-                'https://twitter.com/paraysco',
-                'https://linkedin.com/company/paraysco',
-                'https://instagram.com/paraysco',
+                'https://www.facebook.com/share/1B3A4oumdE/',
+                'https://www.instagram.com/parayscoconsultinginc',
+                'https://www.tiktok.com/@parayscoconsultin',
+                'https://www.linkedin.com/in/mola-scott-607760250',
+              ],
+              knowsAbout: [
+                'Real Estate',
+                'Engineering',
+                'Construction Management',
+                'Procurement',
+                'Investment Advisory',
+                'Business Consultancy',
+                'Project Management',
+                'Sustainable Development',
+              ],
+              areaServed: {
+                '@type': 'Place',
+                name: 'Africa',
+              },
+            }),
+          }}
+        />
+
+        {/* SEO/GEO: WebSite Schema with Search Box - Enables Sitelinks Search Box */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              '@id': 'https://paraysco.com/#website',
+              name: 'Paraysco Consulting',
+              url: 'https://paraysco.com',
+              description: 'Professional consulting services in real estate, engineering, construction, and business consultancy across Africa.',
+              publisher: { '@id': 'https://paraysco.com/#organization' },
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: 'https://paraysco.com/search?q={search_term_string}',
+                },
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
+
+        {/* AEO: BreadcrumbList Schema for navigation context */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                {
+                  '@type': 'ListItem',
+                  position: 1,
+                  name: 'Home',
+                  item: 'https://paraysco.com',
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 2,
+                  name: 'Services',
+                  item: 'https://paraysco.com/services',
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 3,
+                  name: 'About',
+                  item: 'https://paraysco.com/about',
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 4,
+                  name: 'Contact',
+                  item: 'https://paraysco.com/contact',
+                },
               ],
             }),
           }}

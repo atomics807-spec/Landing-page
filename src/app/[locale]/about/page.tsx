@@ -7,6 +7,58 @@ import { Card, CardContent } from '@/components/ui/card';
 import { CTASection } from '@/components/home/cta-section';
 import type { Locale } from '@/i18n';
 
+// AEO: HowTo schema for working with Paraysco
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to Work with Paraysco Consulting',
+  description: 'A step-by-step guide on how to engage with Paraysco Consulting for your professional consulting needs in real estate, engineering, construction, and business consultancy.',
+  totalTime: 'P1D',
+  estimatedCost: {
+    '@type': 'MonetaryAmount',
+    currency: 'USD',
+    value: '100',
+  },
+  supply: [
+    { '@type': 'HowToSupply', name: 'Project requirements documentation' },
+    { '@type': 'HowToSupply', name: 'Budget information' },
+    { '@type': 'HowToSupply', name: 'Timeline expectations' },
+  ],
+  tool: [
+    { '@type': 'HowToTool', name: 'Contact form on website' },
+    { '@type': 'HowToTool', name: 'Email: parayscoconsulting@gmail.com' },
+    { '@type': 'HowToTool', name: 'Phone: +237 676 914 581' },
+  ],
+  step: [
+    {
+      '@type': 'HowToStep',
+      name: 'Initial Consultation',
+      text: 'Submit an inquiry through our contact form or email us directly. Describe your project needs and requirements.',
+      url: 'https://paraysco.com/contact',
+    },
+    {
+      '@type': 'HowToStep',
+      name: 'Discovery Meeting',
+      text: 'Schedule a discovery call or meeting with our team to discuss your project in detail and understand your goals.',
+    },
+    {
+      '@type': 'HowToStep',
+      name: 'Proposal Development',
+      text: 'Our team will prepare a customized proposal outlining our approach, timeline, and investment requirements.',
+    },
+    {
+      '@type': 'HowToStep',
+      name: 'Contract and Kickoff',
+      text: 'Review and sign the contract, then we begin work on your project with regular updates and communication.',
+    },
+    {
+      '@type': 'HowToStep',
+      name: 'Project Execution',
+      text: 'We deliver our services with regular check-ins, progress reports, and ongoing support throughout the engagement.',
+    },
+  ],
+};
+
 export default function AboutPage() {
   const locale = useLocale() as Locale;
   const t = useTranslations('about');
@@ -29,6 +81,12 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen">
+      {/* AEO: HowTo Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+
       <section className="bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-20">
         <div className="container mx-auto px-4">
           <motion.div

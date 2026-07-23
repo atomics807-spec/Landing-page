@@ -98,7 +98,7 @@ function LoginForm() {
                 className="w-10 h-10 object-contain rounded-lg"
               />
               <span className="font-heading text-lg font-semibold text-gray-900 dark:text-white">
-                PARAYSCO INC
+                PARAYSCO CONSULTING
               </span>
             </Link>
             <h1 className="text-2xl font-heading font-bold text-gray-900 dark:text-white">

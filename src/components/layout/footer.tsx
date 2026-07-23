@@ -6,6 +6,15 @@ import { Facebook, Twitter, Linkedin, Instagram, Youtube, Mail, Phone, MapPin } 
 import { Separator } from '@/components/ui/separator';
 import type { Locale } from '@/i18n';
 
+// Custom TikTok Icon
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" />
+    </svg>
+  );
+}
+
 interface FooterProps {
   locale: Locale;
 }
@@ -36,11 +45,10 @@ export function Footer({ locale }: FooterProps) {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
-    { icon: Youtube, href: 'https://youtube.com', label: 'YouTube' },
+    { icon: Facebook, href: 'https://www.facebook.com/share/1B3A4oumdE/', label: 'Facebook' },
+    { icon: Instagram, href: 'https://www.instagram.com/parayscoconsultinginc?igsh=NTc3cGg3YWd5emk0', label: 'Instagram' },
+    { icon: TikTokIcon, href: 'https://www.tiktok.com/@parayscoconsultin?_r=1&_t=ZS-98GqbjxWyzF', label: 'TikTok' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/mola-scott-607760250', label: 'LinkedIn' },
   ];
 
   const contactInfo = [
@@ -57,7 +65,7 @@ export function Footer({ locale }: FooterProps) {
     {
       icon: Mail,
       label: t('email'),
-      value: 'paraysco@gmail.com',
+      value: 'parayscoconsulting@gmail.com',
     },
   ];
 
@@ -76,7 +84,7 @@ export function Footer({ locale }: FooterProps) {
               />
               <div>
                 <span className="font-heading text-lg font-semibold text-white">
-                  PARAYSCO INC
+                  PARAYSCO CONSULTING
                 </span>
               </div>
             </div>

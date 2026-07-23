@@ -60,9 +60,61 @@ function ContactForm() {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Contact form data:', data);
+      // Get user's location from IP
+      let userLocation = 'Unknown';
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const geoRes = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (geoRes.ok) {
+          const geoData = await geoRes.json();
+          userLocation = `${geoData.city || ''}, ${geoData.country_name || ''}`.replace(/^, |, $/, '');
+        }
+      } catch (e) {
+        // Use default if geolocation fails
+      }
+
+      // Save to database
+      const { createClient } = await import('@/lib/supabase/client');
+      const supabase = createClient();
+      
+      const { error: dbError } = await supabase
+        .from('contact_messages')
+        .insert({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          subject: data.subject,
+          message: data.message,
+          property_id: propertyInquiry?.id || null,
+          status: 'unread',
+          user_location: userLocation,
+        });
+
+      if (dbError) {
+        console.error('Database error:', dbError);
+      }
+
+      // Send email notification to admin via API route
+      const emailRes = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          subject: data.subject,
+          message: data.message,
+          propertyTitle: propertyInquiry?.title,
+          userLocation: userLocation,
+        }),
+      });
+
+      if (!emailRes.ok) {
+        console.error('Email notification failed');
+      }
+
       setSubmitted(true);
       reset();
     } catch (error) {
@@ -87,7 +139,7 @@ function ContactForm() {
     {
       icon: Mail,
       label: t('info.email'),
-      value: 'paraysco@gmail.com',
+      value: 'parayscoconsulting@gmail.com',
     },
     {
       icon: Clock,
@@ -148,7 +200,7 @@ function ContactForm() {
 
       {/* Contact Section */}
       {user && (
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section id="contact-form" className="py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16">
             {/* Contact Form */}
