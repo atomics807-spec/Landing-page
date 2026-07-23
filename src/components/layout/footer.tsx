@@ -84,7 +84,7 @@ export function Footer({ locale }: FooterProps) {
               />
               <div>
                 <span className="font-heading text-lg font-semibold text-white">
-                  PARAYSCO INC
+                  PARAYSCO CONSULTING
                 </span>
               </div>
             </div>
