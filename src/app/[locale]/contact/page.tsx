@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
+import { InteractiveMap } from '@/components/ui/map';
 import { contactFormSchema, type ContactFormData } from '@/lib/utils';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2, Briefcase, Lock } from 'lucide-react';
 import { getUserProfile } from '@/app/actions/auth';
@@ -325,19 +326,11 @@ function ContactForm() {
                 </a>
               </Button>
 
-              {/* Map Placeholder */}
+              {/* Interactive Map */}
               <Card>
                 <CardContent className="p-0 overflow-hidden rounded-xl">
-                  <div className="aspect-video bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                    <div className="text-center">
-                      <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500 dark:text-gray-400">
-                        Interactive Map
-                      </p>
-                      <p className="text-sm text-gray-400 dark:text-gray-500">
-                        Limbe, Cameroon
-                      </p>
-                    </div>
+                  <div className="aspect-video">
+                    <InteractiveMap className="w-full h-full" />
                   </div>
                 </CardContent>
               </Card>
