@@ -19,6 +19,68 @@ const iconMap = {
   consultancy: Users,
 };
 
+// AEO: Service schemas for rich answers
+const servicesSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Paraysco Consulting Services',
+  description: 'Professional consulting services including real estate, engineering, construction, procurement, investment advisory, and business consultancy across Africa.',
+  numberOfItems: 6,
+  itemListElement: [
+    {
+      '@type': 'Service',
+      name: 'Real Estate Advisory',
+      description: 'Comprehensive real estate consulting including property acquisition, valuation, management, and investment advisory services.',
+      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
+      areaServed: 'Africa',
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Real Estate Services',
+        includes: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Acquisition' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Valuation' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Management' } },
+        ],
+      },
+    },
+    {
+      '@type': 'Service',
+      name: 'Engineering Services',
+      description: 'Professional engineering solutions including design, planning, and project engineering for construction and infrastructure projects.',
+      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
+      areaServed: 'Africa',
+    },
+    {
+      '@type': 'Service',
+      name: 'Construction Management',
+      description: 'End-to-end construction project management from planning through completion with quality assurance and timeline management.',
+      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
+      areaServed: 'Africa',
+    },
+    {
+      '@type': 'Service',
+      name: 'Procurement Services',
+      description: 'Strategic procurement solutions for materials, equipment, and services with supplier management and quality control.',
+      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
+      areaServed: 'Africa',
+    },
+    {
+      '@type': 'Service',
+      name: 'Investment Advisory',
+      description: 'Expert investment advisory services helping clients identify opportunities and make informed investment decisions.',
+      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
+      areaServed: 'Africa',
+    },
+    {
+      '@type': 'Service',
+      name: 'Business Consultancy',
+      description: 'Strategic business consulting for growth optimization, process improvement, and sustainable business development.',
+      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
+      areaServed: 'Africa',
+    },
+  ],
+};
+
 export default function ServicesPage() {
   const locale = useLocale() as Locale;
   const t = useTranslations('services');
@@ -34,6 +96,12 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen">
+      {/* AEO: Service Schemas */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
+      />
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-20">
         <div className="container mx-auto px-4">
