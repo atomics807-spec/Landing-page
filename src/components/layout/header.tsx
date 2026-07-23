@@ -124,168 +124,165 @@ export function Header({ locale }: HeaderProps) {
         <p>{t('announcement')}</p>
       </div>
 
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo - larger and properly aligned */}
-          <Link href={`/${locale}`} className="flex items-center gap-3 flex-shrink-0">
-            <img 
-              src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
-              alt="Paraysco Logo" 
-              className="h-12 w-12 object-contain rounded-lg"
-            />
-            <span className="font-heading text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap">
-              PARAYSCO CONSULTING
-            </span>
-          </Link>
+      {/* Main Header - Full Width */}
+      <div className="w-full">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            
+            {/* Left Section - Logo & Brand */}
+            <Link 
+              href={`/${locale}`} 
+              className="flex items-center gap-3 flex-shrink-0"
+            >
+              <img 
+                src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
+                alt="Paraysco Logo" 
+                className="h-10 w-10 object-contain rounded-lg"
+              />
+              <span className="font-heading text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap">
+                PARAYSCO CONSULTING
+              </span>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => (
-              <div key={item.label} className="relative" ref={item.isDropdown ? propertiesDropdownRef : undefined}>
-                {item.isDropdown ? (
-                  <>
-                    <button
-                      onClick={() => setIsPropertiesDropdownOpen(!isPropertiesDropdownOpen)}
-                      onMouseEnter={() => setIsPropertiesDropdownOpen(true)}
-                      className={cn(
-                        'flex items-center space-x-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-                        isPropertiesDropdownOpen
-                          ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
-                      )}
-                    >
-                      <Building2 className="w-4 h-4 mr-1" />
-                      {item.label}
-                      <ChevronDown className={cn(
-                        'w-4 h-4 ml-1 transition-transform duration-200',
-                        isPropertiesDropdownOpen && 'rotate-180'
-                      )} />
-                    </button>
-                    
-                    <AnimatePresence>
-                      {isPropertiesDropdownOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute left-0 top-full mt-2 w-64 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden"
-                          onClick={() => setIsPropertiesDropdownOpen(false)}
+            {/* Center Section - Desktop Navigation */}
+            <nav className="hidden xl:flex items-center justify-center flex-1 mx-8">
+              <div className="flex items-center gap-0.5">
+                {navItems.map((item) => (
+                  <div key={item.label} className="relative" ref={item.isDropdown ? propertiesDropdownRef : undefined}>
+                    {item.isDropdown ? (
+                      <>
+                        <button
+                          onClick={() => setIsPropertiesDropdownOpen(!isPropertiesDropdownOpen)}
+                          onMouseEnter={() => setIsPropertiesDropdownOpen(true)}
+                          className={cn(
+                            'flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px]',
+                            isPropertiesDropdownOpen
+                              ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
+                              : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
+                          )}
                         >
-                          <div className="p-3 space-y-1">
-                            {propertiesMenu.map((item) => (
-                              <Link
-                                key={item.label}
-                                href={item.href}
-                                className="flex items-start space-x-3 p-3 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors group"
-                              >
-                                <div className="w-10 h-10 rounded-lg bg-primary-100 group-hover:bg-primary-200 dark:bg-primary-900/50 dark:group-hover:bg-primary-800 flex items-center justify-center flex-shrink-0">
-                                  <item.icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-300">
-                                    {item.label}
-                                  </p>
-                                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                                    {item.description}
-                                  </p>
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      'flex items-center space-x-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
-                      pathname === item.href
-                        ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-300'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
-                    )}
-                  >
-                    {item.icon && <item.icon className="w-4 h-4" />}
-                    <span>{item.label}</span>
-                  </Link>
-                )}
-              </div>
-            ))}
-          </nav>
-
-          {/* Right Side Actions - shifted right */}
-          <div className="flex items-center space-x-1 -mr-2">
-            {/* Language Switcher */}
-            <div className="relative">
-              <button
-                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                className="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 dark:text-gray-300"
-              >
-                <Globe className="h-4 w-4" />
-                <span className="uppercase">{locale}</span>
-                <ChevronDown className="h-4 w-4" />
-              </button>
-              <AnimatePresence>
-                {isLangMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 mt-2 w-32 rounded-lg border bg-white shadow-lg dark:bg-gray-900"
-                  >
-                    {locales.map((loc) => (
-                      <button
-                        key={loc}
-                        onClick={() => {
-                          switchLocale(loc);
-                          setIsLangMenuOpen(false);
-                        }}
+                          {item.label}
+                          <ChevronDown className={cn(
+                            'w-4 h-4 transition-transform duration-200',
+                            isPropertiesDropdownOpen && 'rotate-180'
+                          )} />
+                        </button>
+                        
+                        <AnimatePresence>
+                          {isPropertiesDropdownOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -8 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -8 }}
+                              transition={{ duration: 0.15 }}
+                              className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden"
+                              onClick={() => setIsPropertiesDropdownOpen(false)}
+                            >
+                              <div className="p-2 space-y-1">
+                                {propertiesMenu.map((item) => (
+                                  <Link
+                                    key={item.label}
+                                    href={item.href}
+                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors group"
+                                  >
+                                    <div className="w-10 h-10 rounded-lg bg-primary-100 group-hover:bg-primary-200 dark:bg-primary-900/50 dark:group-hover:bg-primary-800 flex items-center justify-center flex-shrink-0">
+                                      <item.icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-300">
+                                        {item.label}
+                                      </p>
+                                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                                        {item.description}
+                                      </p>
+                                    </div>
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </>
+                    ) : (
+                      <Link
+                        href={item.href}
                         className={cn(
-                          'block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800',
-                          locale === loc && 'text-primary-600 font-medium'
+                          'flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px]',
+                          pathname === item.href
+                            ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-300'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
                         )}
                       >
-                        {loc === 'en' ? 'English' : 'Français'}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                        {item.label}
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </nav>
+
+            {/* Right Section - Actions */}
+            <div className="flex items-center gap-1">
+              {/* Language Switcher */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 min-h-[44px]"
+                  aria-label="Switch language"
+                >
+                  <Globe className="h-4 w-4" />
+                  <span className="uppercase hidden sm:inline">{locale}</span>
+                </button>
+                <AnimatePresence>
+                  {isLangMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      className="absolute right-0 mt-2 w-36 rounded-lg border bg-white shadow-lg dark:bg-gray-900"
+                    >
+                      {locales.map((loc) => (
+                        <button
+                          key={loc}
+                          onClick={() => {
+                            switchLocale(loc);
+                            setIsLangMenuOpen(false);
+                          }}
+                          className={cn(
+                            'block w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-800 first:rounded-t-lg last:rounded-b-lg',
+                            locale === loc && 'text-primary-600 font-medium'
+                          )}
+                        >
+                          {loc === 'en' ? 'English' : 'Français'}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2.5 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Toggle theme"
+              >
+                <Sun className={cn("h-5 w-5", theme === 'light' ? 'opacity-100' : 'opacity-0 absolute')} />
+                <Moon className={cn("h-5 w-5", theme === 'dark' ? 'opacity-100' : 'opacity-0 absolute')} />
+              </button>
+
+              {/* User Menu / Login */}
+              <UserMenu locale={locale} />
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="xl:hidden p-2.5 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
             </div>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 relative"
-              aria-label="Toggle theme"
-            >
-              <Sun className={cn(
-                "h-5 w-5 transition-all",
-                theme === 'light' ? 'opacity-100' : 'opacity-0'
-              )} />
-              <Moon className={cn(
-                "h-5 w-5 absolute inset-0 m-auto transition-all",
-                theme === 'dark' ? 'opacity-100' : 'opacity-0'
-              )} />
-            </button>
-
-            {/* User Menu */}
-            <UserMenu locale={locale} />
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden rounded-lg p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
           </div>
         </div>
       </div>
@@ -297,19 +294,18 @@ export function Header({ locale }: HeaderProps) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900"
+            className="xl:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden"
           >
-            <div className="container mx-auto px-4 py-4 space-y-1">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 space-y-1">
               {navItems.map((item) => (
                 <div key={item.label}>
-                  {/* Properties dropdown shows both Properties and Products */}
                   {item.isDropdown ? (
                     <div className="space-y-1">
                       <Link
                         href={`/${locale}/properties`}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
-                          'flex items-center space-x-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors',
+                          'flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px]',
                           pathname.includes('/properties')
                             ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
                             : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300'
@@ -322,7 +318,7 @@ export function Header({ locale }: HeaderProps) {
                         href={`/${locale}/products`}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
-                          'flex items-center space-x-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ml-4',
+                          'flex items-center gap-3 pl-10 pr-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px]',
                           pathname.includes('/products')
                             ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
                             : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400'
@@ -337,7 +333,7 @@ export function Header({ locale }: HeaderProps) {
                       href={item.href}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
-                        'flex items-center space-x-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors',
+                        'flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px]',
                         pathname === item.href
                           ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
                           : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300'
@@ -350,12 +346,10 @@ export function Header({ locale }: HeaderProps) {
                 </div>
               ))}
               <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
-                <div className="flex flex-col gap-2">
-                  <UserMenu locale={locale} />
-                  <Link href={`/${locale}/login`}>
-                    <Button variant="outline" className="w-full">{t('login')}</Button>
-                  </Link>
-                </div>
+                <UserMenu locale={locale} />
+                <Link href={`/${locale}/login`} className="mt-2 block">
+                  <Button variant="outline" className="w-full">{t('login')}</Button>
+                </Link>
               </div>
             </div>
           </motion.div>
