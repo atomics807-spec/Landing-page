@@ -73,6 +73,11 @@ export function Header({ locale }: HeaderProps) {
       icon: Briefcase,
     },
     {
+      label: 'Sourcing Services',
+      href: `/${locale}/sourcing`,
+      icon: Users,
+    },
+    {
       label: t('properties'),
       href: `/${locale}/properties`,
       icon: Building2,
