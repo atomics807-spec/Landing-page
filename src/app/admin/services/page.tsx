@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X, Upload, Image as ImageIcon } from 'lucide-react';
+import { Plus, Edit, Trash2, X, Upload, Image as ImageIcon, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,7 +12,11 @@ import { createClient } from '@/lib/supabase/client';
 interface Service {
   id: string;
   name: string;
+  name_en: string;
+  name_fr: string;
   description: string;
+  description_en: string;
+  description_fr: string;
   icon: string;
   image_url: string;
   is_active: boolean;
@@ -28,7 +32,15 @@ export default function ServicesPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    name: '', description: '', icon: '', image_url: '', sort_order: '0'
+    name: '',
+    name_en: '',
+    name_fr: '',
+    description: '',
+    description_en: '',
+    description_fr: '',
+    icon: '',
+    image_url: '',
+    sort_order: '0'
   });
 
   useEffect(() => { fetchServices(); }, []);
@@ -68,7 +80,11 @@ export default function ServicesPage() {
     const supabase = createClient();
     const data = {
       name: formData.name,
+      name_en: formData.name_en || formData.name,
+      name_fr: formData.name_fr || formData.name,
       description: formData.description || null,
+      description_en: formData.description_en || formData.description,
+      description_fr: formData.description_fr || formData.description,
       icon: formData.icon || null,
       image_url: formData.image_url || null,
       sort_order: parseInt(formData.sort_order) || 0,
@@ -87,13 +103,33 @@ export default function ServicesPage() {
 
   const handleEdit = (s: Service) => {
     setEditingId(s.id);
-    setFormData({ name: s.name, description: s.description || '', icon: s.icon || '', image_url: s.image_url || '', sort_order: s.sort_order?.toString() || '0' });
+    setFormData({
+      name: s.name || s.name_en || '',
+      name_en: s.name_en || s.name || '',
+      name_fr: s.name_fr || '',
+      description: s.description || s.description_en || '',
+      description_en: s.description_en || s.description || '',
+      description_fr: s.description_fr || '',
+      icon: s.icon || '',
+      image_url: s.image_url || '',
+      sort_order: s.sort_order?.toString() || '0'
+    });
     setImagePreview(s.image_url);
     setShowModal(true);
   };
 
   const resetForm = () => {
-    setFormData({ name: '', description: '', icon: '', image_url: '', sort_order: '0' });
+    setFormData({
+      name: '',
+      name_en: '',
+      name_fr: '',
+      description: '',
+      description_en: '',
+      description_fr: '',
+      icon: '',
+      image_url: '',
+      sort_order: '0'
+    });
     setEditingId(null);
     setImagePreview(null);
   };
@@ -177,9 +213,11 @@ export default function ServicesPage() {
                   {isUploading && <p className="text-sm text-primary-600 mt-2">Uploading...</p>}
                 </div>
               </div>
-              <div><Label>Service Name *</Label><Input value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="Real Estate Advisory" /></div>
-              <div><Label>Description</Label><Textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} placeholder="Service description..." /></div>
-              <div><Label>Icon Name</Label><Input value={formData.icon} onChange={(e) => setFormData({...formData, icon: e.target.value})} placeholder="building, cog, chart (lucide icon)" /></div>
+              <div><Label>Service Name (English) *</Label><Input value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="Real Estate Advisory" /></div>
+              <div><Label>Service Name (French)</Label><Input value={formData.name_fr} onChange={(e) => setFormData({...formData, name_fr: e.target.value})} placeholder="Conseil en Immobilier" /></div>
+              <div><Label>Description (English)</Label><Textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} placeholder="Service description..." /></div>
+              <div><Label>Description (French)</Label><Textarea value={formData.description_fr} onChange={(e) => setFormData({...formData, description_fr: e.target.value})} placeholder="Description du service..." /></div>
+              <div><Label>Icon Name</Label><Input value={formData.icon} onChange={(e) => setFormData({...formData, icon: e.target.value})} placeholder="Building, Cog, TrendingUp (lucide icon)" /></div>
               <div><Label>Sort Order</Label><Input type="number" value={formData.sort_order} onChange={(e) => setFormData({...formData, sort_order: e.target.value})} /></div>
             </div>
             <div className="p-6 border-t flex gap-4">

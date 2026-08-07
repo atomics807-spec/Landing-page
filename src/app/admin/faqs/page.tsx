@@ -12,11 +12,14 @@ import { createClient } from '@/lib/supabase/client';
 interface FAQ {
   id: string;
   question: string;
+  question_en: string;
+  question_fr: string;
   answer: string;
-  meta_title: string;
-  meta_description: string;
-  keywords: string;
+  answer_en: string;
+  answer_fr: string;
+  category: string;
   is_active: boolean;
+  sort_order: number;
   created_at: string;
 }
 
@@ -27,10 +30,13 @@ export default function FAQsPage() {
   const [editingFaq, setEditingFaq] = useState<FAQ | null>(null);
   const [formData, setFormData] = useState({
     question: '',
+    question_en: '',
+    question_fr: '',
     answer: '',
-    meta_title: '',
-    meta_description: '',
-    keywords: '',
+    answer_en: '',
+    answer_fr: '',
+    category: '',
+    sort_order: '0',
   });
   const [saving, setSaving] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,7 +50,7 @@ export default function FAQsPage() {
     const { data } = await supabase
       .from('faqs')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('sort_order', { ascending: true });
 
     if (data) {
       setFAQs(data as FAQ[]);
@@ -57,16 +63,15 @@ export default function FAQsPage() {
     try {
       const supabase = createClient();
 
-      // Auto-generate SEO fields if empty
-      const seoTitle = formData.meta_title || formData.question;
-      const seoDescription = formData.meta_description || formData.answer.substring(0, 160);
-
       const faqData = {
-        question: formData.question,
-        answer: formData.answer,
-        meta_title: seoTitle,
-        meta_description: seoDescription,
-        keywords: formData.keywords || generateKeywords(formData.question, formData.answer),
+        question: formData.question || formData.question_en,
+        question_en: formData.question_en || formData.question,
+        question_fr: formData.question_fr,
+        answer: formData.answer || formData.answer_en,
+        answer_en: formData.answer_en || formData.answer,
+        answer_fr: formData.answer_fr,
+        category: formData.category || null,
+        sort_order: parseInt(formData.sort_order) || 0,
         is_active: true,
       };
 
@@ -79,7 +84,16 @@ export default function FAQsPage() {
       await fetchFAQs();
       setShowModal(false);
       setEditingFaq(null);
-      setFormData({ question: '', answer: '', meta_title: '', meta_description: '', keywords: '' });
+      setFormData({
+        question: '',
+        question_en: '',
+        question_fr: '',
+        answer: '',
+        answer_en: '',
+        answer_fr: '',
+        category: '',
+        sort_order: '0',
+      });
     } catch (error) {
       console.error('Error saving FAQ:', error);
     } finally {
@@ -87,21 +101,17 @@ export default function FAQsPage() {
     }
   };
 
-  const generateKeywords = (question: string, answer: string): string => {
-    const text = `${question} ${answer} Paraysco Consulting Cameroon real estate services`;
-    const words = text.toLowerCase().split(/\s+/);
-    const uniqueWords = [...new Set(words.filter(w => w.length > 3))];
-    return uniqueWords.slice(0, 10).join(', ');
-  };
-
   const handleEdit = (faq: FAQ) => {
     setEditingFaq(faq);
     setFormData({
-      question: faq.question,
-      answer: faq.answer,
-      meta_title: faq.meta_title || '',
-      meta_description: faq.meta_description || '',
-      keywords: faq.keywords || '',
+      question: faq.question || faq.question_en || '',
+      question_en: faq.question_en || faq.question || '',
+      question_fr: faq.question_fr || '',
+      answer: faq.answer || faq.answer_en || '',
+      answer_en: faq.answer_en || faq.answer || '',
+      answer_fr: faq.answer_fr || '',
+      category: faq.category || '',
+      sort_order: faq.sort_order?.toString() || '0',
     });
     setShowModal(true);
   };
@@ -120,8 +130,8 @@ export default function FAQsPage() {
   };
 
   const filteredFAQs = faqs.filter(faq =>
-    faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
+    (faq.question || faq.question_en || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (faq.answer || faq.answer_en || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -137,22 +147,24 @@ export default function FAQsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">FAQs</h1>
-          <p className="text-sm text-gray-500 mt-1">SEO-optimized FAQs for search engines</p>
+          <p className="text-sm text-gray-500 mt-1">Manage frequently asked questions</p>
         </div>
-        <Button onClick={() => { setEditingFaq(null); setFormData({ question: '', answer: '', meta_title: '', meta_description: '', keywords: '' }); setShowModal(true); }}>
+        <Button onClick={() => {
+          setEditingFaq(null);
+          setFormData({
+            question: '',
+            question_en: '',
+            question_fr: '',
+            answer: '',
+            answer_en: '',
+            answer_fr: '',
+            category: '',
+            sort_order: '0',
+          });
+          setShowModal(true);
+        }}>
           <Plus className="mr-2 h-4 w-4" /> Add FAQ
         </Button>
-      </div>
-
-      {/* SEO Tips Banner */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-6">
-        <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">SEO Best Practices for FAQs</h3>
-        <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-          <li>• Use natural language questions that users search for</li>
-          <li>• Keep answers concise (40-60 words) for featured snippets</li>
-          <li>• Include relevant keywords naturally in questions and answers</li>
-          <li>• Add location-specific terms like "Cameroon" or "Limbe" when relevant</li>
-        </ul>
       </div>
 
       {/* Search */}
@@ -175,25 +187,19 @@ export default function FAQsPage() {
             <div key={faq.id} className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg text-gray-900 dark:text-white">{faq.question}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mt-2">{faq.answer}</p>
-
-                  {/* SEO Preview */}
-                  {faq.meta_title && (
-                    <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <p className="text-xs text-gray-500 mb-1">SEO Preview:</p>
-                      <p className="text-sm text-primary-600">{faq.meta_title}</p>
-                      <p className="text-xs text-gray-500 mt-1">{faq.meta_description?.substring(0, 100)}...</p>
-                      {faq.keywords && (
-                        <p className="text-xs text-gray-400 mt-1">Keywords: {faq.keywords}</p>
-                      )}
-                    </div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="outline" className="text-xs">{faq.category || 'General'}</Badge>
+                    <Badge variant={faq.is_active ? 'default' : 'secondary'}>
+                      {faq.is_active ? 'Active' : 'Inactive'}
+                    </Badge>
+                  </div>
+                  <h3 className="font-bold text-lg text-gray-900 dark:text-white">{faq.question_en || faq.question}</h3>
+                  {faq.question_fr && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400">FR: {faq.question_fr}</p>
                   )}
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">{faq.answer_en || faq.answer}</p>
                 </div>
                 <div className="flex items-center gap-2 ml-4">
-                  <Badge variant={faq.is_active ? 'default' : 'secondary'}>
-                    {faq.is_active ? 'Active' : 'Inactive'}
-                  </Badge>
                   <Button variant="ghost" size="sm" onClick={() => handleToggle(faq)}>
                     {faq.is_active ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </Button>
@@ -221,62 +227,62 @@ export default function FAQsPage() {
             </div>
             <div className="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
               <div>
-                <Label>Question *</Label>
+                <Label>Question (English) *</Label>
                 <Input
-                  value={formData.question}
-                  onChange={(e) => setFormData({ ...formData, question: e.target.value })}
+                  value={formData.question_en}
+                  onChange={(e) => setFormData({ ...formData, question_en: e.target.value })}
                   placeholder="e.g., What services does Paraysco offer?"
                 />
-                <p className="text-xs text-gray-500 mt-1">Use natural language that users would search for</p>
               </div>
               <div>
-                <Label>Answer *</Label>
+                <Label>Question (French)</Label>
+                <Input
+                  value={formData.question_fr}
+                  onChange={(e) => setFormData({ ...formData, question_fr: e.target.value })}
+                  placeholder="Question en français..."
+                />
+              </div>
+              <div>
+                <Label>Answer (English) *</Label>
                 <Textarea
-                  value={formData.answer}
-                  onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
+                  value={formData.answer_en}
+                  onChange={(e) => setFormData({ ...formData, answer_en: e.target.value })}
                   placeholder="Provide a clear, concise answer..."
                   rows={4}
                 />
-                <p className="text-xs text-gray-500 mt-1">Aim for 40-60 words for better chance of featured snippets</p>
               </div>
-
-              <div className="border-t pt-4 mt-4">
-                <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">SEO Settings (Optional)</h4>
-                <div className="space-y-4">
-                  <div>
-                    <Label>Meta Title</Label>
-                    <Input
-                      value={formData.meta_title}
-                      onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
-                      placeholder="Auto-generated from question if empty"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">Recommended: 50-60 characters</p>
-                  </div>
-                  <div>
-                    <Label>Meta Description</Label>
-                    <Textarea
-                      value={formData.meta_description}
-                      onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
-                      placeholder="Auto-generated from answer if empty"
-                      rows={2}
-                    />
-                    <p className="text-xs text-gray-500 mt-1">Recommended: 150-160 characters</p>
-                  </div>
-                  <div>
-                    <Label>Keywords</Label>
-                    <Input
-                      value={formData.keywords}
-                      onChange={(e) => setFormData({ ...formData, keywords: e.target.value })}
-                      placeholder="paraysco, real estate, cameroon, limbe..."
-                    />
-                    <p className="text-xs text-gray-500 mt-1">Comma-separated keywords for search optimization</p>
-                  </div>
+              <div>
+                <Label>Answer (French)</Label>
+                <Textarea
+                  value={formData.answer_fr}
+                  onChange={(e) => setFormData({ ...formData, answer_fr: e.target.value })}
+                  placeholder="Réponse en français..."
+                  rows={4}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Category</Label>
+                  <Input
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    placeholder="e.g., General, Services"
+                  />
+                </div>
+                <div>
+                  <Label>Sort Order</Label>
+                  <Input
+                    type="number"
+                    value={formData.sort_order}
+                    onChange={(e) => setFormData({ ...formData, sort_order: e.target.value })}
+                    placeholder="0"
+                  />
                 </div>
               </div>
             </div>
             <div className="p-6 border-t flex gap-4">
               <Button variant="outline" onClick={() => setShowModal(false)} className="flex-1">Cancel</Button>
-              <Button onClick={handleSave} disabled={saving || !formData.question || !formData.answer} className="flex-1">
+              <Button onClick={handleSave} disabled={saving || !formData.question_en || !formData.answer_en} className="flex-1">
                 {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 {editingFaq ? 'Update FAQ' : 'Save FAQ'}
               </Button>

@@ -172,8 +172,12 @@ CREATE INDEX IF NOT EXISTS idx_products_active ON products(is_active);
 -- =====================================================
 CREATE TABLE IF NOT EXISTS services (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    title TEXT NOT NULL,
+    name TEXT NOT NULL,
+    name_en TEXT,
+    name_fr TEXT,
     description TEXT,
+    description_en TEXT,
+    description_fr TEXT,
     icon TEXT,
     image_url TEXT,
     is_active BOOLEAN DEFAULT TRUE,
@@ -184,6 +188,45 @@ CREATE TABLE IF NOT EXISTS services (
 
 CREATE INDEX IF NOT EXISTS idx_services_active ON services(is_active);
 CREATE INDEX IF NOT EXISTS idx_services_sort ON services(sort_order);
+
+-- =====================================================
+-- TESTIMONIALS TABLE (Testimonials Page)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS testimonials (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    company TEXT,
+    content TEXT NOT NULL,
+    rating INTEGER DEFAULT 5 CHECK (rating >= 1 AND rating <= 5),
+    image_url TEXT,
+    is_active BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_testimonials_active ON testimonials(is_active);
+CREATE INDEX IF NOT EXISTS idx_testimonials_created ON testimonials(created_at);
+
+-- =====================================================
+-- FAQs TABLE (FAQ Page)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS faqs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    question TEXT NOT NULL,
+    question_en TEXT,
+    question_fr TEXT,
+    answer TEXT NOT NULL,
+    answer_en TEXT,
+    answer_fr TEXT,
+    category TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    sort_order INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_faqs_active ON faqs(is_active);
+CREATE INDEX IF NOT EXISTS idx_faqs_sort ON faqs(sort_order);
 
 -- =====================================================
 -- ROW LEVEL SECURITY (RLS)
@@ -197,6 +240,8 @@ ALTER TABLE newsletters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE consultants ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
+ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
+ALTER TABLE faqs ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies for clean re-run
 DROP POLICY IF EXISTS "Users can view own profile" ON users;
@@ -263,6 +308,14 @@ CREATE POLICY "Admins can manage products" ON products FOR ALL USING (is_admin()
 CREATE POLICY "Anyone can view active services" ON services FOR SELECT USING (is_active = TRUE OR is_admin());
 CREATE POLICY "Admins can manage services" ON services FOR ALL USING (is_admin());
 
+-- ============== TESTIMONIALS POLICIES ==============
+CREATE POLICY "Anyone can view active testimonials" ON testimonials FOR SELECT USING (is_active = TRUE OR is_admin());
+CREATE POLICY "Admins can manage testimonials" ON testimonials FOR ALL USING (is_admin());
+
+-- ============== FAQs POLICIES ==============
+CREATE POLICY "Anyone can view active faqs" ON faqs FOR SELECT USING (is_active = TRUE OR is_admin());
+CREATE POLICY "Admins can manage faqs" ON faqs FOR ALL USING (is_admin());
+
 -- =====================================================
 -- FUNCTIONS AND TRIGGERS
 -- =====================================================
@@ -283,6 +336,8 @@ CREATE OR REPLACE TRIGGER update_newsletters_updated_at BEFORE UPDATE ON newslet
 CREATE OR REPLACE TRIGGER update_consultants_updated_at BEFORE UPDATE ON consultants FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE OR REPLACE TRIGGER update_products_updated_at BEFORE UPDATE ON products FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE OR REPLACE TRIGGER update_services_updated_at BEFORE UPDATE ON services FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE OR REPLACE TRIGGER update_testimonials_updated_at BEFORE UPDATE ON testimonials FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE OR REPLACE TRIGGER update_faqs_updated_at BEFORE UPDATE ON faqs FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- =====================================================
 -- ADMIN USER CREATION

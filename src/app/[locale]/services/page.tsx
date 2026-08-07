@@ -1,16 +1,37 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
+import { useState, useEffect } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Building, Cog, Construction, Truck, TrendingUp, Users, ArrowRight, CheckCircle } from 'lucide-react';
+import { Building, Cog, Construction, Truck, TrendingUp, Users, ArrowRight, CheckCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CTASection } from '@/components/home/cta-section';
+import { createClient } from '@/lib/supabase/client';
 import type { Locale } from '@/i18n';
 
-const iconMap = {
+interface Service {
+  id: string;
+  name: string;
+  name_en: string;
+  name_fr: string;
+  description: string;
+  description_en: string;
+  description_fr: string;
+  icon: string;
+  image_url: string;
+  is_active: boolean;
+  sort_order: number;
+}
+
+const iconMap: Record<string, any> = {
+  Building,
+  Cog,
+  Construction,
+  Truck,
+  TrendingUp,
+  Users,
   realEstate: Building,
   engineering: Cog,
   construction: Construction,
@@ -19,89 +40,61 @@ const iconMap = {
   consultancy: Users,
 };
 
-// AEO: Service schemas for rich answers
-const servicesSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  name: 'Paraysco Consulting Services',
-  description: 'Professional consulting services including real estate, engineering, construction, procurement, investment advisory, and business consultancy across Africa.',
-  numberOfItems: 6,
-  itemListElement: [
-    {
-      '@type': 'Service',
-      name: 'Real Estate Advisory',
-      description: 'Comprehensive real estate consulting including property acquisition, valuation, management, and investment advisory services.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-      hasOfferCatalog: {
-        '@type': 'OfferCatalog',
-        name: 'Real Estate Services',
-        includes: [
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Acquisition' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Valuation' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Management' } },
-        ],
-      },
-    },
-    {
-      '@type': 'Service',
-      name: 'Engineering Services',
-      description: 'Professional engineering solutions including design, planning, and project engineering for construction and infrastructure projects.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-    {
-      '@type': 'Service',
-      name: 'Construction Management',
-      description: 'End-to-end construction project management from planning through completion with quality assurance and timeline management.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-    {
-      '@type': 'Service',
-      name: 'Procurement Services',
-      description: 'Strategic procurement solutions for materials, equipment, and services with supplier management and quality control.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-    {
-      '@type': 'Service',
-      name: 'Investment Advisory',
-      description: 'Expert investment advisory services helping clients identify opportunities and make informed investment decisions.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-    {
-      '@type': 'Service',
-      name: 'Business Consultancy',
-      description: 'Strategic business consulting for growth optimization, process improvement, and sustainable business development.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-  ],
+const colorMap: Record<string, string> = {
+  blue: 'bg-blue-500',
+  purple: 'bg-purple-500',
+  orange: 'bg-orange-500',
+  green: 'bg-green-500',
+  red: 'bg-red-500',
+  teal: 'bg-teal-500',
+  primary: 'bg-primary-500',
 };
 
 export default function ServicesPage() {
   const locale = useLocale() as Locale;
   const t = useTranslations('services');
+  const [services, setServices] = useState<Service[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const services = [
-    { key: 'realEstate', color: 'bg-blue-500' },
-    { key: 'engineering', color: 'bg-purple-500' },
-    { key: 'construction', color: 'bg-orange-500' },
-    { key: 'procurement', color: 'bg-green-500' },
-    { key: 'investment', color: 'bg-red-500' },
-    { key: 'consultancy', color: 'bg-teal-500' },
-  ];
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    setIsLoading(true);
+    const supabase = createClient();
+    const { data } = await supabase
+      .from('services')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true });
+    setServices(data || []);
+    setIsLoading(false);
+  };
+
+  const getServiceName = (service: Service) => {
+    if (locale === 'fr' && service.name_fr) return service.name_fr;
+    if (locale === 'en' && service.name_en) return service.name_en;
+    return service.name;
+  };
+
+  const getServiceDescription = (service: Service) => {
+    if (locale === 'fr' && service.description_fr) return service.description_fr;
+    if (locale === 'en' && service.description_en) return service.description_en;
+    return service.description;
+  };
+
+  const getServiceIcon = (iconName: string) => {
+    return iconMap[iconName] || Building;
+  };
+
+  const getServiceColor = (index: number) => {
+    const colors = ['bg-blue-500', 'bg-purple-500', 'bg-orange-500', 'bg-green-500', 'bg-red-500', 'bg-teal-500'];
+    return colors[index % colors.length];
+  };
 
   return (
     <div className="min-h-screen">
-      {/* AEO: Service Schemas */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
-      />
-
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-20">
         <div className="container mx-auto px-4">
@@ -124,51 +117,51 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => {
-              const Icon = iconMap[service.key as keyof typeof iconMap];
-              const features = t.raw(`${service.key}.features`) as string[];
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+            </div>
+          ) : services.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-gray-500 dark:text-gray-400">Services coming soon.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service, index) => {
+                const Icon = getServiceIcon(service.icon || '');
+                const color = getServiceColor(index);
 
-              return (
-                <motion.div
-                  key={service.key}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card className="h-full hover:shadow-xl transition-shadow duration-300">
-                    <CardContent className="p-8">
-                      <div className={`w-16 h-16 rounded-xl ${service.color} flex items-center justify-center mb-6`}>
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                        {t(`${service.key}.title`)}
-                      </h3>
-                      <p className="text-gray-600 dark:text-gray-300 mb-6">
-                        {t(`${service.key}.description`)}
-                      </p>
-                      <ul className="space-y-3 mb-6">
-                        {features.map((feature, i) => (
-                          <li key={i} className="flex items-start space-x-3">
-                            <CheckCircle className="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm text-gray-600 dark:text-gray-300">
-                              {feature}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Button variant="outline" className="w-full group" asChild>
-                        <Link href={`/${locale}/contact`}>
-                          Contact Us
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
+                return (
+                  <motion.div
+                    key={service.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card className="h-full hover:shadow-xl transition-shadow duration-300">
+                      <CardContent className="p-8">
+                        <div className={`w-16 h-16 rounded-xl ${color} flex items-center justify-center mb-6`}>
+                          <Icon className="w-8 h-8 text-white" />
+                        </div>
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                          {getServiceName(service)}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-300 mb-6">
+                          {getServiceDescription(service) || t('subtitle')}
+                        </p>
+                        <Button variant="outline" className="w-full group" asChild>
+                          <Link href={`/${locale}/contact`}>
+                            Contact Us
+                            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                          </Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 

@@ -10,13 +10,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/supabase/client';
 
-interface Review {
+interface Testimonial {
   id: string;
   name: string;
-  company: string;
+  company: string | null;
   content: string;
   rating: number;
-  is_approved: boolean;
+  image_url: string | null;
+  is_active: boolean;
   created_at: string;
 }
 
@@ -43,7 +44,7 @@ const defaultTestimonials = [
 
 export function TestimonialsSection() {
   const t = useTranslations('testimonials');
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -56,24 +57,24 @@ export function TestimonialsSection() {
   });
 
   useEffect(() => {
-    fetchReviews();
+    fetchTestimonials();
   }, []);
 
-  async function fetchReviews() {
+  async function fetchTestimonials() {
     try {
       const supabase = createClient();
       const { data } = await supabase
-        .from('reviews')
+        .from('testimonials')
         .select('*')
-        .eq('is_approved', true)
+        .eq('is_active', true)
         .order('created_at', { ascending: false })
         .limit(6);
       
       if (data && data.length > 0) {
-        setReviews(data as Review[]);
+        setTestimonials(data as Testimonial[]);
       }
     } catch (err) {
-      console.error('Error fetching reviews:', err);
+      console.error('Error fetching testimonials:', err);
     }
     setLoading(false);
   }
@@ -84,12 +85,13 @@ export function TestimonialsSection() {
 
     try {
       const supabase = createClient();
-      await supabase.from('reviews').insert({
+      await supabase.from('testimonials').insert({
         name: formData.name,
-        company: formData.company,
+        company: formData.company || null,
         content: formData.content,
         rating: formData.rating,
-        is_approved: false, // Requires admin approval
+        image_url: null,
+        is_active: false, // Requires admin approval
       });
       
       setSubmitted(true);
@@ -99,20 +101,21 @@ export function TestimonialsSection() {
         setShowForm(false);
       }, 3000);
     } catch (err) {
-      console.error('Error submitting review:', err);
-      alert('Failed to submit review. Please try again.');
+      console.error('Error submitting testimonial:', err);
+      alert('Failed to submit testimonial. Please try again.');
     } finally {
       setSubmitting(false);
     }
   };
 
-  const displayReviews = reviews.length > 0 ? reviews : defaultTestimonials.map((t, i) => ({
+  const displayTestimonials = testimonials.length > 0 ? testimonials : defaultTestimonials.map((d, i) => ({
     id: `default-${i}`,
-    name: t.name,
-    company: t.company,
-    content: t.content,
-    rating: t.rating,
-    is_approved: true,
+    name: d.name,
+    company: d.company,
+    content: d.content,
+    rating: d.rating,
+    is_active: true,
+    image_url: null,
     created_at: new Date().toISOString(),
   }));
 
@@ -237,16 +240,16 @@ export function TestimonialsSection() {
           </motion.div>
         )}
 
-        {/* Reviews Grid */}
+        {/* Testimonials Grid */}
         {loading ? (
           <div className="flex justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-white" />
           </div>
         ) : (
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {displayReviews.slice(0, 6).map((review, index) => (
+            {displayTestimonials.slice(0, 6).map((testimonial, index) => (
               <motion.div
-                key={review.id}
+                key={testimonial.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -256,7 +259,7 @@ export function TestimonialsSection() {
                 <Quote className="absolute top-6 right-6 w-10 h-10 text-primary-100" />
 
                 <div className="flex mb-4">
-                  {[...Array(review.rating)].map((_, i) => (
+                  {[...Array(testimonial.rating)].map((_, i) => (
                     <Star
                       key={i}
                       className="w-5 h-5 text-yellow-400 fill-yellow-400"
@@ -265,13 +268,13 @@ export function TestimonialsSection() {
                 </div>
 
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  &quot;{review.content}&quot;
+                  &quot;{testimonial.content}&quot;
                 </p>
 
                 <div>
-                  <p className="font-semibold text-gray-900">{review.name}</p>
-                  {review.company && (
-                    <p className="text-sm text-gray-500">{review.company}</p>
+                  <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                  {testimonial.company && (
+                    <p className="text-sm text-gray-500">{testimonial.company}</p>
                   )}
                 </div>
               </motion.div>
