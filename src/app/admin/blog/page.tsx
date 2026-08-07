@@ -20,6 +20,7 @@ interface Newsletter {
   category: string;
   is_published: boolean;
   published_at: string;
+  author_name: string;
   created_at: string;
 }
 
@@ -36,6 +37,7 @@ export default function BlogPage() {
     content: '',
     category: '',
     cover_image: '',
+    author_name: 'Paraysco Team',
     is_published: false
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -92,6 +94,7 @@ export default function BlogPage() {
       category: formData.category,
       cover_image: formData.cover_image,
       image_url: formData.cover_image,
+      author_name: formData.author_name || 'Paraysco Team',
       is_published: formData.is_published,
       published_at: formData.is_published ? new Date().toISOString() : null,
     };
@@ -104,7 +107,7 @@ export default function BlogPage() {
 
     setShowModal(false);
     setEditingPost(null);
-    setFormData({ title: '', excerpt: '', content: '', category: '', cover_image: '', is_published: false });
+    setFormData({ title: '', excerpt: '', content: '', category: '', cover_image: '', author_name: 'Paraysco Team', is_published: false });
     fetchNewsletters();
     setIsSaving(false);
   };
@@ -117,6 +120,7 @@ export default function BlogPage() {
       content: post.content,
       category: post.category || '',
       cover_image: post.cover_image || post.image_url || '',
+      author_name: post.author_name || 'Paraysco Team',
       is_published: post.is_published
     });
     setShowModal(true);
@@ -140,7 +144,7 @@ export default function BlogPage() {
 
   const openCreateModal = () => {
     setEditingPost(null);
-    setFormData({ title: '', excerpt: '', content: '', category: '', cover_image: '', is_published: false });
+    setFormData({ title: '', excerpt: '', content: '', category: '', cover_image: '', author_name: 'Paraysco Team', is_published: false });
     setShowModal(true);
   };
 
@@ -244,6 +248,7 @@ export default function BlogPage() {
 
               <div><Label>Title *</Label><Input value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} placeholder="Post title" /></div>
               <div><Label>Category</Label><Input value={formData.category} onChange={(e) => setFormData({...formData, category: e.target.value})} placeholder="Insights, News, Guide" /></div>
+              <div><Label>Author Name</Label><Input value={formData.author_name} onChange={(e) => setFormData({...formData, author_name: e.target.value})} placeholder="Paraysco Team" /></div>
               <div><Label>Excerpt</Label><Textarea value={formData.excerpt} onChange={(e) => setFormData({...formData, excerpt: e.target.value})} rows={2} placeholder="Brief description for listings" /></div>
               <div><Label>Content *</Label><Textarea value={formData.content} onChange={(e) => setFormData({...formData, content: e.target.value})} rows={10} placeholder="Full article content..." /></div>
               <div className="flex items-center gap-2">

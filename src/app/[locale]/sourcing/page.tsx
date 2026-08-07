@@ -619,7 +619,7 @@ export default function SourcingPage() {
               </Button>
               <Button size="lg" variant="outline" className="bg-white/10 text-white hover:bg-white/20 border-white/30" asChild>
                 <Link href={`/${locale}/services`}>
-                  View Other Services
+                  View Consulting Services
                 </Link>
               </Button>
             </div>

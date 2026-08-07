@@ -116,6 +116,7 @@ CREATE TABLE IF NOT EXISTS newsletters (
     is_published BOOLEAN DEFAULT FALSE,
     published_at TIMESTAMP WITH TIME ZONE,
     author_id UUID REFERENCES users(id),
+    author_name TEXT DEFAULT 'Paraysco Team',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

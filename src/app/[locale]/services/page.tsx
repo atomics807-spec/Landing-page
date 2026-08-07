@@ -172,6 +172,24 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Sourcing Services CTA */}
+      <section className="py-16 bg-gradient-to-r from-primary-600 to-primary-700">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            Looking for Staff?
+          </h2>
+          <p className="text-primary-100 mb-6 max-w-2xl mx-auto">
+            We also provide comprehensive manpower sourcing and outsourcing services. Let us help you find the right personnel for your needs.
+          </p>
+          <Button size="lg" variant="secondary" asChild>
+            <Link href={`/${locale}/sourcing`}>
+              View Sourcing Services
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
       {/* Process Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800/50">
         <div className="container mx-auto px-4">
