@@ -100,7 +100,7 @@ export function UserMenu({ locale }: { locale: string }) {
 
   if (!user) {
     return (
-      <Button asChild>
+      <Button asChild size="sm" className="h-9 px-3 sm:h-10 sm:px-4">
         <Link href={`/${locale}/login`}>Login</Link>
       </Button>
     );

@@ -138,14 +138,14 @@ export function Header({ locale }: HeaderProps) {
             {/* Left Section - Logo & Brand */}
             <Link 
               href={`/${locale}`} 
-              className="flex items-center gap-3 flex-shrink-0"
+              className="flex items-center gap-2 sm:gap-3 flex-shrink-0 min-w-0"
             >
               <img 
-                src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
+                src="/logo.png" 
                 alt="Paraysco Logo" 
-                className="h-10 w-10 object-contain rounded-lg"
+                className="h-9 w-9 sm:h-10 sm:w-10 object-contain rounded-lg flex-shrink-0"
               />
-              <span className="font-heading text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap">
+              <span className="font-heading text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap hidden sm:inline">
                 PARAYSCO CONSULTING
               </span>
             </Link>
@@ -228,12 +228,12 @@ export function Header({ locale }: HeaderProps) {
             </nav>
 
             {/* Right Section - Actions */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
               {/* Language Switcher */}
               <div className="relative">
                 <button
                   onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 min-h-[44px]"
+                  className="flex items-center gap-1.5 px-2 sm:px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 min-h-[44px]"
                   aria-label="Switch language"
                 >
                   <Globe className="h-4 w-4" />

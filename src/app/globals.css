@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent horizontal scroll from any wide element on mobile */
+@layer base {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
 /* Leaflet Map Styles */
 .leaflet-container {
   width: 100%;
