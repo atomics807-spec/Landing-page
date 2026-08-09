@@ -25,6 +25,7 @@ import { cn } from '@/lib/utils';
 import type { Locale } from '@/i18n';
 import { useTheme } from '@/components/providers/theme-provider';
 import { UserMenu } from '@/components/layout/user-menu';
+import { InstallAppButton } from '@/components/pwa';
 
 const locales: Locale[] = ['en', 'fr'];
 
@@ -276,6 +277,13 @@ export function Header({ locale }: HeaderProps) {
                 <Moon className={cn("h-5 w-5", theme === 'dark' ? 'opacity-100' : 'opacity-0 absolute')} />
               </button>
 
+              {/* Install App (PWA) — auto-hides when unavailable/installed */}
+              <InstallAppButton
+                variant="outline"
+                size="sm"
+                className="hidden sm:inline-flex"
+              />
+
               {/* User Menu / Login */}
               <UserMenu locale={locale} />
 
@@ -355,6 +363,9 @@ export function Header({ locale }: HeaderProps) {
                 <Link href={`/${locale}/login`} className="mt-2 block">
                   <Button variant="outline" className="w-full">{t('login')}</Button>
                 </Link>
+                <div className="mt-2">
+                  <InstallAppButton variant="default" className="w-full" />
+                </div>
               </div>
             </div>
           </motion.div>
