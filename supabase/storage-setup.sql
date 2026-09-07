@@ -26,9 +26,13 @@ DROP POLICY IF EXISTS "Admins can manage images bucket" ON storage.objects;
 CREATE POLICY "Public can view images bucket" ON storage.objects
 FOR SELECT USING (bucket_id = 'images');
 
--- Allow anyone to upload images (needed for anonymous admin uploads)
-CREATE POLICY "Anyone can upload to images" ON storage.objects
-FOR INSERT WITH CHECK (bucket_id = 'images');
+-- Uploads require an authenticated admin session (the app's admin pages
+-- and /api/upload run with the signed-in user's session; anonymous uploads
+-- would let anyone host arbitrary files on our domain).
+CREATE POLICY "Admins can upload to images" ON storage.objects
+FOR INSERT WITH CHECK (bucket_id = 'images' AND EXISTS (
+    SELECT 1 FROM admins WHERE admins.user_id = auth.uid()
+));
 
 -- Allow admins to manage images bucket
 CREATE POLICY "Admins can manage images bucket" ON storage.objects
@@ -48,9 +52,11 @@ DROP POLICY IF EXISTS "Admins can manage media bucket" ON storage.objects;
 CREATE POLICY "Public can view media bucket" ON storage.objects
 FOR SELECT USING (bucket_id = 'media');
 
--- Allow anyone to upload media (needed for anonymous admin uploads)
-CREATE POLICY "Anyone can upload to media" ON storage.objects
-FOR INSERT WITH CHECK (bucket_id = 'media');
+-- Uploads require an authenticated admin session (see notes above).
+CREATE POLICY "Admins can upload to media" ON storage.objects
+FOR INSERT WITH CHECK (bucket_id = 'media' AND EXISTS (
+    SELECT 1 FROM admins WHERE admins.user_id = auth.uid()
+));
 
 -- Allow admins to manage media bucket
 CREATE POLICY "Admins can manage media bucket" ON storage.objects

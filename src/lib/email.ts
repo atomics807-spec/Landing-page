@@ -4,6 +4,15 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY) 
   : null;
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Paraysco Consulting <noreply@paraysco.com>';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
@@ -58,11 +67,11 @@ export async function sendVerificationEmail(email: string, confirmationUrl: stri
         <p style="margin-bottom: 20px;">Thank you for registering with Paraysco Consulting. Please verify your email address by clicking the button below:</p>
         
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${confirmationUrl}" style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Verify Email Address</a>
+          <a href="${escapeHtml(confirmationUrl)}" style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Verify Email Address</a>
         </div>
         
         <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Or copy and paste this link into your browser:</p>
-        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px; word-break: break-all; font-size: 12px; color: #333;">${confirmationUrl}</p>
+        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px; word-break: break-all; font-size: 12px; color: #333;">${escapeHtml(confirmationUrl)}</p>
         
         <p style="color: #666; font-size: 14px; margin-top: 30px;">This link will expire in 24 hours. If you didn't create an account with Paraysco Consulting, you can safely ignore this email.</p>
       </div>
@@ -106,11 +115,11 @@ export async function sendPasswordResetEmail(email: string, token: string) {
         <p style="margin-bottom: 20px;">We received a request to reset your password. Click the button below to create a new password:</p>
         
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${resetUrl}" style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Reset Password</a>
+          <a href="${escapeHtml(resetUrl)}" style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">Reset Password</a>
         </div>
         
         <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Or copy and paste this link into your browser:</p>
-        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px; word-break: break-all; font-size: 12px; color: #333;">${resetUrl}</p>
+        <p style="background: #f5f5f5; padding: 12px; border-radius: 6px; word-break: break-all; font-size: 12px; color: #333;">${escapeHtml(resetUrl)}</p>
         
         <p style="color: #666; font-size: 14px; margin-top: 30px; background: #fff3cd; padding: 12px; border-radius: 6px; border-left: 4px solid #ffc107;">⚠️ This link will expire in 1 hour. If you didn't request a password reset, please ignore this email and your password will remain unchanged.</p>
       </div>
@@ -143,7 +152,7 @@ export async function sendWelcomeEmail(email: string, name: string) {
       </div>
       
       <div style="background: white; padding: 40px 30px; border: 1px solid #e0e0e0; border-top: none;">
-        <h2 style="color: #1e3a5f; margin-top: 0;">Welcome to Paraysco Consulting, ${name}!</h2>
+        <h2 style="color: #1e3a5f; margin-top: 0;">Welcome to Paraysco Consulting, ${escapeHtml(name)}!</h2>
         
         <p style="margin-bottom: 20px;">Your account has been successfully created. You can now:</p>
         
@@ -200,21 +209,21 @@ export async function sendContactNotification(
         <table style="width: 100%; border-collapse: collapse;">
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: 600; width: 120px;">Name:</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${name}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${escapeHtml(name)}</td>
           </tr>
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: 600;">Email:</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #eee;"><a href="mailto:${email}">${email}</a></td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #eee;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td>
           </tr>
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: 600;">Subject:</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${subject}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${escapeHtml(subject)}</td>
           </tr>
         </table>
         
         <div style="margin-top: 30px;">
           <h3 style="color: #1e3a5f; margin-bottom: 10px;">Message:</h3>
-          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; white-space: pre-wrap;">${message}</div>
+          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; white-space: pre-wrap;">${escapeHtml(message)}</div>
         </div>
       </div>
       

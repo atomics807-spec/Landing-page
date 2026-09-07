@@ -86,10 +86,10 @@ export default function ProductsPage() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-6">
-              Our Products
+              {t('title')}
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Browse our selection of quality products and materials
+              {t('subtitle')}
             </p>
           </motion.div>
         </div>
@@ -103,7 +103,7 @@ export default function ProductsPage() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
-                  placeholder="Search products..."
+                  placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -113,14 +113,14 @@ export default function ProductsPage() {
             <div className="flex gap-4">
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Category" />
+                  <SelectValue placeholder={t('categoryLabel')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  <SelectItem value="materials">Materials</SelectItem>
-                  <SelectItem value="equipment">Equipment</SelectItem>
-                  <SelectItem value="tools">Tools</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="all">{t('allCategories')}</SelectItem>
+                  <SelectItem value="materials">{t('categories.materials')}</SelectItem>
+                  <SelectItem value="equipment">{t('categories.equipment')}</SelectItem>
+                  <SelectItem value="tools">{t('categories.tools')}</SelectItem>
+                  <SelectItem value="other">{t('categories.other')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -142,7 +142,7 @@ export default function ProductsPage() {
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-20">
               <Package className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">No products found.</p>
+              <p className="text-gray-500 dark:text-gray-400">{t('noProducts')}</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -170,7 +170,7 @@ export default function ProductsPage() {
                         variant={product.stock > 0 ? 'available' : 'sold'}
                         className="absolute top-4 right-4"
                       >
-                        {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                        {product.stock > 0 ? t('inStock') : t('outOfStock')}
                       </Badge>
                     </div>
                     <CardContent className="p-4">
@@ -190,7 +190,7 @@ export default function ProductsPage() {
                       </div>
                       <Link href={`/${locale}/contact#contact-form`}>
                         <Button variant="outline" className="w-full mt-4">
-                          Contact for Purchase
+                          {t('contactForPurchase')}
                         </Button>
                       </Link>
                     </CardContent>

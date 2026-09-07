@@ -284,23 +284,23 @@ export default function SourcingPage() {
             transition={{ duration: 0.5 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <Badge variant="secondary" className="mb-4">Professional Staffing Solutions</Badge>
+            <Badge variant="secondary" className="mb-4">{t('badge')}</Badge>
             <h1 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-6">
-              Our Manpower Sourcing Services
+              {t('title')}
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-              PCI recruits, screens, trains and supplies personnel in various categories to meet your business needs across Africa.
+              {t('subtitle')}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button size="lg" asChild>
                 <Link href={`/${locale}/contact`}>
                   <Phone className="mr-2 h-5 w-5" />
-                  Request Personnel
+                  {t('requestPersonnel')}
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link href="#staffing-categories">
-                  View Staffing Categories
+                  {t('viewCategories')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -320,10 +320,10 @@ export default function SourcingPage() {
             className="text-center max-w-3xl mx-auto mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-              Staffing Categories
+              {t('categoriesTitle')}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              We provide qualified personnel across multiple industries and sectors
+              {t('categoriesSubtitle')}
             </p>
           </motion.div>
 
@@ -367,7 +367,7 @@ export default function SourcingPage() {
                         </ul>
                       ) : (
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {category.items.length} positions available
+                          {t('positionsAvailable', { count: category.items.length })}
                         </p>
                       )}
                     </CardContent>
@@ -390,10 +390,10 @@ export default function SourcingPage() {
             className="text-center max-w-3xl mx-auto mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-              Our Sourcing & Outsourcing Process
+              {t('processTitle')}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              A systematic 10-step approach to finding the right personnel for your needs
+              {t('processSubtitle')}
             </p>
           </motion.div>
 
@@ -448,7 +448,7 @@ export default function SourcingPage() {
                       <Shield className="w-6 h-6 text-primary-600" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      PCI Responsibilities
+                      {t('pciResponsibilitiesTitle')}
                     </h3>
                   </div>
                   <ul className="space-y-3">
@@ -477,7 +477,7 @@ export default function SourcingPage() {
                       <Award className="w-6 h-6 text-blue-600" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      Client Responsibilities
+                      {t('clientResponsibilitiesTitle')}
                     </h3>
                   </div>
                   <ul className="space-y-3">
@@ -506,7 +506,7 @@ export default function SourcingPage() {
                       <Users className="w-6 h-6 text-green-600" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      Staff Responsibilities
+                      {t('staffResponsibilitiesTitle')}
                     </h3>
                   </div>
                   <ul className="space-y-3">
@@ -542,11 +542,11 @@ export default function SourcingPage() {
                       <Clock className="w-6 h-6 text-purple-600" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                      Quality Assurance
+                      {t('qualityAssuranceTitle')}
                     </h3>
                   </div>
                   <p className="text-gray-600 dark:text-gray-300 mb-6">
-                    PCI maintains high standards through:
+                    {t('qualityAssuranceIntro')}
                   </p>
                   <div className="grid grid-cols-2 gap-3">
                     {qualityAssurance.map((item, i) => (
@@ -574,11 +574,11 @@ export default function SourcingPage() {
                       <Award className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="text-2xl font-bold text-white">
-                      Benefits to Clients
+                      {t('benefitsTitle')}
                     </h3>
                   </div>
                   <p className="text-primary-100 mb-6">
-                    Choosing PCI provides:
+                    {t('benefitsIntro')}
                   </p>
                   <ul className="space-y-3">
                     {benefitsToClients.map((item, i) => (
@@ -605,21 +605,21 @@ export default function SourcingPage() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-6">
-              Ready to Source Personnel?
+              {t('ctaTitle')}
             </h2>
             <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-              Let PCI help you find the right staff for your business needs. Contact us today for a consultation.
+              {t('ctaSubtitle')}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button size="lg" variant="secondary" asChild>
                 <Link href={`/${locale}/contact`}>
                   <Mail className="mr-2 h-5 w-5" />
-                  Contact Us
+                  {t('contactUs')}
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="bg-white/10 text-white hover:bg-white/20 border-white/30" asChild>
                 <Link href={`/${locale}/services`}>
-                  View Consulting Services
+                  {t('viewServices')}
                 </Link>
               </Button>
             </div>

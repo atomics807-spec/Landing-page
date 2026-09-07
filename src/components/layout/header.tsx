@@ -44,15 +44,15 @@ export function Header({ locale }: HeaderProps) {
 
   const propertiesMenu = [
     {
-      label: 'Properties',
+      label: t('properties'),
       href: `/${locale}/properties`,
-      description: 'View our available properties',
+      description: t('propertiesDescription'),
       icon: Building2,
     },
     {
-      label: 'Products',
+      label: t('products'),
       href: `/${locale}/products`,
-      description: 'View our available products',
+      description: t('productsDescription'),
       icon: Package,
     },
   ];
@@ -74,7 +74,7 @@ export function Header({ locale }: HeaderProps) {
       icon: Briefcase,
     },
     {
-      label: 'Sourcing Services',
+      label: t('sourcing'),
       href: `/${locale}/sourcing`,
       icon: Users,
     },

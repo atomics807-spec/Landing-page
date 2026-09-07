@@ -230,6 +230,93 @@ CREATE INDEX IF NOT EXISTS idx_faqs_active ON faqs(is_active);
 CREATE INDEX IF NOT EXISTS idx_faqs_sort ON faqs(sort_order);
 
 -- =====================================================
+-- REVIEWS TABLE (Site Reviews Management)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS reviews (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    company TEXT,
+    content TEXT NOT NULL,
+    rating INTEGER DEFAULT 5 CHECK (rating >= 1 AND rating <= 5),
+    is_approved BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_reviews_approved ON reviews(is_approved);
+CREATE INDEX IF NOT EXISTS idx_reviews_created ON reviews(created_at);
+
+-- =====================================================
+-- BLOG POSTS TABLE (Blog Management - analytics/counts)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS blog_posts (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    excerpt TEXT,
+    content TEXT NOT NULL,
+    cover_image TEXT,
+    category TEXT,
+    author_name TEXT DEFAULT 'Paraysco Team',
+    is_published BOOLEAN DEFAULT FALSE,
+    published_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_blog_posts_published ON blog_posts(is_published);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_created ON blog_posts(created_at);
+
+-- =====================================================
+-- CAREERS TABLE (Job Postings)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS careers (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    department TEXT,
+    location TEXT,
+    type TEXT,
+    description TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_careers_active ON careers(is_active);
+
+-- =====================================================
+-- CONTACT MESSAGES TABLE (Contact Form Inquiries)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS contact_messages (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT,
+    subject TEXT NOT NULL,
+    message TEXT NOT NULL,
+    property_title TEXT,
+    user_location TEXT,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_contact_messages_created ON contact_messages(created_at);
+
+-- =====================================================
+-- AUDIT LOGS TABLE (Admin Activity Log)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS audit_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    action TEXT NOT NULL,
+    user_email TEXT,
+    details TEXT,
+    user_location TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at);
+
+-- =====================================================
 -- ROW LEVEL SECURITY (RLS)
 -- =====================================================
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
@@ -243,6 +330,11 @@ ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
 ALTER TABLE faqs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE careers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies for clean re-run
 DROP POLICY IF EXISTS "Users can view own profile" ON users;
@@ -253,13 +345,23 @@ DROP POLICY IF EXISTS "Admins can manage admins" ON admins;
 DROP POLICY IF EXISTS "Anyone can view active team" ON team_members;
 DROP POLICY IF EXISTS "Admins can manage team" ON team_members;
 DROP POLICY IF EXISTS "Anyone can subscribe newsletter" ON newsletter_subscribers;
+DROP POLICY IF EXISTS "Admins can view newsletter subscribers" ON newsletter_subscribers;
 DROP POLICY IF EXISTS "Admins can manage newsletter subscribers" ON newsletter_subscribers;
+DROP POLICY IF EXISTS "Admins can delete newsletter subscribers" ON newsletter_subscribers;
 DROP POLICY IF EXISTS "Anyone can view active properties" ON properties;
 DROP POLICY IF EXISTS "Admins can manage properties" ON properties;
 DROP POLICY IF EXISTS "Anyone can view published newsletters" ON newsletters;
 DROP POLICY IF EXISTS "Admins can manage newsletters" ON newsletters;
 DROP POLICY IF EXISTS "Anyone can view active consultants" ON consultants;
 DROP POLICY IF EXISTS "Admins can manage consultants" ON consultants;
+DROP POLICY IF EXISTS "Admins can manage reviews" ON reviews;
+DROP POLICY IF EXISTS "Anyone can view published blog posts" ON blog_posts;
+DROP POLICY IF EXISTS "Admins can manage blog posts" ON blog_posts;
+DROP POLICY IF EXISTS "Anyone can view active careers" ON careers;
+DROP POLICY IF EXISTS "Admins can manage careers" ON careers;
+DROP POLICY IF EXISTS "Admins can manage contact messages" ON contact_messages;
+DROP POLICY IF EXISTS "Admins can view audit logs" ON audit_logs;
+DROP POLICY IF EXISTS "Admins can insert audit logs" ON audit_logs;
 
 -- Helper function to check if user is admin
 CREATE OR REPLACE FUNCTION is_admin()
@@ -285,9 +387,12 @@ CREATE POLICY "Anyone can view active team" ON team_members FOR SELECT USING (is
 CREATE POLICY "Admins can manage team" ON team_members FOR ALL USING (is_admin());
 
 -- ============== NEWSLETTER SUBSCRIBERS POLICIES ==============
-CREATE POLICY "Anyone can subscribe newsletter" ON newsletter_subscribers FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+-- Anyone may subscribe (public homepage form is anonymous); managing
+-- (SELECT/UPDATE/DELETE) remains admin-only via is_admin().
+CREATE POLICY "Anyone can subscribe newsletter" ON newsletter_subscribers FOR INSERT WITH CHECK (true);
 CREATE POLICY "Admins can view newsletter subscribers" ON newsletter_subscribers FOR SELECT USING (is_admin());
 CREATE POLICY "Admins can manage newsletter subscribers" ON newsletter_subscribers FOR UPDATE USING (is_admin());
+CREATE POLICY "Admins can delete newsletter subscribers" ON newsletter_subscribers FOR DELETE USING (is_admin());
 
 -- ============== PROPERTIES POLICIES ==============
 CREATE POLICY "Anyone can view active properties" ON properties FOR SELECT USING (is_active = TRUE OR is_admin());
@@ -317,6 +422,24 @@ CREATE POLICY "Admins can manage testimonials" ON testimonials FOR ALL USING (is
 CREATE POLICY "Anyone can view active faqs" ON faqs FOR SELECT USING (is_active = TRUE OR is_admin());
 CREATE POLICY "Admins can manage faqs" ON faqs FOR ALL USING (is_admin());
 
+-- ============== REVIEWS POLICIES ==============
+CREATE POLICY "Admins can manage reviews" ON reviews FOR ALL USING (is_admin());
+
+-- ============== BLOG POSTS POLICIES ==============
+CREATE POLICY "Anyone can view published blog posts" ON blog_posts FOR SELECT USING (is_published = TRUE OR is_admin());
+CREATE POLICY "Admins can manage blog posts" ON blog_posts FOR ALL USING (is_admin());
+
+-- ============== CAREERS POLICIES ==============
+CREATE POLICY "Anyone can view active careers" ON careers FOR SELECT USING (is_active = TRUE OR is_admin());
+CREATE POLICY "Admins can manage careers" ON careers FOR ALL USING (is_admin());
+
+-- ============== CONTACT MESSAGES POLICIES ==============
+CREATE POLICY "Admins can manage contact messages" ON contact_messages FOR ALL USING (is_admin());
+
+-- ============== AUDIT LOGS POLICIES ==============
+CREATE POLICY "Admins can view audit logs" ON audit_logs FOR SELECT USING (is_admin());
+CREATE POLICY "Admins can insert audit logs" ON audit_logs FOR INSERT WITH CHECK (is_admin());
+
 -- =====================================================
 -- FUNCTIONS AND TRIGGERS
 -- =====================================================
@@ -339,13 +462,16 @@ CREATE OR REPLACE TRIGGER update_products_updated_at BEFORE UPDATE ON products F
 CREATE OR REPLACE TRIGGER update_services_updated_at BEFORE UPDATE ON services FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE OR REPLACE TRIGGER update_testimonials_updated_at BEFORE UPDATE ON testimonials FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE OR REPLACE TRIGGER update_faqs_updated_at BEFORE UPDATE ON faqs FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE OR REPLACE TRIGGER update_reviews_updated_at BEFORE UPDATE ON reviews FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE OR REPLACE TRIGGER update_blog_posts_updated_at BEFORE UPDATE ON blog_posts FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE OR REPLACE TRIGGER update_careers_updated_at BEFORE UPDATE ON careers FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- =====================================================
 -- ADMIN USER CREATION
 -- =====================================================
 DO $$
 DECLARE
-    admin_email TEXT := 'brandonadii39@gmail.com';
+    admin_email TEXT := '${ADMIN_EMAIL}';
     admin_uuid UUID;
 BEGIN
     SELECT id INTO admin_uuid FROM auth.users WHERE email = admin_email;
@@ -355,7 +481,7 @@ BEGIN
         RAISE NOTICE 'ADMIN SETUP REQUIRED';
         RAISE NOTICE '========================================';
         RAISE NOTICE '1. Go to Supabase Dashboard > Authentication > Users';
-        RAISE NOTICE '2. Create user: brandonadii39@gmail.com / Password123';
+        RAISE NOTICE '2. Create user: ${ADMIN_EMAIL} / ${ADMIN_PASSWORD}';
         RAISE NOTICE '3. Copy the UUID from auth.users';
         RAISE NOTICE '4. Run the INSERT queries below with that UUID';
         RAISE NOTICE '========================================';

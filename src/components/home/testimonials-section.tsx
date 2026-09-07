@@ -138,21 +138,29 @@ export function TestimonialsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center max-w-3xl mx-auto mb-12"
+          className="relative z-10"
         >
-          <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
-            {t('title')}
-          </h2>
-          <p className="text-lg text-primary-100 mb-6">
-            {t('subtitle')}
-          </p>
-          <Button
-            variant="secondary"
-            onClick={() => setShowForm(!showForm)}
-            className="bg-white text-primary-600 hover:bg-gray-100"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-3xl mx-auto mb-12"
           >
-            {showForm ? 'Close Form' : 'Leave a Review'}
-          </Button>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
+              {t('title')}
+            </h2>
+            <p className="text-lg text-primary-100 mb-6">
+              {t('subtitle')}
+            </p>
+            <Button
+              variant="secondary"
+              onClick={() => setShowForm(!showForm)}
+              className="bg-white text-primary-600 hover:bg-gray-100"
+            >
+              {showForm ? 'Close Form' : 'Leave a Review'}
+            </Button>
+          </motion.div>
         </motion.div>
 
         {/* Review Form */}

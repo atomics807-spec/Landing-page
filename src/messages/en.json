@@ -46,7 +46,11 @@
     "subcompanies": "Subsidiary Companies",
     "careers": "Careers",
     "login": "Client Login",
-    "adminDashboard": "Dashboard"
+    "adminDashboard": "Dashboard",
+    "sourcing": "Sourcing Services",
+    "products": "Products",
+    "propertiesDescription": "View our available properties",
+    "productsDescription": "View our available products"
   },
   "hero": {
     "title": "Professional Solutions... Sustainable Growth",
@@ -107,32 +111,62 @@
     "realEstate": {
       "title": "Real Estate & Property Management",
       "description": "Property sourcing, leasing, facility management, and investment property advisory services.",
-      "features": ["Property Sourcing", "Leasing Management", "Facility Management", "Investment Advisory"]
+      "features": [
+        "Property Sourcing",
+        "Leasing Management",
+        "Facility Management",
+        "Investment Advisory"
+      ]
     },
     "engineering": {
       "title": "Engineering & Infrastructure",
       "description": "Infrastructure planning, technical feasibility studies, and engineering quality assurance.",
-      "features": ["Infrastructure Planning", "Feasibility Studies", "Quality Assurance", "Technical Design"]
+      "features": [
+        "Infrastructure Planning",
+        "Feasibility Studies",
+        "Quality Assurance",
+        "Technical Design"
+      ]
     },
     "construction": {
       "title": "Construction Project Management",
       "description": "Project planning, construction supervision, cost tracking, and timeline controls.",
-      "features": ["Project Planning", "Construction Supervision", "Cost Management", "Timeline Control"]
+      "features": [
+        "Project Planning",
+        "Construction Supervision",
+        "Cost Management",
+        "Timeline Control"
+      ]
     },
     "procurement": {
       "title": "Procurement & Supply Chain",
       "description": "Transparent bidding frameworks, contract administration, and value-for-money sourcing.",
-      "features": ["Bidding Frameworks", "Contract Administration", "Vendor Management", "Quality Sourcing"]
+      "features": [
+        "Bidding Frameworks",
+        "Contract Administration",
+        "Vendor Management",
+        "Quality Sourcing"
+      ]
     },
     "investment": {
       "title": "Investment Advisory",
       "description": "Financial modelling, business case development, and project finance support tools.",
-      "features": ["Financial Modelling", "Business Cases", "Project Finance", "Risk Assessment"]
+      "features": [
+        "Financial Modelling",
+        "Business Cases",
+        "Project Finance",
+        "Risk Assessment"
+      ]
     },
     "consultancy": {
       "title": "Business Consultancy",
       "description": "Corporate strategy, organizational development, and institutional transformation.",
-      "features": ["Corporate Strategy", "Org Development", "Process Optimization", "Change Management"]
+      "features": [
+        "Corporate Strategy",
+        "Org Development",
+        "Process Optimization",
+        "Change Management"
+      ]
     }
   },
   "subcompanies": {
@@ -141,17 +175,37 @@
     "parayscoExpress": {
       "name": "Paraysco Express",
       "description": "Technology-driven logistics and delivery services for individuals and businesses.",
-      "services": ["Food Delivery", "Package Delivery", "Errand Services", "Pickup & Drop-off", "Express Shipping"]
+      "services": [
+        "Food Delivery",
+        "Package Delivery",
+        "Errand Services",
+        "Pickup & Drop-off",
+        "Express Shipping"
+      ]
     },
     "elohimAzar": {
       "name": "Elohim Azar Speedboat Services",
       "description": "Premium marine transport and logistics services for passengers and cargo.",
-      "services": ["Passenger Transport", "Charter Services", "Corporate Hire", "Tourism", "Emergency Marine", "Cargo", "Marine Consultancy"]
+      "services": [
+        "Passenger Transport",
+        "Charter Services",
+        "Corporate Hire",
+        "Tourism",
+        "Emergency Marine",
+        "Cargo",
+        "Marine Consultancy"
+      ]
     },
     "houseOfPat": {
       "name": "House Of Pat",
       "description": "Luxury fashion retail specializing in premium fabrics and bridal collections.",
-      "services": ["Luxury Lace Fabrics", "Bridal Collection", "Luxury Clutches", "Bulk Supply", "Styling Advice"]
+      "services": [
+        "Luxury Lace Fabrics",
+        "Bridal Collection",
+        "Luxury Clutches",
+        "Bulk Supply",
+        "Styling Advice"
+      ]
     }
   },
   "properties": {
@@ -184,13 +238,20 @@
   },
   "consultants": {
     "title": "Our Consultants",
-    "subtitle": "Expert Professional Advisors",
-    "specialization": "Specialization",
-    "contact": "Contact Consultant"
+    "subtitle": "Expert advice from industry professionals",
+    "expertise": "Expertise",
+    "availability": "Availability",
+    "available": "Available",
+    "contactConsultant": "Contact Consultant",
+    "noConsultants": "Our consultants will be announced soon"
   },
   "team": {
-    "title": "Executive Leadership",
-    "subtitle": "Meet the Visionaries Behind Our Success"
+    "title": "Our Team",
+    "subtitle": "Meet the dedicated professionals behind our success",
+    "noMembers": "Team members coming soon",
+    "ctaTitle": "Join Our Team",
+    "ctaText": "We are always looking for talented professionals to join our growing team. Check out our career opportunities.",
+    "viewCareers": "View Careers"
   },
   "testimonials": {
     "title": "What Our Clients Say",
@@ -212,8 +273,17 @@
     "subtitle": "Find Answers to Common Questions"
   },
   "careers": {
-    "title": "Join Our Team",
-    "subtitle": "Build Your Career with Paraysco Consulting Inc."
+    "title": "Careers",
+    "subtitle": "Join our team of professionals and contribute to meaningful projects across Africa",
+    "openPositions": "Open Positions",
+    "department": "Department",
+    "location": "Location",
+    "type": "Type",
+    "requirements": "Requirements",
+    "applyNow": "Apply Now",
+    "dontSeePosition": "Do not See Your Position?",
+    "openApplicationText": "We are always looking for talented individuals to join our team. Send us your CV and we will keep it on file for future opportunities.",
+    "sendOpenApplication": "Send Open Application"
   },
   "contact": {
     "title": "Get In Touch",
@@ -505,36 +575,48 @@
     "emailVerified": "Email Verified",
     "memberSince": "Member Since",
     "logout": "Logout",
-    "profileUpdated": "Profile updated successfully!"
+    "profileUpdated": "Profile updated successfully!",
+    "currentPassword": "Current Password",
+    "passwordMatch": "Passwords do not match"
   },
-  "team": {
-    "title": "Our Team",
-    "subtitle": "Meet the dedicated professionals behind our success",
-    "noMembers": "Team members coming soon",
-    "ctaTitle": "Join Our Team",
-    "ctaText": "We are always looking for talented professionals to join our growing team. Check out our career opportunities.",
-    "viewCareers": "View Careers"
+  "products": {
+    "title": "Our Products",
+    "subtitle": "Browse our selection of quality products and materials",
+    "searchPlaceholder": "Search products...",
+    "categoryLabel": "Category",
+    "allCategories": "All Categories",
+    "categories": {
+      "materials": "Materials",
+      "equipment": "Equipment",
+      "tools": "Tools",
+      "other": "Other"
+    },
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "noProducts": "No products found.",
+    "contactForPurchase": "Contact for Purchase"
   },
-  "consultants": {
-    "title": "Our Consultants",
-    "subtitle": "Expert advice from industry professionals",
-    "expertise": "Expertise",
-    "availability": "Availability",
-    "available": "Available",
-    "contactConsultant": "Contact Consultant",
-    "noConsultants": "Our consultants will be announced soon"
-  },
-  "careers": {
-    "title": "Careers",
-    "subtitle": "Join our team of professionals and contribute to meaningful projects across Africa",
-    "openPositions": "Open Positions",
-    "department": "Department",
-    "location": "Location",
-    "type": "Type",
-    "requirements": "Requirements",
-    "applyNow": "Apply Now",
-    "dontSeePosition": "Do not See Your Position?",
-    "openApplicationText": "We are always looking for talented individuals to join our team. Send us your CV and we will keep it on file for future opportunities.",
-    "sendOpenApplication": "Send Open Application"
+  "sourcing": {
+    "badge": "Professional Staffing Solutions",
+    "title": "Our Manpower Sourcing Services",
+    "subtitle": "PCI recruits, screens, trains and supplies personnel in various categories to meet your business needs across Africa.",
+    "requestPersonnel": "Request Personnel",
+    "viewCategories": "View Staffing Categories",
+    "categoriesTitle": "Staffing Categories",
+    "categoriesSubtitle": "We provide qualified personnel across multiple industries and sectors",
+    "positionsAvailable": "{count} positions available",
+    "processTitle": "Our Sourcing & Outsourcing Process",
+    "processSubtitle": "A systematic 10-step approach to finding the right personnel for your needs",
+    "pciResponsibilitiesTitle": "PCI Responsibilities",
+    "clientResponsibilitiesTitle": "Client Responsibilities",
+    "staffResponsibilitiesTitle": "Staff Responsibilities",
+    "qualityAssuranceTitle": "Quality Assurance",
+    "qualityAssuranceIntro": "PCI maintains high standards through:",
+    "benefitsTitle": "Benefits to Clients",
+    "benefitsIntro": "Choosing PCI provides:",
+    "ctaTitle": "Ready to Source Personnel?",
+    "ctaSubtitle": "Let PCI help you find the right staff for your business needs. Contact us today for a consultation.",
+    "contactUs": "Contact Us",
+    "viewServices": "View Consulting Services"
   }
 }

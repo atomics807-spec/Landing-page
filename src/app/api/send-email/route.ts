@@ -1,16 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
 import { sendVerificationEmail, sendPasswordResetEmail, sendWelcomeEmail, sendContactNotification } from '@/lib/email';
+
+function keysEqual(a: string | null, b: string | undefined): boolean {
+  if (!a || !b || a.length !== b.length) return false;
+  return crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { type, ...data } = body;
-
-    // Verify API key for security
-    const apiKey = request.headers.get('x-api-key');
-    if (apiKey !== process.env.EMAIL_API_KEY) {
+    // Require the shared internal key to be configured and match in constant time
+    const expected = process.env.EMAIL_API_KEY;
+    if (!expected || !keysEqual(request.headers.get('x-api-key'), expected)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const body = await request.json();
+    const { type, ...data } = body;
 
     let result;
     switch (type) {

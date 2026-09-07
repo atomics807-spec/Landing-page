@@ -61,7 +61,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const { data: { user: authUser } } = await supabase.auth.getUser();
     
     if (!authUser) {
-      router.push('/en/login');
+      router.push(`/${currentLocale}/login`);
       return;
     }
 
@@ -72,7 +72,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       .single();
 
     if (!adminData) {
-      router.push('/en');
+      router.push(`/${currentLocale}`);
       return;
     }
 
@@ -93,10 +93,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       if (typeof window !== 'undefined') {
         localStorage.clear();
       }
-      window.location.href = '/en/login';
+      window.location.href = `/${currentLocale}/login`;
     } catch (error) {
       console.error('Logout error:', error);
-      window.location.href = '/en/login';
+      window.location.href = `/${currentLocale}/login`;
     }
   };
 
@@ -135,7 +135,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             >
               {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
-            <Link href="/en" className="flex items-center gap-2">
+            <Link href={`/${currentLocale}`} className="flex items-center gap-2">
               <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold">P</span>
               </div>
@@ -194,7 +194,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </AnimatePresence>
             </div>
 
-            <Link href="/en">
+            <Link href={`/${currentLocale}`}>
               <Button variant="ghost" size="sm" className="text-xs">
                 <Home className="w-4 h-4" />
               </Button>
@@ -210,7 +210,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <header className="bg-white dark:bg-gray-800 shadow-sm fixed top-0 left-0 right-0 z-50 hidden lg:block">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
-            <Link href="/en" className="flex items-center gap-3">
+            <Link href={`/${currentLocale}`} className="flex items-center gap-3">
               <img 
                 src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
                 alt="Paraysco Logo" 
@@ -274,7 +274,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </AnimatePresence>
             </div>
 
-            <Link href="/en">
+            <Link href={`/${currentLocale}`}>
               <Button variant="ghost" size="sm">
                 <Home className="mr-2 h-4 w-4" />View Site
               </Button>

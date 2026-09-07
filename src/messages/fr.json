@@ -46,7 +46,11 @@
     "subcompanies": "Filiales",
     "careers": "Carrières",
     "login": "Espace Client",
-    "adminDashboard": "Tableau de bord"
+    "adminDashboard": "Tableau de bord",
+    "sourcing": "Services de Sourcing",
+    "products": "Produits",
+    "propertiesDescription": "Voir nos propriétés disponibles",
+    "productsDescription": "Voir nos produits disponibles"
   },
   "hero": {
     "title": "Solutions Professionnelles... Croissance Durable",
@@ -107,32 +111,62 @@
     "realEstate": {
       "title": "Immobilier et Gestion de Propriétés",
       "description": "Services d'acquisition de biens, de location, de gestion d'installations et de conseil en investissements immobiliers.",
-      "features": ["Acquisition de Biens", "Gestion Locative", "Gestion d'Installations", "Conseil en Investissement"]
+      "features": [
+        "Acquisition de Biens",
+        "Gestion Locative",
+        "Gestion d'Installations",
+        "Conseil en Investissement"
+      ]
     },
     "engineering": {
       "title": "Ingénierie et Infrastructure",
       "description": "Planification des infrastructures, études de faisabilité techniques et assurance qualité en ingénierie.",
-      "features": ["Planification des Infrastructures", "Études de Faisabilité", "Assurance Qualité", "Conception Technique"]
+      "features": [
+        "Planification des Infrastructures",
+        "Études de Faisabilité",
+        "Assurance Qualité",
+        "Conception Technique"
+      ]
     },
     "construction": {
       "title": "Gestion de Projets de Construction",
       "description": "Planification de projets, supervision de construction, suivi des coûts et contrôle des délais.",
-      "features": ["Planification de Projets", "Supervision de Construction", "Gestion des Coûts", "Contrôle des Délais"]
+      "features": [
+        "Planification de Projets",
+        "Supervision de Construction",
+        "Gestion des Coûts",
+        "Contrôle des Délais"
+      ]
     },
     "procurement": {
       "title": "Approvisionnement et Chaîne d'Approvisionnement",
       "description": "Cadres d'appels d'offres transparents, administration des contrats et approvisionnement optimal.",
-      "features": ["Cadres d'Appels d'Offres", "Administration des Contrats", "Gestion des Fournisseurs", "Approvisionnement de Qualité"]
+      "features": [
+        "Cadres d'Appels d'Offres",
+        "Administration des Contrats",
+        "Gestion des Fournisseurs",
+        "Approvisionnement de Qualité"
+      ]
     },
     "investment": {
       "title": "Conseil en Investissement",
       "description": "Modélisation financière, développement de business cases et outils de support pour le financement de projets.",
-      "features": ["Modélisation Financière", "Business Cases", "Financement de Projets", "Évaluation des Risques"]
+      "features": [
+        "Modélisation Financière",
+        "Business Cases",
+        "Financement de Projets",
+        "Évaluation des Risques"
+      ]
     },
     "consultancy": {
       "title": "Conseil aux Entreprises",
       "description": "Stratégie d'entreprise, développement organisationnel et transformation institutionnelle.",
-      "features": ["Stratégie d'Entreprise", "Développement Organisationnel", "Optimisation des Processus", "Gestion du Changement"]
+      "features": [
+        "Stratégie d'Entreprise",
+        "Développement Organisationnel",
+        "Optimisation des Processus",
+        "Gestion du Changement"
+      ]
     }
   },
   "subcompanies": {
@@ -141,17 +175,37 @@
     "parayscoExpress": {
       "name": "Paraysco Express",
       "description": "Services logistiques et de livraison basés sur la technologie pour les individus et les entreprises.",
-      "services": ["Livraison de Repas", "Livraison de Colis", "Services d'Errand", "Enlèvement et Dépôt", "Expédition Express"]
+      "services": [
+        "Livraison de Repas",
+        "Livraison de Colis",
+        "Services d'Errand",
+        "Enlèvement et Dépôt",
+        "Expédition Express"
+      ]
     },
     "elohimAzar": {
       "name": "Elohim Azar Speedboat Services",
       "description": "Services de transport maritime et de logistique haut de gamme pour passagers et marchandises.",
-      "services": ["Transport de Passagers", "Services de Charter", "Location d'Entreprise", "Tourisme", "Urgence Maritime", "Cargo", "Conseil Maritime"]
+      "services": [
+        "Transport de Passagers",
+        "Services de Charter",
+        "Location d'Entreprise",
+        "Tourisme",
+        "Urgence Maritime",
+        "Cargo",
+        "Conseil Maritime"
+      ]
     },
     "houseOfPat": {
       "name": "House Of Pat",
       "description": "Commerce de mode luxueux spécialisé dans les tissus premium et les collections de mariée.",
-      "services": ["Tissus de Dentelle de Luxe", "Collection de Mariée", "Pochettes de Luxe", "Vente en Gros", "Conseils de Style"]
+      "services": [
+        "Tissus de Dentelle de Luxe",
+        "Collection de Mariée",
+        "Pochettes de Luxe",
+        "Vente en Gros",
+        "Conseils de Style"
+      ]
     }
   },
   "properties": {
@@ -184,13 +238,20 @@
   },
   "consultants": {
     "title": "Nos Consultants",
-    "subtitle": "Conseillers Professionnels Experts",
-    "specialization": "Spécialisation",
-    "contact": "Contacter le Consultant"
+    "subtitle": "Conseils d'experts de professionnels de l'industrie",
+    "expertise": "Expertise",
+    "availability": "Disponibilité",
+    "available": "Disponible",
+    "contactConsultant": "Contacter le Consultant",
+    "noConsultants": "Nos consultants seront annoncés bientôt"
   },
   "team": {
-    "title": "Direction Exécutive",
-    "subtitle": "Rencontrez les Visionnaires derriere Notre Succès"
+    "title": "Notre Équipe",
+    "subtitle": "Rencontrez les professionnels dédiés derrière notre succès",
+    "noMembers": "Membres de l'équipe à venir",
+    "ctaTitle": "Rejoignez Notre Équipe",
+    "ctaText": "Nous sommes toujours à la recherche de professionnels talentueux pour rejoindre notre équipe croissante. Découvrez nos opportunités de carrière.",
+    "viewCareers": "Voir les Carrieres"
   },
   "testimonials": {
     "title": "Ce Que Disent Nos Clients",
@@ -212,8 +273,17 @@
     "subtitle": "Trouvez des Réponses à Vos Questions"
   },
   "careers": {
-    "title": "Rejoignez Notre Équipe",
-    "subtitle": "Construisez Votre Carrière avec Paraysco Consulting Inc."
+    "title": "Carrieres",
+    "subtitle": "Rejoignez notre équipe de professionnels et contribuez à des projets significatifs à travers l'Afrique",
+    "openPositions": "Postes Ouverts",
+    "department": "Département",
+    "location": "Localisation",
+    "type": "Type",
+    "requirements": "Exigences",
+    "applyNow": "Postuler Maintenant",
+    "dontSeePosition": "Vous ne Voyez Pas Votre Poste ?",
+    "openApplicationText": "Nous sommes toujours à la recherche de talents pour rejoindre notre équipe. Envoyez-nous votre CV et nous le conserverons pour de futures opportunités.",
+    "sendOpenApplication": "Envoyer une Candidature Spontanée"
   },
   "contact": {
     "title": "Contactez-Nous",
@@ -506,36 +576,47 @@
     "emailVerified": "Email Vérifié",
     "memberSince": "Membre Depuis",
     "logout": "Déconnexion",
-    "profileUpdated": "Profil mis à jour avec succès !"
+    "profileUpdated": "Profil mis à jour avec succès !",
+    "passwordMatch": "Les mots de passe ne correspondent pas"
   },
-  "team": {
-    "title": "Notre Équipe",
-    "subtitle": "Rencontrez les professionnels dédiés derrière notre succès",
-    "noMembers": "Membres de l'équipe à venir",
-    "ctaTitle": "Rejoignez Notre Équipe",
-    "ctaText": "Nous sommes toujours à la recherche de professionnels talentueux pour rejoindre notre équipe croissante. Découvrez nos opportunités de carrière.",
-    "viewCareers": "Voir les Carrieres"
+  "products": {
+    "title": "Nos Produits",
+    "subtitle": "Parcourez notre sélection de produits et matériaux de qualité",
+    "searchPlaceholder": "Rechercher des produits...",
+    "categoryLabel": "Catégorie",
+    "allCategories": "Toutes les Catégories",
+    "categories": {
+      "materials": "Matériaux",
+      "equipment": "Équipements",
+      "tools": "Outils",
+      "other": "Autres"
+    },
+    "inStock": "En Stock",
+    "outOfStock": "Rupture de Stock",
+    "noProducts": "Aucun produit trouvé.",
+    "contactForPurchase": "Contactez-nous pour l'achat"
   },
-  "consultants": {
-    "title": "Nos Consultants",
-    "subtitle": "Conseils d'experts de professionnels de l'industrie",
-    "expertise": "Expertise",
-    "availability": "Disponibilité",
-    "available": "Disponible",
-    "contactConsultant": "Contacter le Consultant",
-    "noConsultants": "Nos consultants seront annoncés bientôt"
-  },
-  "careers": {
-    "title": "Carrieres",
-    "subtitle": "Rejoignez notre équipe de professionnels et contribuez à des projets significatifs à travers l'Afrique",
-    "openPositions": "Postes Ouverts",
-    "department": "Département",
-    "location": "Localisation",
-    "type": "Type",
-    "requirements": "Exigences",
-    "applyNow": "Postuler Maintenant",
-    "dontSeePosition": "Vous ne Voyez Pas Votre Poste ?",
-    "openApplicationText": "Nous sommes toujours à la recherche de talents pour rejoindre notre équipe. Envoyez-nous votre CV et nous le conserverons pour de futures opportunités.",
-    "sendOpenApplication": "Envoyer une Candidature Spontanée"
+  "sourcing": {
+    "badge": "Solutions Professionnelles de Personnel",
+    "title": "Nos Services de Sourcing de Main-d'œuvre",
+    "subtitle": "PCI recrute, sélectionne, forme et fournit du personnel dans diverses catégories pour répondre à vos besoins professionnels partout en Afrique.",
+    "requestPersonnel": "Demander du Personnel",
+    "viewCategories": "Voir les Catégories de Personnel",
+    "categoriesTitle": "Catégories de Personnel",
+    "categoriesSubtitle": "Nous fournissons du personnel qualifié dans plusieurs secteurs et industries",
+    "positionsAvailable": "{count} postes disponibles",
+    "processTitle": "Notre Processus de Sourcing et d'Externalisation",
+    "processSubtitle": "Une approche systématique en 10 étapes pour trouver le bon personnel pour vos besoins",
+    "pciResponsibilitiesTitle": "Responsabilités de PCI",
+    "clientResponsibilitiesTitle": "Responsabilités du Client",
+    "staffResponsibilitiesTitle": "Responsabilités du Personnel",
+    "qualityAssuranceTitle": "Assurance Qualité",
+    "qualityAssuranceIntro": "PCI maintient des normes élevées grâce à:",
+    "benefitsTitle": "Avantages pour les Clients",
+    "benefitsIntro": "Choisir PCI vous offre:",
+    "ctaTitle": "Prêt à recruter du Personnel?",
+    "ctaSubtitle": "Laissez PCI vous aider à trouver le bon personnel pour vos besoins professionnels. Contactez-nous dès aujourd'hui pour une consultation.",
+    "contactUs": "Contactez-nous",
+    "viewServices": "Voir les Services de Conseil"
   }
 }

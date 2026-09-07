@@ -2,15 +2,15 @@
 -- PARAYSCO CONSULTING - COMPLETE ADMIN SETUP SCRIPT
 -- =====================================================
 -- Run this AFTER running schema.sql
--- This creates the admin user: brandonadii39@gmail.com
+-- This creates the admin user: ${ADMIN_EMAIL}
 -- =====================================================
 
 -- IMPORTANT: Before running this script:
 -- 1. Go to Supabase Dashboard > Authentication > Users
 -- 2. Click "Add User" 
 -- 3. Create user with:
---    Email: brandonadii39@gmail.com
---    Password: Password123
+--    Email: ${ADMIN_EMAIL}
+--    Password: ${ADMIN_PASSWORD}
 -- 4. Copy the user's UUID
 -- 5. Replace 'YOUR_ADMIN_UUID_HERE' below with that UUID
 -- 6. Run this script
@@ -20,7 +20,7 @@
 -- (Get it from Supabase Dashboard > Authentication > Users table)
 DO $$
 DECLARE
-    admin_email TEXT := 'brandonadii39@gmail.com';
+    admin_email TEXT := '${ADMIN_EMAIL}';
     admin_uuid UUID := NULL;  -- Replace with actual UUID from auth.users
 BEGIN
     -- Try to find existing user
@@ -31,8 +31,8 @@ BEGIN
         RAISE NOTICE 'ERROR: Admin user not found in auth.users';
         RAISE NOTICE 'Please create the user first in:';
         RAISE NOTICE 'Supabase Dashboard > Authentication > Users > Add User';
-        RAISE NOTICE 'Email: brandonadii39@gmail.com';
-        RAISE NOTICE 'Password: Password123';
+        RAISE NOTICE 'Email: ${ADMIN_EMAIL}';
+        RAISE NOTICE 'Password: ${ADMIN_PASSWORD}';
         RAISE NOTICE 'Then copy the UUID and update this script.';
         RAISE NOTICE '========================================';
     ELSE
@@ -51,7 +51,7 @@ BEGIN
         
         RAISE NOTICE '========================================';
         RAISE NOTICE 'SUCCESS: Admin user configured!';
-        RAISE NOTICE 'Email: brandonadii39@gmail.com';
+        RAISE NOTICE 'Email: ${ADMIN_EMAIL}';
         RAISE NOTICE 'UUID: %', admin_uuid;
         RAISE NOTICE '========================================';
     END IF;
@@ -72,7 +72,7 @@ END $$;
 --     CASE WHEN a.user_id IS NOT NULL THEN 'YES' ELSE 'NO' END as is_admin
 -- FROM users u
 -- LEFT JOIN admins a ON u.id = a.user_id
--- WHERE u.email = 'brandonadii39@gmail.com';
+-- WHERE u.email = '${ADMIN_EMAIL}';
 
 -- Query 2: Check all admins
 -- SELECT u.email, u.full_name, a.permissions, a.created_at
