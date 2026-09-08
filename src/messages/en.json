@@ -618,5 +618,63 @@
     "ctaSubtitle": "Let PCI help you find the right staff for your business needs. Contact us today for a consultation.",
     "contactUs": "Contact Us",
     "viewServices": "View Consulting Services"
+  },
+  "meta": {
+    "home": {
+      "title": "Paraysco Consulting | Professional Solutions, Sustainable Growth",
+      "description": "Paraysco Consulting provides innovative consultancy solutions that bridge the gap between ideas and implementation, investment and opportunity, and ambition and sustainable growth. Expert services in real estate, engineering, construction, procurement, investment advisory, and business consultancy across Africa."
+    },
+    "about": {
+      "title": "About Us | Paraysco Consulting",
+      "description": "Meet Paraysco Consulting, a multidisciplinary consulting firm headquartered in Limbe, Cameroon serving Africa with real estate advisory, engineering, construction management, procurement, investment advisory, and business consultancy."
+    },
+    "services": {
+      "title": "Our Consulting Services | Paraysco Consulting",
+      "description": "Explore Paraysco Consulting's six specialist practices: real estate advisory, engineering, construction management, procurement, investment advisory, and business consultancy across Africa."
+    },
+    "properties": {
+      "title": "Properties for Sale & Rent | Paraysco Consulting",
+      "description": "Discover premium real estate in Cameroon and Nigeria. Paraysco Consulting offers property acquisition, leasing, valuation, and management advisory services."
+    },
+    "products": {
+      "title": "Products & Materials | Paraysco Consulting",
+      "description": "Browse quality products and building materials supplied by Paraysco Consulting. Sourcing, procurement, and delivery across Africa."
+    },
+    "blog": {
+      "title": "Insights & News | Paraysco Consulting Blog",
+      "description": "Expert insights, market news, and practical guidance from Paraysco Consulting on real estate, engineering, construction, procurement, investment, and doing business in Africa."
+    },
+    "sourcing": {
+      "title": "Manpower Sourcing & Staffing | Paraysco Consulting",
+      "description": "Paraysco Consulting recruits, screens, and mobilizes qualified personnel for construction, engineering, and industrial projects across Africa."
+    },
+    "consultants": {
+      "title": "Our Consultants | Paraysco Consulting",
+      "description": "Meet the industry experts behind Paraysco Consulting. Specialist advisers in real estate, engineering, construction, procurement, and business strategy."
+    },
+    "team": {
+      "title": "Our Team | Paraysco Consulting",
+      "description": "Meet the dedicated professionals behind Paraysco Consulting's success across real estate, engineering, construction, and business consultancy in Africa."
+    },
+    "careers": {
+      "title": "Careers | Paraysco Consulting",
+      "description": "Join Paraysco Consulting. Explore open positions in consulting, engineering, construction, procurement, and business development across Cameroon and Nigeria."
+    },
+    "contact": {
+      "title": "Contact Us | Paraysco Consulting",
+      "description": "Contact Paraysco Consulting for real estate, engineering, construction, procurement, investment, and business consulting across Africa. Limbe, Cameroon• Lagos, Nigeria• Abuja, Nigeria."
+    },
+    "terms": {
+      "title": "Terms of Service | Paraysco Consulting",
+      "description": "Read the terms of service governing access to and use of the Paraysco Consulting website."
+    },
+    "privacy": {
+      "title": "Privacy Policy | Paraysco Consulting",
+      "description": "Learn how Paraysco Consulting collects, uses, and protects your personal information."
+    },
+    "cookies": {
+      "title": "Cookie Policy | Paraysco Consulting",
+      "description": "Learn how Paraysco Consulting uses cookies and similar technologies to improve your browsing experience."
+    }
   }
 }

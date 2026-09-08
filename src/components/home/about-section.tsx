@@ -39,6 +39,9 @@ export function AboutSection({ locale }: AboutSectionProps) {
                 src="https://cdn.nishtyainfotech.com/content/learnings/data/blog/banner/68b98b1fd04231.13423553.webp" 
                 alt="Paraysco Consulting" 
                 className="w-full h-full object-cover"
+                width={800}
+                height={600}
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-8 left-8 right-8 text-white">

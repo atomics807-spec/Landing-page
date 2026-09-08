@@ -143,6 +143,10 @@ export function Header({ locale }: HeaderProps) {
               <img 
                 src="/logo.png" 
                 alt="Paraysco Logo" 
+                width={40}
+                height={40}
+                loading="eager"
+                fetchPriority="high"
                 className="h-9 w-9 sm:h-10 sm:w-10 object-contain rounded-lg flex-shrink-0"
               />
               <span className="font-heading text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap hidden sm:inline">

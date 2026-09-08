@@ -618,5 +618,63 @@
     "ctaSubtitle": "Laissez PCI vous aider à trouver le bon personnel pour vos besoins professionnels. Contactez-nous dès aujourd'hui pour une consultation.",
     "contactUs": "Contactez-nous",
     "viewServices": "Voir les Services de Conseil"
+  },
+  "meta": {
+    "home": {
+      "title": "Paraysco Consulting | Solutions Professionnelles, Croissance Durable",
+      "description": "Paraysco Consulting fournit des solutions de conseil innovantes qui comblent le fossé entre les idées et leur mise en œuvre, l'investissement et l'opportunité, et l'ambition et la croissance durable. Services d'expertise en immobilier, ingénierie, construction, achats et conseil aux entreprises à travers l'Afrique."
+    },
+    "about": {
+      "title": "À Propos | Paraysco Consulting",
+      "description": "Découvrez Paraysco Consulting, un cabinet de conseil multidisciplinaire basé à Limbé, au Cameroun, servant l'Afrique en conseil immobilier, ingénierie, gestion de construction, achats, conseil en investissement et conseil aux entreprises."
+    },
+    "services": {
+      "title": "Nos Services de Conseil | Paraysco Consulting",
+      "description": "Découvrez les six expertises de Paraysco Consulting: conseil immobilier, ingénierie, gestion de construction, achats, conseil en investissement et conseil aux entreprises à travers l'Afrique."
+    },
+    "properties": {
+      "title": "Biens Immobiliers à Vendre & Louer | Paraysco Consulting",
+      "description": "Découvrez des biens immobiliers premium au Cameroun et au Nigeria. Paraysco Consulting offre des services de conseil en acquisition, location, évaluation et gestion immobilière."
+    },
+    "products": {
+      "title": "Produits & Matériaux | Paraysco Consulting",
+      "description": "Parcourez des produits et matériaux de construction de qualité fournis par Paraysco Consulting. Approvisionnement, achats et livraison à travers l'Afrique."
+    },
+    "blog": {
+      "title": "Analyses & Actualités | Blog Paraysco Consulting",
+      "description": "Analyses d'experts, actualités du marché et conseils pratiques de Paraysco Consulting sur l'immobilier, l'ingénierie, la construction, les achats, l'investissement et les affaires en Afrique."
+    },
+    "sourcing": {
+      "title": "Sourcing de Personnel & Intérim | Paraysco Consulting",
+      "description": "Paraysco Consulting recrute, sélectionne et mobilise du personnel qualifié pour les projets de construction, d'ingénierie et industriels à travers l'Afrique."
+    },
+    "consultants": {
+      "title": "Nos Consultants | Paraysco Consulting",
+      "description": "Rencontrez les experts de l'industrie qui font Paraysco Consulting. Conseillers spécialisés en immobilier, ingénierie, construction, achats et stratégie d'entreprise."
+    },
+    "team": {
+      "title": "Notre Équipe | Paraysco Consulting",
+      "description": "Rencontrez les professionnels dévoués derrière le succès de Paraysco Consulting en immobilier, ingénierie, construction et conseil aux entreprises en Afrique."
+    },
+    "careers": {
+      "title": "Carrières | Paraysco Consulting",
+      "description": "Rejoignez Paraysco Consulting. Explorez les postes ouverts en conseil, ingénierie, construction, achats et développement d'affaires au Cameroun et au Nigeria."
+    },
+    "contact": {
+      "title": "Contactez-Nous | Paraysco Consulting",
+      "description": "Contactez Paraysco Consulting pour le conseil immobilier, ingénierie, construction, achats, investissement et conseil aux entreprises à travers l'Afrique. Limbé, Cameroun• Lagos, Nigeria• Abuja, Nigeria."
+    },
+    "terms": {
+      "title": "Conditions d'Utilisation | Paraysco Consulting",
+      "description": "Lisez les conditions d'utilisation régissant l'accès ou l'utilisation du site web de Paraysco Consulting."
+    },
+    "privacy": {
+      "title": "Politique de Confidentialité | Paraysco Consulting",
+      "description": "Découvrez comment Paraysco Consulting collecte, utilise et protège vos informations personnelles."
+    },
+    "cookies": {
+      "title": "Politique de Cookies | Paraysco Consulting",
+      "description": "Découvrez comment Paraysco Consulting utilise les cookies et technologies similaires pour améliorer votre expérience de navigation."
+    }
   }
 }

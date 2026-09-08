@@ -42,6 +42,9 @@ export function FounderSection({ locale }: FounderSectionProps) {
                 src="https://i.postimg.cc/3xJQ0dM9/Whats-App-Image-2026-06-21-at-12-00-37.jpg" 
                 alt={t('name')} 
                 className="w-full h-full object-cover"
+                width={800}
+                height={600}
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white">

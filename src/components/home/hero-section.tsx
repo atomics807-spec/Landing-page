@@ -119,6 +119,9 @@ export function HeroSection({ locale }: HeroSectionProps) {
                 src="https://i0.wp.com/expertshouseuae.com/wp-content/uploads/2023/10/SmallBusiness6002.jpeg?fit=600%2C600&ssl=1" 
                 alt="Professional Building" 
                 className="w-full h-full object-cover"
+                width={800}
+                height={600}
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             </div>

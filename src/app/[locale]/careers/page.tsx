@@ -1,8 +1,10 @@
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { Briefcase, MapPin, Clock, Users, Send, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { absoluteUrl, buildHreflang } from '@/lib/seo';
 
 interface Career {
   id: string;
@@ -14,7 +16,25 @@ interface Career {
   requirements: string[];
 }
 
-export default async function CareersPage({ params }: { params: Promise<{ locale: string }> }) {
+interface CareersPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: CareersPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta.careers' });
+
+  return {
+    title: t('title'),
+    description: t('description'),
+    alternates: {
+      canonical: absoluteUrl(`/${locale}/careers`),
+      ...buildHreflang(locale, '/careers'),
+    },
+  };
+}
+
+export default async function CareersPage({ params }: CareersPageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('careers');

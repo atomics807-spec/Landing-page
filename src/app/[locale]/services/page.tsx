@@ -1,242 +1,27 @@
-'use client';
+import type { Metadata } from 'next';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { absoluteUrl, buildHreflang } from '@/lib/seo';
+import ServicesClientPage from './client-page';
 
-import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Building, Cog, Construction, Truck, TrendingUp, Users, ArrowRight, CheckCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { CTASection } from '@/components/home/cta-section';
-import type { Locale } from '@/i18n';
+interface ServicesPageProps {
+  params: Promise<{ locale: string }>;
+}
 
-const iconMap = {
-  realEstate: Building,
-  engineering: Cog,
-  construction: Construction,
-  procurement: Truck,
-  investment: TrendingUp,
-  consultancy: Users,
-};
-
-// AEO: Service schemas for rich answers
-const servicesSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  name: 'Paraysco Consulting Services',
-  description: 'Professional consulting services including real estate, engineering, construction, procurement, investment advisory, and business consultancy across Africa.',
-  numberOfItems: 6,
-  itemListElement: [
-    {
-      '@type': 'Service',
-      name: 'Real Estate Advisory',
-      description: 'Comprehensive real estate consulting including property acquisition, valuation, management, and investment advisory services.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-      hasOfferCatalog: {
-        '@type': 'OfferCatalog',
-        name: 'Real Estate Services',
-        includes: [
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Acquisition' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Valuation' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Management' } },
-        ],
-      },
+export async function generateMetadata({ params }: ServicesPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta.services' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    alternates: {
+      canonical: absoluteUrl(`/${locale}/services`),
+      ...buildHreflang(locale, '/services'),
     },
-    {
-      '@type': 'Service',
-      name: 'Engineering Services',
-      description: 'Professional engineering solutions including design, planning, and project engineering for construction and infrastructure projects.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-    {
-      '@type': 'Service',
-      name: 'Construction Management',
-      description: 'End-to-end construction project management from planning through completion with quality assurance and timeline management.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-    {
-      '@type': 'Service',
-      name: 'Procurement Services',
-      description: 'Strategic procurement solutions for materials, equipment, and services with supplier management and quality control.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-    {
-      '@type': 'Service',
-      name: 'Investment Advisory',
-      description: 'Expert investment advisory services helping clients identify opportunities and make informed investment decisions.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-    {
-      '@type': 'Service',
-      name: 'Business Consultancy',
-      description: 'Strategic business consulting for growth optimization, process improvement, and sustainable business development.',
-      provider: { '@type': 'Organization', name: 'Paraysco Consulting' },
-      areaServed: 'Africa',
-    },
-  ],
-};
+  };
+}
 
-export default function ServicesPage() {
-  const locale = useLocale() as Locale;
-  const t = useTranslations('services');
-
-  const services = [
-    { key: 'realEstate', color: 'bg-blue-500' },
-    { key: 'engineering', color: 'bg-purple-500' },
-    { key: 'construction', color: 'bg-orange-500' },
-    { key: 'procurement', color: 'bg-green-500' },
-    { key: 'investment', color: 'bg-red-500' },
-    { key: 'consultancy', color: 'bg-teal-500' },
-  ];
-
-  return (
-    <div className="min-h-screen">
-      {/* AEO: Service Schemas */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
-      />
-
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-20">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h1 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-6">
-              {t('title')}
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              {t('subtitle')}
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Services Grid */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => {
-              const Icon = iconMap[service.key as keyof typeof iconMap];
-              const features = t.raw(`${service.key}.features`) as string[];
-
-              return (
-                <motion.div
-                  key={service.key}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card className="h-full hover:shadow-xl transition-shadow duration-300">
-                    <CardContent className="p-8">
-                      <div className={`w-16 h-16 rounded-xl ${service.color} flex items-center justify-center mb-6`}>
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                        {t(`${service.key}.title`)}
-                      </h3>
-                      <p className="text-gray-600 dark:text-gray-300 mb-6">
-                        {t(`${service.key}.description`)}
-                      </p>
-                      <ul className="space-y-3 mb-6">
-                        {features.map((feature, i) => (
-                          <li key={i} className="flex items-start space-x-3">
-                            <CheckCircle className="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm text-gray-600 dark:text-gray-300">
-                              {feature}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Button variant="outline" className="w-full group" asChild>
-                        <Link href={`/${locale}/contact`}>
-                          Contact Us
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Sourcing Services CTA */}
-      <section className="py-16 bg-gradient-to-r from-primary-600 to-primary-700">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            Looking for Staff?
-          </h2>
-          <p className="text-primary-100 mb-6 max-w-2xl mx-auto">
-            We also provide comprehensive manpower sourcing and outsourcing services. Let us help you find the right personnel for your needs.
-          </p>
-          <Button size="lg" variant="secondary" asChild>
-            <Link href={`/${locale}/sourcing`}>
-              View Sourcing Services
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
-        </div>
-      </section>
-
-      {/* Process Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800/50">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-3xl mx-auto mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-              Our Working Process
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              A systematic approach to delivering excellence
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: '01', title: 'Consultation', description: 'We discuss your needs and requirements in detail' },
-              { step: '02', title: 'Analysis', description: 'Our team analyzes and develops a strategic plan' },
-              { step: '03', title: 'Implementation', description: 'We execute the plan with regular updates' },
-              { step: '04', title: 'Delivery', description: 'Final delivery with comprehensive support' },
-            ].map((item, index) => (
-              <motion.div
-                key={item.step}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative"
-              >
-                <div className="text-6xl font-bold text-primary-100 dark:text-primary-900/30 mb-4">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {item.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CTASection locale={locale} />
-    </div>
-  );
+export default async function ServicesPage({ params }: ServicesPageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <ServicesClientPage />;
 }

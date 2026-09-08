@@ -81,6 +81,9 @@ export function Footer({ locale }: FooterProps) {
                 src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
                 alt="Paraysco Logo" 
                 className="h-12 w-12 object-contain rounded-lg"
+                width={800}
+                height={600}
+                loading="lazy"
               />
               <div>
                 <span className="font-heading text-lg font-semibold text-white">
