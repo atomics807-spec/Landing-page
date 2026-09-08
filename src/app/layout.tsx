@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
   variable: '--font-playfair',
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://parayscoconsulting.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

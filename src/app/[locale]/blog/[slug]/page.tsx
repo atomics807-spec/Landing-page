@@ -9,7 +9,7 @@ interface BlogPostPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://parayscoconsulting.com';
 
 async function getPost(slug: string) {
   const supabase = await createClient();

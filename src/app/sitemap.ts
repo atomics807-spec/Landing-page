@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { locales } from '@/i18n';
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://parayscoconsulting.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [

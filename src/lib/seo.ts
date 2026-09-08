@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 const siteName = 'Paraysco Consulting';
-const defaultUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com';
+const defaultUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://parayscoconsulting.com';
 
 export function absoluteUrl(path: string) {
   return new URL(path, defaultUrl).toString().replace(/\/$/, '');

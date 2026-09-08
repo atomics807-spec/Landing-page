@@ -31,7 +31,9 @@ export function Footer({ locale }: FooterProps) {
     { label: tNav('about'), href: `/${locale}/about` },
     { label: tNav('services'), href: `/${locale}/services` },
     { label: tNav('properties'), href: `/${locale}/properties` },
-    { label: tNav('blog'), href: `/${locale}/blog`    },
+    { label: tNav('products'), href: `/${locale}/products` },
+    { label: tNav('gallery'), href: `/${locale}/gallery` },
+    { label: tNav('blog'), href: `/${locale}/blog` },
     { label: tNav('contact'), href: `/${locale}/contact` },
   ];
 

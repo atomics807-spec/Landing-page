@@ -33,7 +33,7 @@ export default async function LocaleLayout({
     <div className={cn('min-h-screen flex flex-col')}>
       <NextIntlClientProvider messages={messages}>
         <Header locale={locale as Locale} />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pt-28">{children}</main>
         <Footer locale={locale as Locale} />
         <CookieConsent locale={locale} />
       </NextIntlClientProvider>

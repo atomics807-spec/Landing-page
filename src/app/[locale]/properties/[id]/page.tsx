@@ -9,7 +9,7 @@ interface PropertyDetailPageProps {
   params: Promise<{ locale: string; id: string }>;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://paraysco.com';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://parayscoconsulting.com';
 
 async function getProperty(id: string) {
   const supabase = await createClient();
