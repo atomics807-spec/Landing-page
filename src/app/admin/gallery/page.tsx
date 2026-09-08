@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,15 +20,14 @@ interface GalleryImage {
 }
 
 const CATEGORIES = [
-  { value: 'Flyer', labelKey: 'category.flyer' },
-  { value: 'Event', labelKey: 'category.event' },
-  { value: 'Project', labelKey: 'category.project' },
-  { value: 'Company', labelKey: 'category.company' },
-  { value: 'Other', labelKey: 'category.other' },
+  { value: 'Flyer', label: 'Flyer' },
+  { value: 'Event', label: 'Event' },
+  { value: 'Project', label: 'Project' },
+  { value: 'Company', label: 'Company' },
+  { value: 'Other', label: 'Other' },
 ];
 
 export default function AdminGalleryPage() {
-  const t = useTranslations('admin.gallery');
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -129,41 +127,41 @@ export default function AdminGalleryPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">{t('title')}</h1>
-        <p className="text-muted-foreground">{t('subtitle')}</p>
+        <h1 className="text-2xl font-bold">Gallery</h1>
+        <p className="text-muted-foreground">Manage gallery images, flyers, and events</p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>{editingId ? t('editTitle') : t('addTitle')}</CardTitle>
+          <CardTitle>{editingId ? 'Edit Image' : 'Add New Image'}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="gallery-title">{t('titleLabel')}</Label>
+              <Label htmlFor="gallery-title">Title</Label>
               <Input id="gallery-title" value={formData.title} onChange={(e) => handleInputChange('title', e.target.value)} required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="gallery-desc">{t('descLabel')}</Label>
+              <Label htmlFor="gallery-desc">Description</Label>
               <Textarea id="gallery-desc" value={formData.description} onChange={(e) => handleInputChange('description', e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="gallery-cat">{t('categoryLabel')}</Label>
+              <Label htmlFor="gallery-cat">Category</Label>
               <Select value={formData.category} onValueChange={(v) => handleInputChange('category', v)}>
-                <SelectTrigger id="gallery-cat"><SelectValue placeholder={t('categoryPlaceholder')} /></SelectTrigger>
+                <SelectTrigger id="gallery-cat"><SelectValue placeholder="Select a category" /></SelectTrigger>
                 <SelectContent>
                   {CATEGORIES.map((cat) => (
-                    <SelectItem key={cat.value} value={cat.value}>{t(cat.labelKey)}</SelectItem>
+                    <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="gallery-sort">{t('sortLabel')}</Label>
+              <Label htmlFor="gallery-sort">Sort Order</Label>
               <Input id="gallery-sort" type="number" value={formData.sortOrder} onChange={(e) => handleInputChange('sortOrder', e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label>{t('imageLabel')}</Label>
+              <Label>Image</Label>
               <div className="flex items-center gap-3">
                 <Input type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={(e) => { const f = e.target.files?.[0]; if (f) void handleUpload(f); }} className="flex-1" />
                 {isUploading && <Loader2 className="h-5 w-5 animate-spin text-primary-600" />}
@@ -171,12 +169,12 @@ export default function AdminGalleryPage() {
               {formData.imageUrl && (
                 <div className="mt-2 flex items-center gap-3">
                   <ImagePlus className="h-5 w-5 text-primary-600" />
-                  <span className="text-sm text-muted-foreground">{t('uploaded')}</span>
+                  <span className="text-sm text-muted-foreground">Image uploaded</span>
                 </div>
               )}
             </div>
             <Button type="submit" disabled={isSaving || !formData.imageUrl}>
-              {isSaving ? 'Saving...' : editingId ? t('updateBtn') : t('addBtn')}
+              {isSaving ? 'Saving...' : editingId ? 'Update' : 'Add Image'}
             </Button>
           </form>
         </CardContent>
@@ -184,11 +182,11 @@ export default function AdminGalleryPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>{t('listTitle')}</CardTitle>
+          <CardTitle>Gallery Images</CardTitle>
         </CardHeader>
         <CardContent>
           {images.length === 0 ? (
-            <p className="text-muted-foreground">{t('noImages')}</p>
+            <p className="text-muted-foreground">No images yet. Upload your first image above.</p>
           ) : (
             <ul className="divide-y">
               {images.map((img) => (
