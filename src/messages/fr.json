@@ -517,6 +517,30 @@
       "view": "Voir les Messages",
       "export": "Exporter"
     },
+    "gallery": {
+      "title": "Galerie",
+      "subtitle": "Gérer les images, dépliants et événements de la galerie",
+      "editTitle": "Modifier l'image",
+      "addTitle": "Ajouter une nouvelle image",
+      "titleLabel": "Titre",
+      "descLabel": "Description",
+      "categoryLabel": "Catégorie",
+      "categoryPlaceholder": "Sélectionnez une catégorie",
+      "category": {
+        "flyer": "Dépliant",
+        "event": "Événement",
+        "project": "Projet",
+        "company": "Entreprise",
+        "other": "Autre"
+      },
+      "sortLabel": "Ordre d'affichage",
+      "imageLabel": "Image",
+      "uploaded": "Image téléversée",
+      "updateBtn": "Modifier",
+      "addBtn": "Ajouter l'image",
+      "listTitle": "Images de la galerie",
+      "noImages": "Aucune image pour le moment. Téléversez votre première image ci-dessus."
+    },
     "newsletter": {
       "title": "Newsletter",
       "subscribers": "Abonnés"

@@ -517,6 +517,30 @@
       "view": "View Messages",
       "export": "Export"
     },
+    "gallery": {
+      "title": "Gallery",
+      "subtitle": "Manage gallery images, flyers, and events",
+      "editTitle": "Edit Image",
+      "addTitle": "Add New Image",
+      "titleLabel": "Title",
+      "descLabel": "Description",
+      "categoryLabel": "Category",
+      "categoryPlaceholder": "Select a category",
+      "category": {
+        "flyer": "Flyer",
+        "event": "Event",
+        "project": "Project",
+        "company": "Company",
+        "other": "Other"
+      },
+      "sortLabel": "Sort Order",
+      "imageLabel": "Image",
+      "uploaded": "Image uploaded",
+      "updateBtn": "Update",
+      "addBtn": "Add Image",
+      "listTitle": "Gallery Images",
+      "noImages": "No images yet. Upload your first image above."
+    },
     "newsletter": {
       "title": "Newsletter",
       "subscribers": "Subscribers"
