@@ -49,6 +49,7 @@
     "adminDashboard": "Tableau de bord",
     "sourcing": "Services de Sourcing",
     "products": "Produits",
+    "gallery": "Galerie",
     "propertiesDescription": "Voir nos propriétés disponibles",
     "productsDescription": "Voir nos produits disponibles"
   },
@@ -252,6 +253,12 @@
     "ctaTitle": "Rejoignez Notre Équipe",
     "ctaText": "Nous sommes toujours à la recherche de professionnels talentueux pour rejoindre notre équipe croissante. Découvrez nos opportunités de carrière.",
     "viewCareers": "Voir les Carrieres"
+  },
+  "gallery": {
+    "title": "Notre Galerie",
+    "subtitle": "Dépliants, événements, projets et moments de Paraysco Consulting",
+    "noImages": "Les images de la galerie arrivent bientôt",
+    "lightboxClose": "Fermer l'aperçu"
   },
   "testimonials": {
     "title": "Ce Que Disent Nos Clients",
@@ -655,6 +662,10 @@
     "team": {
       "title": "Notre Équipe | Paraysco Consulting",
       "description": "Rencontrez les professionnels dévoués derrière le succès de Paraysco Consulting en immobilier, ingénierie, construction et conseil aux entreprises en Afrique."
+    },
+    "gallery": {
+      "title": "Galerie | Paraysco Consulting",
+      "description": "Parcourez les photos, dépliants, événements et projets de Paraysco Consulting. La galerie de l'entreprise présente notre travail à travers l'Afrique."
     },
     "careers": {
       "title": "Carrières | Paraysco Consulting",

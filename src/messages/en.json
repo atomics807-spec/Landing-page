@@ -49,6 +49,7 @@
     "adminDashboard": "Dashboard",
     "sourcing": "Sourcing Services",
     "products": "Products",
+    "gallery": "Gallery",
     "propertiesDescription": "View our available properties",
     "productsDescription": "View our available products"
   },
@@ -252,6 +253,12 @@
     "ctaTitle": "Join Our Team",
     "ctaText": "We are always looking for talented professionals to join our growing team. Check out our career opportunities.",
     "viewCareers": "View Careers"
+  },
+  "gallery": {
+    "title": "Our Gallery",
+    "subtitle": "Flyers, events, projects, and moments from Paraysco Consulting",
+    "noImages": "Gallery images coming soon",
+    "lightboxClose": "Close preview"
   },
   "testimonials": {
     "title": "What Our Clients Say",
@@ -655,6 +662,10 @@
     "team": {
       "title": "Our Team | Paraysco Consulting",
       "description": "Meet the dedicated professionals behind Paraysco Consulting's success across real estate, engineering, construction, and business consultancy in Africa."
+    },
+    "gallery": {
+      "title": "Gallery | Paraysco Consulting",
+      "description": "Browse photos, flyers, events, and projects from Paraysco Consulting. Company gallery showing our work across Africa."
     },
     "careers": {
       "title": "Careers | Paraysco Consulting",

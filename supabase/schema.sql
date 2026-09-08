@@ -317,6 +317,25 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at);
 
 -- =====================================================
+-- GALLERY TABLE (Gallery/Media Showcase)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS gallery_images (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    description TEXT,
+    category TEXT DEFAULT 'flyer',
+    image_url TEXT NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    sort_order INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_gallery_active ON gallery_images(is_active);
+CREATE INDEX IF NOT EXISTS idx_gallery_category ON gallery_images(category);
+CREATE INDEX IF NOT EXISTS idx_gallery_sort ON gallery_images(sort_order);
+
+-- =====================================================
 -- ROW LEVEL SECURITY (RLS)
 -- =====================================================
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
@@ -335,6 +354,7 @@ ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE careers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE gallery_images ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies for clean re-run
 DROP POLICY IF EXISTS "Users can view own profile" ON users;
@@ -362,6 +382,8 @@ DROP POLICY IF EXISTS "Admins can manage careers" ON careers;
 DROP POLICY IF EXISTS "Admins can manage contact messages" ON contact_messages;
 DROP POLICY IF EXISTS "Admins can view audit logs" ON audit_logs;
 DROP POLICY IF EXISTS "Admins can insert audit logs" ON audit_logs;
+DROP POLICY IF EXISTS "Anyone can view active gallery" ON gallery_images;
+DROP POLICY IF EXISTS "Admins can manage gallery" ON gallery_images;
 
 -- Helper function to check if user is admin
 CREATE OR REPLACE FUNCTION is_admin()
@@ -440,6 +462,10 @@ CREATE POLICY "Admins can manage contact messages" ON contact_messages FOR ALL U
 CREATE POLICY "Admins can view audit logs" ON audit_logs FOR SELECT USING (is_admin());
 CREATE POLICY "Admins can insert audit logs" ON audit_logs FOR INSERT WITH CHECK (is_admin());
 
+-- ============== GALLERY POLICIES ==============
+CREATE POLICY "Anyone can view active gallery" ON gallery_images FOR SELECT USING (is_active = TRUE OR is_admin());
+CREATE POLICY "Admins can manage gallery" ON gallery_images FOR ALL USING (is_admin());
+
 -- =====================================================
 -- FUNCTIONS AND TRIGGERS
 -- =====================================================
@@ -465,6 +491,7 @@ CREATE OR REPLACE TRIGGER update_faqs_updated_at BEFORE UPDATE ON faqs FOR EACH 
 CREATE OR REPLACE TRIGGER update_reviews_updated_at BEFORE UPDATE ON reviews FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE OR REPLACE TRIGGER update_blog_posts_updated_at BEFORE UPDATE ON blog_posts FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE OR REPLACE TRIGGER update_careers_updated_at BEFORE UPDATE ON careers FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE OR REPLACE TRIGGER update_gallery_updated_at BEFORE UPDATE ON gallery_images FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- =====================================================
 -- ADMIN USER CREATION

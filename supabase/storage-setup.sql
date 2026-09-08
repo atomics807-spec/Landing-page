@@ -13,6 +13,11 @@ INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 VALUES ('media', 'media', true, 10485760, ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
 ON CONFLICT (id) DO UPDATE SET public = true, file_size_limit = 10485760;
 
+-- Create the gallery bucket (for gallery/flyer images)
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES ('gallery', 'gallery', true, 15728640, ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+ON CONFLICT (id) DO UPDATE SET public = true, file_size_limit = 15728640;
+
 -- =====================================================
 -- STORAGE POLICIES FOR 'images' BUCKET
 -- =====================================================
@@ -55,6 +60,30 @@ FOR SELECT USING (bucket_id = 'media');
 -- Uploads require an authenticated admin session (see notes above).
 CREATE POLICY "Admins can upload to media" ON storage.objects
 FOR INSERT WITH CHECK (bucket_id = 'media' AND EXISTS (
+    SELECT 1 FROM admins WHERE admins.user_id = auth.uid()
+));
+
+-- =====================================================
+-- STORAGE POLICIES FOR 'gallery' BUCKET
+-- =====================================================
+
+DROP POLICY IF EXISTS "Public can view gallery bucket" ON storage.objects;
+DROP POLICY IF EXISTS "Admins can upload to gallery" ON storage.objects;
+DROP POLICY IF EXISTS "Admins can manage gallery bucket" ON storage.objects;
+
+-- Allow anyone to view gallery images
+CREATE POLICY "Public can view gallery bucket" ON storage.objects
+FOR SELECT USING (bucket_id = 'gallery');
+
+-- Uploads require an authenticated admin session (see notes above).
+CREATE POLICY "Admins can upload to gallery" ON storage.objects
+FOR INSERT WITH CHECK (bucket_id = 'gallery' AND EXISTS (
+    SELECT 1 FROM admins WHERE admins.user_id = auth.uid()
+));
+
+-- Allow admins to manage gallery images
+CREATE POLICY "Admins can manage gallery bucket" ON storage.objects
+FOR ALL USING (bucket_id = 'gallery' AND EXISTS (
     SELECT 1 FROM admins WHERE admins.user_id = auth.uid()
 ));
 

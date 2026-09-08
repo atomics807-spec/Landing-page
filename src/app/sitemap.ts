@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/sourcing',
     '/consultants',
     '/team',
+    '/gallery',
     '/careers',
     '/contact',
     '/terms',

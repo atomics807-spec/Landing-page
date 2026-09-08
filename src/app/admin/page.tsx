@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Users, Building2, Mail, FileText, Briefcase } from 'lucide-react';
+import { Users, Building2, Mail, FileText, Briefcase, Images } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { createClient } from '@/lib/supabase/client';
 
@@ -14,7 +14,7 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     const supabase = createClient();
-    const tables = ['users', 'properties', 'newsletter_subscribers', 'newsletters', 'team_members', 'consultants'];
+    const tables = ['users', 'properties', 'newsletter_subscribers', 'newsletters', 'team_members', 'consultants', 'gallery_images'];
     const results: any = {};
     
     for (const table of tables) {
@@ -31,6 +31,7 @@ export default function AdminDashboard() {
     { label: 'Newsletters', count: stats.newsletters, icon: FileText, color: 'orange' },
     { label: 'Team Members', count: stats.team_members, icon: Users, color: 'indigo' },
     { label: 'Consultants', count: stats.consultants, icon: Briefcase, color: 'pink' },
+    { label: 'Gallery', count: stats.gallery_images, icon: Images, color: 'teal' },
   ];
 
   return (
