@@ -6,7 +6,7 @@ import { PWAProvider } from '@/components/providers/pwa-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import Script from 'next/script';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -273,8 +273,18 @@ export default async function RootLayout({
           </ThemeProvider>
         </PWAProvider>
         <Analytics />
-        <Analytics />
-        <GoogleAnalytics gaId="G-N83DYCXM2X" />
+        <Script
+          src="https://googletagmanager.com"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-N83DYCXM2X');
+          `}
+        </Script>
       </body>
     </html>
   );
