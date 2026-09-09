@@ -1,168 +1,94 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { Resend } from 'resend';
+
+// Initialize your email service handler via environmental parameters
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    // Require an authenticated session (contact page is login-gated)
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const body = await request.json();
+    const { name, email, phone, subject, message, propertyTitle, userLocation } = body;
 
-    const { name, email, phone, subject, message, propertyTitle, userLocation } = await request.json();
-
-    // Validate required fields
+    // 1. Basic validation check
     if (!name || !email || !subject || !message) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Missing mandatory fields configuration parameters.' },
         { status: 400 }
       );
     }
 
-    const adminEmail = process.env.ADMIN_EMAIL || 'parayscoconsulting@gmail.com';
-    const resendApiKey = process.env.RESEND_API_KEY;
+    // 2. Intelligent Routing Decision Matrix
+    // We check the subject header passed down from the client component grid to figure out the right mailbox destinations.
+    let targetAdminInbox = 'info@parayscoconsulting.com'; // Default primary fallback
+    
+    const subjectClean = subject.toLowerCase();
+    if (subjectClean.includes('support') || subjectClean.includes('technical') || subjectClean.includes('help')) {
+      targetAdminInbox = 'support@parayscoconsulting.com';
+    }
 
-    // Prepare email content
-    const emailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); padding: 20px; border-radius: 8px 8px 0 0;">
-          <h1 style="color: white; margin: 0; font-size: 24px;">New Contact Message</h1>
-          <p style="color: rgba(255,255,255,0.9); margin: 5px 0 0 0;">Paraysco Consulting Website</p>
+    // 3. Construct HTML email layout blueprint
+    const emailHtmlPayload = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
+        <h2 style="color: #1e3a8a; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px; margin-top: 0;">
+          New Contact Department Notification
+        </h2>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+          <tr>
+            <td style="padding: 6px 0; font-weight: bold; color: #4b5563; width: 130px;">Sender Name:</td>
+            <td style="padding: 6px 0; color: #111827;">${name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 0; font-weight: bold; color: #4b5563;">Sender Email:</td>
+            <td style="padding: 6px 0; color: #111827;">
+              <a href="mailto:${email}" style="color: #2563eb; text-decoration: none;">${email}</a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 0; font-weight: bold; color: #4b5563;">Phone Connection:</td>
+            <td style="padding: 6px 0; color: #111827;">${phone || 'Not provided'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 0; font-weight: bold; color: #4b5563;">Geographic Origin:</td>
+            <td style="padding: 6px 0; color: #111827;">${userLocation || 'Undetected'}</td>
+          </tr>
+          ${propertyTitle ? `
+          <tr>
+            <td style="padding: 6px 0; font-weight: bold; color: #b45309;">Linked Listing:</td>
+            <td style="padding: 6px 0; color: #b45309; font-weight: 500;">${propertyTitle}</td>
+          </tr>` : ''}
+        </table>
+
+        <div style="margin-top: 20px; padding: 15px; bg-color: #f9fafb; border-radius: 8px; border: 1px solid #f3f4f6;">
+          <h4 style="margin: 0 0 8px 0; color: #374151;">Client Message Summary:</h4>
+          <p style="margin: 0; color: #4b5563; line-height: 1.6; white-space: pre-wrap;">${message}</p>
         </div>
         
-        <div style="background: #f9fafb; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <strong style="color: #374151;">Name:</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <span style="color: #111827;">${escapeHtml(name)}</span>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <strong style="color: #374151;">Email:</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <a href="mailto:${escapeHtml(email)}" style="color: #0d9488;">${escapeHtml(email)}</a>
-              </td>
-            </tr>
-            ${phone ? `
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <strong style="color: #374151;">Phone:</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <a href="tel:${escapeHtml(phone)}" style="color: #0d9488;">${escapeHtml(phone)}</a>
-              </td>
-            </tr>
-            ` : ''}
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <strong style="color: #374151;">Subject:</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <span style="color: #111827;">${escapeHtml(subject)}</span>
-              </td>
-            </tr>
-            ${userLocation && userLocation !== 'Unknown' ? `
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <strong style="color: #374151;">Location:</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <span style="color: #6b7280;">${escapeHtml(userLocation)}</span>
-              </td>
-            </tr>
-            ` : ''}
-            ${propertyTitle ? `
-            <tr>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <strong style="color: #374151;">Property Inquiry:</strong>
-              </td>
-              <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-                <span style="color: #0d9488;">${escapeHtml(propertyTitle)}</span>
-              </td>
-            </tr>
-            ` : ''}
-          </table>
-          
-          <div style="margin-top: 24px; padding: 16px; background: white; border-radius: 6px; border: 1px solid #e5e7eb;">
-            <h3 style="margin: 0 0 12px 0; color: #374151; font-size: 16px;">Message:</h3>
-            <p style="margin: 0; color: #111827; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(message)}</p>
-          </div>
-          
-          <div style="margin-top: 24px; text-align: center;">
-            <a href="mailto:${escapeHtml(email)}?subject=Re: ${escapeHtml(subject)}" 
-               style="display: inline-block; background: #0d9488; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600;">
-              Reply to ${escapeHtml(name)}
-            </a>
-          </div>
+        <div style="margin-top: 25px; padding-t: 15px; border-t: 1px solid #e5e7eb; font-size: 11px; color: #9ca3af; text-align: center;">
+          Sent securely via Paraysco Consulting Infrastructure Ecosystem.
         </div>
-        
-        <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 16px;">
-          This message was sent from the Paraysco Consulting website contact form.
-        </p>
       </div>
     `;
 
-    // Send email using Resend API
-    if (resendApiKey) {
-      const response = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${resendApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'Paraysco Contact <onboarding@resend.dev>',
-          to: [adminEmail],
-          reply_to: email,
-          subject: `[Paraysco] New Contact: ${subject}`,
-          html: emailHtml,
-        }),
-      });
+    // 4. Send Transaction Outbound Command
+    // CRUCIAL: "from" matches your actual domain verification profile, while "reply_to" targets the customer!
+    const transactionResult = await resend.emails.send({
+      from: 'Paraysco Portal <notifications@parayscoconsulting.com>',
+      to: targetAdminInbox,
+      replyTo: email, 
+      subject: `[Portal Update] ${subject}`,
+      html: emailHtmlPayload,
+    });
 
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('Resend API error:', errorData);
-        return NextResponse.json(
-          { error: 'Failed to send email' },
-          { status: 500 }
-        );
-      }
-
-      return NextResponse.json({ success: true });
-    } else {
-      // Development mode - log the email
-      console.log('📧 Email notification (no RESEND_API_KEY configured):');
-      console.log('To:', adminEmail);
-      console.log('From:', email);
-      console.log('Subject:', subject);
-      console.log('Message:', message);
-      
-      return NextResponse.json({ 
-        success: true, 
-        message: 'Email logged (configure RESEND_API_KEY for actual sending)' 
-      });
+    if (transactionResult.error) {
+      console.error('Mail system driver runtime error response:', transactionResult.error);
+      return NextResponse.json({ error: 'Outbound relay failure.' }, { status: 500 });
     }
-  } catch (error) {
-    console.error('Contact API error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
-  }
-}
 
-function escapeHtml(text: string): string {
-  if (!text) return '';
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+    return NextResponse.json({ success: true, messageId: transactionResult.data?.id });
+
+  } catch (error) {
+    console.error('Global API boundary validation exception:', error);
+    return NextResponse.json({ error: 'Internal system fault.' }, { status: 500 });
+  }
 }
