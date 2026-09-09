@@ -282,7 +282,9 @@ export default async function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-N83DYCXM2X');
+            gtag('config', 'G-N83DYCXM2X', {
+              send_page_view: true
+            });
           `}
         </Script>
       </body>
