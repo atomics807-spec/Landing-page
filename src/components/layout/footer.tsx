@@ -31,9 +31,7 @@ export function Footer({ locale }: FooterProps) {
     { label: tNav('about'), href: `/${locale}/about` },
     { label: tNav('services'), href: `/${locale}/services` },
     { label: tNav('properties'), href: `/${locale}/properties` },
-    { label: tNav('products'), href: `/${locale}/products` },
-    { label: tNav('gallery'), href: `/${locale}/gallery` },
-    { label: tNav('blog'), href: `/${locale}/blog` },
+    { label: tNav('blog'), href: `/${locale}/blog`    },
     { label: tNav('contact'), href: `/${locale}/contact` },
   ];
 
@@ -53,24 +51,6 @@ export function Footer({ locale }: FooterProps) {
     { icon: Linkedin, href: 'https://www.linkedin.com/in/mola-scott-607760250', label: 'LinkedIn' },
   ];
 
-  const contactInfo = [
-    {
-      icon: MapPin,
-      label: t('address'),
-      value: 'Bota Middle Farms, Limbe, South West Region, Cameroon',
-    },
-    {
-      icon: Phone,
-      label: t('phone'),
-      value: '+237 676 914 581',
-    },
-    {
-      icon: Mail,
-      label: t('email'),
-      value: 'parayscoconsulting@gmail.com',
-    },
-  ];
-
   return (
     <footer className="bg-gray-900 text-gray-300">
       {/* Main Footer */}
@@ -83,9 +63,6 @@ export function Footer({ locale }: FooterProps) {
                 src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
                 alt="Paraysco Logo" 
                 className="h-12 w-12 object-contain rounded-lg"
-                width={800}
-                height={600}
-                loading="lazy"
               />
               <div>
                 <span className="font-heading text-lg font-semibold text-white">
@@ -148,15 +125,48 @@ export function Footer({ locale }: FooterProps) {
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">{t('connect')}</h3>
             <ul className="space-y-4">
-              {contactInfo.map((info) => (
-                <li key={info.label} className="flex items-start space-x-3">
-                  <info.icon className="h-5 w-5 text-primary-400 mt-0.5 flex-shrink-0" />
+              {/* Address */}
+              <li className="flex items-start space-x-3">
+                <MapPin className="h-5 w-5 text-primary-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-gray-400">{t('address')}</p>
+                  <p className="text-sm text-white">Bota Middle Farms, Limbe, South West Region, Cameroon</p>
+                </div>
+              </li>
+
+              {/* Phone */}
+              <li className="flex items-start space-x-3">
+                <Phone className="h-5 w-5 text-primary-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-gray-400">{t('phone')}</p>
+                  <p className="text-sm text-white">+237 676 914 581</p>
+                </div>
+              </li>
+
+              {/* Custom Department Emails Split */}
+              <li className="flex items-start space-x-3 border-t border-gray-800 pt-3 mt-2">
+                <Mail className="h-5 w-5 text-primary-400 mt-0.5 flex-shrink-0" />
+                <div className="space-y-2 w-full">
                   <div>
-                    <p className="text-sm text-gray-400">{info.label}</p>
-                    <p className="text-sm text-white">{info.value}</p>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">{t('generalInquiries')}</p>
+                    <a 
+                      href="mailto:info@://parayscoconsulting.com" 
+                      className="text-sm text-white hover:text-primary-400 transition-colors block break-all font-medium"
+                    >
+                      info@parayscoconsulting.com
+                    </a>
                   </div>
-                </li>
-              ))}
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">{t('clientSupport')}</p>
+                    <a 
+                      href="mailto:support@://parayscoconsulting.com" 
+                      className="text-sm text-white hover:text-primary-400 transition-colors block break-all font-medium"
+                    >
+                      support@parayscoconsulting.com
+                    </a>
+                  </div>
+                </div>
+              </li>
             </ul>
           </div>
         </div>
