@@ -6,6 +6,7 @@ import { PWAProvider } from '@/components/providers/pwa-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -272,6 +273,8 @@ export default async function RootLayout({
           </ThemeProvider>
         </PWAProvider>
         <Analytics />
+        <Analytics />
+        <GoogleAnalytics gaId="G-N83DYCXM2X" />
       </body>
     </html>
   );
