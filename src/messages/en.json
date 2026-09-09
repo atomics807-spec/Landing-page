@@ -332,7 +332,10 @@
     "legal": "Legal",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "cookies": "Cookie Policy"
+    "cookies": "Cookie Policy",
+    "contactUs": "Contact Us",
+    "generalInquiries": "General Inquiries",
+    "clientSupport": "Client Support"
   },
   "privacy": {
     "title": "Privacy Policy",
