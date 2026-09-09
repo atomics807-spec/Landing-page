@@ -39,6 +39,7 @@
     "glob": "^11.0.0",
     "lucide-react": "^0.446.0",
     "next": "^15.0.0",
+    "@vercel/speed-insights": "1.1.0",
     "next-intl": "^3.20.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
