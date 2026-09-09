@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { InteractiveMap } from '@/components/ui/map';
 import { contactFormSchema, type ContactFormData } from '@/lib/utils';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2, Briefcase, Lock, ShieldCheck } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2, Briefcase, Lock, ShieldCheck, ChevronDown } from 'lucide-react';
 import { getUserProfile } from '@/app/actions/auth';
 
 function ContactForm() {
@@ -257,7 +257,7 @@ function ContactForm() {
             </div>
           </section>
 
-          {/* Core Layout Grid */}
+          {/* Core Layout Grid: Form, Text Data, Map Panel */}
           <section id="contact-form" className="py-20 bg-white dark:bg-gray-900">
             <div className="container mx-auto px-4">
               <div className="grid lg:grid-cols-2 gap-16">
@@ -345,14 +345,25 @@ function ContactForm() {
                                   {...register('phone')}
                                 />
                               </div>
+                              
+                              {/* New Department Dropdown Component Selection Field */}
                               <div className="space-y-2">
                                 <Label htmlFor="subject">{t('form.subject')}</Label>
-                                <Input
-                                  id="subject"
-                                  placeholder="Project Inquiry"
-                                  {...register('subject')}
-                                  error={typeof errors.subject?.message === 'string' ? errors.subject.message : undefined}
-                                />
+                                <div className="relative">
+                                  <select
+                                    id="subject"
+                                    {...register('subject')}
+                                    className="w-full rounded-md border border-input bg-background pl-3 pr-10 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring appearance-none text-gray-900 dark:text-white h-10"
+                                  >
+                                    <option value="General Business Inquiry">
+                                      {tFoot('generalInquiries')} (info@)
+                                    </option>
+                                    <option value="Operations & Support Request">
+                                      {tFoot('clientSupport')} (support@)
+                                    </option>
+                                  </select>
+                                  <ChevronDown className="absolute right-3 top-3.5 h-4 w-4 opacity-50 pointer-events-none" />
+                                </div>
                                 {errors.subject && typeof errors.subject.message === 'string' && (
                                   <p className="text-sm text-red-500">{errors.subject.message}</p>
                                 )}
@@ -393,34 +404,50 @@ function ContactForm() {
                   </Card>
                 </motion.div>
 
-                {/* Contact Info */}
+                {/* Contact Info Details Panel */}
                 <motion.div
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8 }}
                   className="space-y-8"
                 >
+                  {/* Contact Info Cards */}
                   <div className="space-y-6">
                     {contactInfo.map((info) => (
-                      <div key={info.label} className="flex items-start space-x-4">
+                      <div
+                        key={info.label}
+                        className="flex items-start space-x-4"
+                      >
                         <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
                           <info.icon className="w-6 h-6 text-primary-600" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900 dark:text-white">{info.label}</p>
+                          <p className="font-medium text-gray-900 dark:text-white">
+                            {info.label}
+                          </p>
                           <p className="text-gray-600 dark:text-gray-300">{info.value}</p>
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  <Button size="lg" className="w-full bg-green-500 hover:bg-green-600" asChild>
-                    <a href="https://wa.me/237676914581" target="_blank" rel="noopener noreferrer">
+                  {/* WhatsApp Interactive Button */}
+                  <Button
+                    size="lg"
+                    className="w-full bg-green-500 hover:bg-green-600"
+                    asChild
+                  >
+                    <a
+                      href="https://wa.me/237676914581"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <MessageCircle className="mr-2 h-5 w-5" />
                       Chat on WhatsApp
                     </a>
                   </Button>
 
+                  {/* Interactive Map Block */}
                   <Card>
                     <CardContent className="p-0 overflow-hidden rounded-xl">
                       <div className="aspect-video">
