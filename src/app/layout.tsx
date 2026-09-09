@@ -5,8 +5,9 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { PWAProvider } from '@/components/providers/pwa-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Analytics } from '@vercel/analytics/next';
-import './globals.css';
 import Script from 'next/script';
+import './globals.css';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -273,6 +274,7 @@ export default async function RootLayout({
           </ThemeProvider>
         </PWAProvider>
         <Analytics />
+        <SpeedInsights />
         <Script
           src="https://googletagmanager.com"
           strategy="afterInteractive"
