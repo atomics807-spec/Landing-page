@@ -332,7 +332,10 @@
     "legal": "Mentions Légales",
     "privacy": "Politique de Confidentialité",
     "terms": "Conditions d'Utilisation",
-    "cookies": "Politique des Cookies"
+    "cookies": "Politique des Cookies",
+    "contactUs": "Contactez-nous",
+    "generalInquiries": "Demandes Générales",
+    "clientSupport": "Support Client"
   },
   "privacy": {
     "title": "Politique de Confidentialité",
