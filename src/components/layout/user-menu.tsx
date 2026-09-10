@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, LogOut, Settings, ChevronDown, Loader2 } from 'lucide-react';
+import { User, LogOut, Settings, LayoutDashboard, ChevronDown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase/client';
 
@@ -16,14 +16,19 @@ export function UserMenu({ locale }: { locale: string }) {
   const loadUser = useCallback(async () => {
     setIsLoading(true);
     const supabase = createClient();
+    const { data: { user: authUser } } = await supabase.auth.getUser();
     
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (session?.user) {
+    if (authUser) {
+      const { data: profile } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', authUser.id)
+        .single();
       setUser({
-        ...session.user,
-        full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
-        email: session.user.email,
+        ...authUser,
+        full_name: authUser.user_metadata?.full_name || authUser.email?.split('@')[0],
+        email: authUser.email,
+        role: profile?.role || authUser.user_metadata?.role || 'user',
       });
     } else {
       setUser(null);
@@ -37,14 +42,12 @@ export function UserMenu({ locale }: { locale: string }) {
     // Listen for auth state changes
     const supabase = createClient();
     
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event);
-      
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_OUT') {
         setUser(null);
       }
       
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
         loadUser();
       }
     });
@@ -165,8 +168,20 @@ export function UserMenu({ locale }: { locale: string }) {
                   <User className="w-4 h-4 text-gray-400" />
                   <span className="text-sm text-gray-700 dark:text-gray-200">My Profile</span>
                 </Link>
+
+                {user?.role === 'admin' && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <LayoutDashboard className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-700 dark:text-gray-200">Dashboard</span>
+                  </Link>
+                )}
+
                 <Link
-                  href={`/${locale}/profile`}
+                  href={`/${locale}/profile#settings`}
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >

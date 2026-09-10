@@ -171,7 +171,7 @@ export function Header({ locale }: HeaderProps) {
                           onClick={() => setIsPropertiesDropdownOpen(!isPropertiesDropdownOpen)}
                           onMouseEnter={() => setIsPropertiesDropdownOpen(true)}
                           className={cn(
-                            'flex items-center gap-1.5 px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px]',
+                            'flex items-center gap-1.5 px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
                             isPropertiesDropdownOpen
                               ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                               : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
@@ -223,7 +223,7 @@ export function Header({ locale }: HeaderProps) {
                       <Link
                         href={item.href}
                         className={cn(
-                          'flex items-center px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px]',
+                          'flex items-center px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
                           pathname === item.href
                             ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-300'
                             : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'

@@ -109,7 +109,12 @@ export default function ProfilePage() {
     if (error) {
       setMessage({ type: 'error', text: 'Failed to update profile' });
     } else {
+      // Keep auth metadata in sync so the site header/usermenu pick up the new name
+      await supabase.auth.updateUser({
+        data: { full_name: profileData.full_name }
+      });
       setMessage({ type: 'success', text: 'Profile updated successfully!' });
+      fetchUserProfile();
     }
     setIsSaving(false);
     setTimeout(() => setMessage(null), 3000);
