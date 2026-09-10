@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   const title = post.title;
  const description = post.excerpt || post.content?.slice(0, 160) || '';
+  const postImage = post.cover_image || post.image_url;
 
   return {
     title,
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       description,
       type: 'article',
       url: absoluteUrl(`/${locale}/blog/${slug}`),
-      images: post.image_url ? [{ url: post.image_url }] : undefined,
+      images: postImage ? [{ url: postImage }] : undefined,
       publishedTime: post.published_at || undefined,
       authors: post.author_name ? [post.author_name] : undefined,
     },
@@ -56,12 +57,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const post = await getPost(slug);
  if (!post) notFound();
 
+  const schemaImage = post.cover_image || post.image_url;
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
     description: post.excerpt || post.content?.slice(0, 160) || '',
-    image: post.image_url || undefined,
+    image: schemaImage || undefined,
     datePublished: post.published_at || post.created_at,
     dateModified: post.published_at || post.created_at,
     author: {

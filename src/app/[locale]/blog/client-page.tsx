@@ -17,7 +17,8 @@ interface BlogPost {
   title: string;
   content: string;
   excerpt: string;
-  image_url: string | null;
+  cover_image?: string | null;
+  image_url?: string | null;
   author_name: string;
   is_published: boolean;
   published_at: string | null;
@@ -163,9 +164,9 @@ export default function BlogClientPage() {
                   <Link href={`/${locale}/blog/${post.id}`}>
                     <Card className="h-full overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
                       <div className="aspect-[16/9] bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 relative">
-                        {post.image_url ? (
+                        {post.cover_image || post.image_url ? (
                           <img
-                            src={post.image_url}
+                            src={post.cover_image || post.image_url || ''}
                             alt={post.title}
                             className="w-full h-full object-cover"
                             width={800}

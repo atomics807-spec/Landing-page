@@ -84,8 +84,13 @@ export default function BlogPage() {
   const handleSave = async () => {
     setIsSaving(true);
     const supabase = createClient();
-    const slug = formData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-    
+    const rawSlug = formData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const slug = rawSlug || `post-${Date.now()}`;
+
+    // NOTE: the newsletters table defines `cover_image`; `image_url` does not
+    // exist in the schema and PostgREST rejects inserts containing it with a
+    // 400, so we only persist the canonical column.
+
     const postData = {
       title: formData.title,
       slug: editingPost?.slug || slug,
@@ -93,23 +98,30 @@ export default function BlogPage() {
       content: formData.content,
       category: formData.category,
       cover_image: formData.cover_image,
-      image_url: formData.cover_image,
       author_name: formData.author_name || 'Paraysco Team',
       is_published: formData.is_published,
       published_at: formData.is_published ? new Date().toISOString() : null,
     };
 
-    if (editingPost) {
-      await supabase.from('newsletters').update(postData).eq('id', editingPost.id);
-    } else {
-      await supabase.from('newsletters').insert(postData);
-    }
+    try {
+      if (editingPost) {
+        const { error } = await supabase.from('newsletters').update(postData).eq('id', editingPost.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from('newsletters').insert(postData);
+        if (error) throw error;
+      }
 
-    setShowModal(false);
-    setEditingPost(null);
-    setFormData({ title: '', excerpt: '', content: '', category: '', cover_image: '', author_name: 'Paraysco Team', is_published: false });
-    fetchNewsletters();
-    setIsSaving(false);
+      setShowModal(false);
+      setEditingPost(null);
+      setFormData({ title: '', excerpt: '', content: '', category: '', cover_image: '', author_name: 'Paraysco Team', is_published: false });
+      fetchNewsletters();
+    } catch (err) {
+      console.error('Failed to save newsletter:', err);
+      alert(err instanceof Error ? err.message : 'Failed to save post. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleEdit = (post: Newsletter) => {

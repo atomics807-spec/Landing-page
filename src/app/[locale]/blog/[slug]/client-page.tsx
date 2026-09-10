@@ -15,7 +15,8 @@ interface BlogPost {
   title: string;
   content: string;
   excerpt: string;
-  image_url: string | null;
+  cover_image?: string | null;
+  image_url?: string | null;
   author_name: string;
   is_published: boolean;
   published_at: string | null;
@@ -129,10 +130,10 @@ export default function BlogPostClientPage() {
       <section className="py-12 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <motion.article initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="max-w-3xl mx-auto">
-            {post.image_url && (
+            {(post.cover_image || post.image_url) && (
               <div className="rounded-xl mb-8 overflow-hidden">
                 <img
-                  src={post.image_url}
+                  src={post.cover_image || post.image_url || ''}
                   alt={post.title}
                   width={1200}
                   height={630}
