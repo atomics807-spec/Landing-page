@@ -139,7 +139,7 @@ export function Header({ locale }: HeaderProps) {
 
       {/* Main Header - Full Width */}
       <div className="w-full">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-6 2xl:px-8">
           <div className="flex items-center justify-between h-16">
             
             {/* Left Section - Logo & Brand */}
@@ -156,7 +156,7 @@ export function Header({ locale }: HeaderProps) {
                 fetchPriority="high"
                 className="h-9 w-9 sm:h-10 sm:w-10 object-contain rounded-lg flex-shrink-0"
               />
-              <span className="font-heading text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap hidden sm:inline xl:hidden">
+              <span className="font-heading text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap hidden sm:inline">
                 PARAYSCO CONSULTING
               </span>
             </Link>
@@ -164,15 +164,18 @@ export function Header({ locale }: HeaderProps) {
             {/* Center Section - Desktop Navigation */}
             <nav className="hidden xl:flex items-center justify-center flex-1 mx-1.5">
               <div className="flex items-center xl:gap-0.5">
-                {navItems.map((item) => (
-                  <div key={item.label} className="relative" ref={item.isDropdown ? propertiesDropdownRef : undefined}>
+                {navItems.map((item) => {
+                  const segment = item.href.split('/').pop() ?? '';
+                  const isExtended = ['sourcing', 'team', 'gallery', 'blog'].includes(segment);
+                  return (
+                  <div key={item.label} className={cn('relative', isExtended && 'hidden 2xl:flex')} ref={item.isDropdown ? propertiesDropdownRef : undefined}>
                     {item.isDropdown ? (
                       <>
                         <button
                           onClick={() => setIsPropertiesDropdownOpen(!isPropertiesDropdownOpen)}
                           onMouseEnter={() => setIsPropertiesDropdownOpen(true)}
                           className={cn(
-                            'flex items-center gap-1.5 px-2.5 xl:px-2 2xl:px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
+                            'flex items-center gap-1.5 px-2.5 xl:px-1.5 2xl:px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
                             isPropertiesDropdownOpen
                               ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                               : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
@@ -224,7 +227,7 @@ export function Header({ locale }: HeaderProps) {
                       <Link
                         href={item.href}
                         className={cn(
-                          'flex items-center px-2.5 xl:px-2 2xl:px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
+                          'flex items-center px-2.5 xl:px-1.5 2xl:px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
                           pathname === item.href
                             ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-300'
                             : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
@@ -234,7 +237,8 @@ export function Header({ locale }: HeaderProps) {
                       </Link>
                     )}
                   </div>
-                ))}
+                );
+                })}
               </div>
             </nav>
 
@@ -304,10 +308,10 @@ export function Header({ locale }: HeaderProps) {
               {/* User Menu / Login — keep it visible even when the install button is shown */}
               <UserMenu locale={locale} />
 
-              {/* Mobile Menu Button */}
+              {/* Mobile Menu Button — visible until 2xl where the extended nav items return */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="xl:hidden p-2.5 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="2xl:hidden p-2.5 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Toggle menu"
               >
                 {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -324,7 +328,7 @@ export function Header({ locale }: HeaderProps) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="xl:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden"
+            className="2xl:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden"
           >
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 space-y-1">
               {navItems.map((item) => (
