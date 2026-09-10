@@ -12,6 +12,7 @@ import {
   Moon,
   Globe,
   ChevronDown,
+  Download,
   Building2,
   Users,
   Briefcase,
@@ -155,14 +156,14 @@ export function Header({ locale }: HeaderProps) {
                 fetchPriority="high"
                 className="h-9 w-9 sm:h-10 sm:w-10 object-contain rounded-lg flex-shrink-0"
               />
-              <span className="font-heading text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap hidden lg:inline">
+              <span className="font-heading text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap hidden sm:inline xl:hidden">
                 PARAYSCO CONSULTING
               </span>
             </Link>
 
             {/* Center Section - Desktop Navigation */}
-            <nav className="hidden xl:flex items-center justify-center flex-1 mx-4">
-              <div className="flex items-center gap-0.5">
+            <nav className="hidden xl:flex items-center justify-center flex-1 mx-1.5">
+              <div className="flex items-center xl:gap-0.5">
                 {navItems.map((item) => (
                   <div key={item.label} className="relative" ref={item.isDropdown ? propertiesDropdownRef : undefined}>
                     {item.isDropdown ? (
@@ -171,7 +172,7 @@ export function Header({ locale }: HeaderProps) {
                           onClick={() => setIsPropertiesDropdownOpen(!isPropertiesDropdownOpen)}
                           onMouseEnter={() => setIsPropertiesDropdownOpen(true)}
                           className={cn(
-                            'flex items-center gap-1.5 px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
+                            'flex items-center gap-1.5 px-2.5 xl:px-2 2xl:px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
                             isPropertiesDropdownOpen
                               ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                               : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
@@ -223,7 +224,7 @@ export function Header({ locale }: HeaderProps) {
                       <Link
                         href={item.href}
                         className={cn(
-                          'flex items-center px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
+                          'flex items-center px-2.5 xl:px-2 2xl:px-2.5 py-2 text-sm font-medium rounded-lg transition-colors min-h-[44px] whitespace-nowrap',
                           pathname === item.href
                             ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-300'
                             : 'text-gray-600 hover:bg-gray-50 hover:text-primary-600 dark:text-gray-300 dark:hover:bg-gray-800'
@@ -238,12 +239,12 @@ export function Header({ locale }: HeaderProps) {
             </nav>
 
             {/* Right Section - Actions */}
-            <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
+            <div className="flex items-center xl:gap-0.5 gap-1 flex-shrink-0">
               {/* Language Switcher */}
               <div className="relative">
                 <button
                   onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                  className="flex items-center gap-1.5 px-2 sm:px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 min-h-[44px]"
+                  className="flex items-center gap-1.5 px-1.5 sm:px-2 lg:px-3 py-2 text-sm font-medium text-gray-600 hover:text-primary-600 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 min-h-[44px]"
                   aria-label="Switch language"
                 >
                   <Globe className="h-4 w-4" />
@@ -292,9 +293,15 @@ export function Header({ locale }: HeaderProps) {
                 variant="outline"
                 size="sm"
                 className="hidden sm:inline-flex"
-              />
+              >
+                <Download className="h-4 w-4" />
+                <span className="hidden md:inline ml-2">Install App</span>
+              </InstallAppButton>
 
-              {/* User Menu / Login */}
+              {/* Spacer so the profile menu never hugs the install button */}
+              <div className="hidden sm:block w-px" aria-hidden="true" />
+
+              {/* User Menu / Login — keep it visible even when the install button is shown */}
               <UserMenu locale={locale} />
 
               {/* Mobile Menu Button */}
