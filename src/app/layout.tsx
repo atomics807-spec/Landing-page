@@ -8,6 +8,7 @@ import { Analytics } from '@vercel/analytics/next';
 import Script from 'next/script';
 import './globals.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { getSiteUrl } from '@/lib/seo';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -19,7 +20,7 @@ const playfair = Playfair_Display({
   variable: '--font-playfair',
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://parayscoconsulting.com';
+const baseUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

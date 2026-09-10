@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
-import { absoluteUrl, buildHreflang } from '@/lib/seo';
+import { absoluteUrl, buildHreflang, getSiteUrl } from '@/lib/seo';
 import BlogPostClientPage from './client-page';
 
 interface BlogPostPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://parayscoconsulting.com';
+const baseUrl = getSiteUrl();
 
 async function getPost(slug: string) {
   const supabase = await createClient();

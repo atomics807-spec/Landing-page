@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
-import { absoluteUrl, buildHreflang } from '@/lib/seo';
+import { absoluteUrl, buildHreflang, getSiteUrl } from '@/lib/seo';
 import PropertyDetailClientPage from './client-page';
 
 interface PropertyDetailPageProps {
   params: Promise<{ locale: string; id: string }>;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://parayscoconsulting.com';
+const baseUrl = getSiteUrl();
 
 async function getProperty(id: string) {
   const supabase = await createClient();

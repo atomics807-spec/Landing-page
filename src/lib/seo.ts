@@ -1,7 +1,16 @@
 import type { Metadata } from 'next';
 
 const siteName = 'Paraysco Consulting';
-const defaultUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://parayscoconsulting.com';
+
+/** Production canonical host. Overridden by NEXT_PUBLIC_APP_URL when set (e.g. local dev. */
+export const DEFAULT_SITE_URL = 'https://www.parayscoconsulting.com';
+
+/** Resolve the canonical site URL (no trailing slash. */
+export function getSiteUrl(): string {
+  return (process.env.NEXT_PUBLIC_APP_URL || DEFAULT_SITE_URL).replace(/\/+$/, '');
+}
+
+const defaultUrl = getSiteUrl();
 
 export function absoluteUrl(path: string) {
   return new URL(path, defaultUrl).toString().replace(/\/$/, '');
