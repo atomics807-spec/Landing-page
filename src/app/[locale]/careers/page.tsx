@@ -45,7 +45,7 @@ export default async function CareersPage({ params }: CareersPageProps) {
       id: '1',
       title: 'Senior Real Estate Consultant',
       department: 'Real Estate',
-      location: 'Lagos, Nigeria',
+      location: 'Remote',
       type: 'Full-time',
       description: 'We are looking for an experienced real estate consultant to join our team and provide expert advice to clients.',
       requirements: [
@@ -59,7 +59,7 @@ export default async function CareersPage({ params }: CareersPageProps) {
       id: '2',
       title: 'Civil Engineer',
       department: 'Engineering',
-      location: 'Remote',
+      location: 'Cameroon',
       type: 'Full-time',
       description: 'Join our engineering team to work on infrastructure projects across Africa.',
       requirements: [
@@ -73,7 +73,7 @@ export default async function CareersPage({ params }: CareersPageProps) {
       id: '3',
       title: 'Project Manager',
       department: 'Construction',
-      location: 'Lagos, Nigeria',
+      location: 'Cameroon',
       type: 'Full-time',
       description: 'Lead construction projects from planning to completion.',
       requirements: [
