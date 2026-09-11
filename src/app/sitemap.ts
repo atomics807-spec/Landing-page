@@ -10,19 +10,18 @@ import { locales } from '@/i18n';
  */
 export const dynamic = 'force-dynamic';
 
-// Static, always-indexable localized routes.
+// Routes that are always emitted, under every locale. Never include pages that are
+// noindexed, redirect, or non-canonical. Collection pages backed by Supabase
+// (products, team, consultants, gallery) are emitted dynamically instead, so
+// they don't appear twice with differing lastmod signals.
 
 const staticRoutes = [
   '',
   '/about',
   '/services',
   '/properties',
-  '/products',
   '/blog',
   '/sourcing',
-  '/consultants',
-  '/team',
-  '/gallery',
   '/careers',
   '/contact',
   '/terms',
@@ -119,23 +118,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Static pages, always indexable under every locale with reciprocal hreflang.
 
+  // Google's 2026 guidance (Gary Illyes): an inaccurate lastmod erodes trust in
+  // the whole sitemap — worse than omitting it. These pages emit no lastmod since
+  // their content has no persisted modification timestamp (they'd otherwise roll with
+  // every request).
+
   for (const route of staticRoutes) {
     for (const locale of locales) {
       entries.push({
         url: `${baseUrl}/${locale}${route}`,
-        lastModified: new Date(),
         alternates: localeAlternates(baseUrl, route),
       });
     }
   }
 
-  // Dynamic collection listing pages (freshness = newest record in the set).
+  // DB-backed collection listing pages. The static list excluded these routes so they
+  // appear exactly once; lastmod carries the newest record's updated_at when the
+  // data fetch succeeds, and is omitted entirely otherwise (per Google's 2026
+  // hygiene guidance — no fabrication).
 
   const collections: CollectionMeta[] = [
-    ...dynamic.products,
-    ...dynamic.teams,
-    ...dynamic.consultants,
-    ...dynamic.gallery,
+    { path: '/products', updatedAt: dynamic.products[0]?.updatedAt },
+    { path: '/team', updatedAt: dynamic.teams[0]?.updatedAt },
+    { path: '/consultants', updatedAt: dynamic.consultants[0]?.updatedAt },
+    { path: '/gallery', updatedAt: dynamic.gallery[0]?.updatedAt },
   ];
 
   for (const collection of collections) {
