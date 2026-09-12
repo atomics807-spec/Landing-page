@@ -19,7 +19,7 @@ async function getPost(slug: string) {
     .eq('id', slug)
     .eq('is_published', true)
     .single();
-  return data;
+  return Array.isArray(data) ? (data[0] ?? null) : data;
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
@@ -61,19 +61,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt || post.content?.slice(0, 160) || '',
     image: schemaImage || undefined,
     datePublished: post.published_at || post.created_at,
-    dateModified: post.published_at || post.created_at,
+    dateModified: post.updated_at || post.published_at || post.created_at,
     author: {
       '@type': 'Person',
       name: post.author_name || 'Paraysco Consulting',
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Paraysco Consulting',
+      '@id': `${baseUrl}/#organization`,
+      name: 'Paraysco Consulting Inc.',
       logo: {
         '@type': 'ImageObject',
         url: `${baseUrl}/logo.png`,

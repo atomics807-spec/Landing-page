@@ -18,7 +18,7 @@ async function getProperty(id: string) {
     .select('*')
     .eq('id', id)
     .single();
-  return data;
+  return Array.isArray(data) ? (data[0] ?? null) : data;
 }
 
 export async function generateMetadata({ params }: PropertyDetailPageProps): Promise<Metadata> {
@@ -54,18 +54,24 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   const property = await getProperty(id);
  if (!property) notFound();
 
+  const schemaType = property.property_type === 'residential' ? 'SingleFamilyResidence' : 'RealEstateListing';
+  const propertyStatus = property.status === 'sold' ? 'Sold' : property.status === 'rented' ? 'For Rent' : 'For Sale';
+
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
+    '@type': schemaType,
     name: property.title,
     description: property.description?.slice(0, 300) || property.title,
     image: property.images?.[0] ? property.images : undefined,
+    datePosted: property.created_at || undefined,
     offers: {
       '@type': 'Offer',
-      price: property.price,
+      price: Number(property.price),
       priceCurrency: property.currency || 'USD',
       availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/UsedCondition',
       url: absoluteUrl(`/${locale}/properties/${id}`),
+      ...(propertyStatus ? { name: propertyStatus } : {}),
     },
   };
 
