@@ -123,6 +123,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // their content has no persisted modification timestamp (they'd otherwise roll with
   // every request).
 
+    // ==========================================
+  // CRITICAL FIX: Inject Naked Root Domain Page Entry
+  // ==========================================
+  entries.push({
+    url: `${baseUrl}`, // Emits the clean main homepage: https://parayscoconsulting.com
+    alternates: {
+      languages: {
+        en: `${baseUrl}/en`,
+        fr: `${baseUrl}/fr`,
+        'x-default': `${baseUrl}/en`, // Tells Google to fallback to English globally
+      },
+    },
+  });
+
   for (const route of staticRoutes) {
     for (const locale of locales) {
       entries.push({
