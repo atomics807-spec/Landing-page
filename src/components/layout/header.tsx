@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import {
@@ -146,13 +147,13 @@ export function Header({ locale }: HeaderProps) {
               href={`/${locale}`} 
               className="flex items-center gap-2 sm:gap-3 flex-shrink-0 min-w-0"
             >
-              <img 
-                src="/logo.png" 
-                alt="Paraysco Logo" 
+              <Image
+                src="/logo.png"
+                alt="Paraysco Consulting"
                 width={40}
                 height={40}
-                loading="eager"
-                fetchPriority="high"
+                priority
+                sizes="40px"
                 className="h-9 w-9 sm:h-10 sm:w-10 object-contain rounded-lg flex-shrink-0"
               />
               <span className="font-heading text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap hidden sm:inline">

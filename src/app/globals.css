@@ -231,3 +231,81 @@ html {
     animation: none;
   }
 }
+
+/* Cookie banner entrance — native CSS, no animation runtime, and only ever
+   runs after the page has loaded (the banner itself mounts post-load). */
+@keyframes pci-cookie-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pci-cookie-in {
+  animation: pci-cookie-in 0.25s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pci-cookie-in {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal for below-the-fold sections.
+
+   Replaces Framer Motion's whileInView. Kept as a CSS transition toggled by an
+   IntersectionObserver class so the animation library never has to ship in the
+   initial bundle (it was ~112 KB and delayed hydration past the LCP).
+--------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+.reveal-up { transform: translate3d(0, 24px, 0); }
+.reveal-left { transform: translate3d(-24px, 0, 0); }
+.reveal-right { transform: translate3d(24px, 0, 0); }
+.reveal-scale { transform: scale(0.92); }
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Header user-menu dropdown entrance (was a Framer Motion spring). */
+@keyframes pci-dropdown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-dropdown {
+  animation: pci-dropdown 0.2s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-dropdown {
+    animation: none;
+  }
+}

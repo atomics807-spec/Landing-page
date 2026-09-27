@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { Reveal } from '@/components/ui/reveal';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -69,13 +69,7 @@ export function NewsletterSection() {
   return (
     <section className="py-20 bg-gray-900 dark:bg-gray-950">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="max-w-2xl mx-auto text-center"
-        >
+        <Reveal variant="up" className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
             {t('title')}
           </h2>
@@ -84,14 +78,10 @@ export function NewsletterSection() {
           </p>
 
           {status === 'success' ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center justify-center space-x-2 text-green-400"
-            >
+            <Reveal variant="scale" className="flex items-center justify-center space-x-2 text-green-400">
               <CheckCircle className="w-6 h-6" />
               <span className="text-lg">{message}</span>
-            </motion.div>
+            </Reveal>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <Input
@@ -118,7 +108,7 @@ export function NewsletterSection() {
           {status === 'error' && (
             <p className="mt-4 text-red-400">{message}</p>
           )}
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

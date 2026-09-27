@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -142,9 +143,12 @@ export default function RegisterPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <Link href={`/${locale}`} className="inline-flex items-center space-x-2 mb-6">
-              <img 
-                src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
-                alt="Paraysco Logo" 
+              <Image
+                src="/logo.png"
+                alt="Paraysco Consulting"
+                width={96}
+                height={96}
+                sizes="96px"
                 className="w-10 h-10 object-contain rounded-lg"
               />
               <span className="font-heading text-lg font-semibold text-gray-900 dark:text-white">

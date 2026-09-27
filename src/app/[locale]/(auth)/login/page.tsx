@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -92,9 +93,12 @@ function LoginForm() {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
             <Link href={`/${locale}`} className="inline-flex items-center space-x-2 mb-6">
-              <img 
-                src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
-                alt="Paraysco Logo" 
+              <Image
+                src="/logo.png"
+                alt="Paraysco Consulting"
+                width={96}
+                height={96}
+                sizes="96px"
                 className="w-10 h-10 object-contain rounded-lg"
               />
               <span className="font-heading text-lg font-semibold text-gray-900 dark:text-white">

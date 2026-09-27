@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Cookie } from 'lucide-react';
+import { Cookie } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -13,16 +13,43 @@ interface CookieConsentProps {
 export function CookieConsent({ locale }: CookieConsentProps) {
   const [isVisible, setIsVisible] = useState(false);
   const t = useTranslations('cookies');
-  const tNav = useTranslations('navigation');
 
   useEffect(() => {
-    // Check if user has already accepted cookies
-    const hasAccepted = localStorage.getItem('cookieConsent');
-    if (!hasAccepted) {
-      // Show after a short delay
-      const timer = setTimeout(() => setIsVisible(true), 1000);
-      return () => clearTimeout(timer);
+    if (localStorage.getItem('cookieConsent')) return;
+
+    let cancelled = false;
+    let idleHandle: number | undefined;
+    let timerHandle: ReturnType<typeof setTimeout> | undefined;
+
+    // Never mount during the initial load. This is a fixed, full-width overlay
+    // whose text became the mobile LCP element; waiting until the page has
+    // loaded and the main thread is idle keeps it out of the critical path.
+    const show = () => {
+      if (typeof window.requestIdleCallback === 'function') {
+        idleHandle = window.requestIdleCallback(() => {
+          if (!cancelled) setIsVisible(true);
+        });
+      } else {
+        timerHandle = setTimeout(() => {
+          if (!cancelled) setIsVisible(true);
+        }, 200);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      show();
+    } else {
+      window.addEventListener('load', show, { once: true });
     }
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', show);
+      if (idleHandle !== undefined && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleHandle);
+      }
+      if (timerHandle !== undefined) clearTimeout(timerHandle);
+    };
   }, []);
 
   const handleAccept = () => {
@@ -37,13 +64,14 @@ export function CookieConsent({ locale }: CookieConsentProps) {
 
   if (!isVisible) return null;
 
+  // Entrance is a small CSS animation (see globals.css) — no animation runtime.
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-in slide-in-from-bottom">
+    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 pci-cookie-in">
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border dark:border-gray-700 max-w-4xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4 p-6">
           <div className="flex-shrink-0">
             <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-              <Cookie className="w-6 h-6 text-primary-600" />
+              <Cookie className="w-6 h-6 text-primary-600" aria-hidden="true" />
             </div>
           </div>
           <div className="flex-1">
@@ -62,17 +90,10 @@ export function CookieConsent({ locale }: CookieConsentProps) {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
-            <Button
-              variant="outline"
-              onClick={handleDecline}
-              className="w-full md:w-auto"
-            >
+            <Button variant="outline" onClick={handleDecline} className="w-full md:w-auto">
               Decline
             </Button>
-            <Button
-              onClick={handleAccept}
-              className="w-full md:w-auto"
-            >
+            <Button onClick={handleAccept} className="w-full md:w-auto">
               Accept All
             </Button>
           </div>

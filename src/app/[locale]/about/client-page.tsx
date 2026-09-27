@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Shield, Sparkles, Target, Eye, Users, Globe, Award, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -113,13 +114,12 @@ export default function AboutClientPage() {
             </div>
             <div className="order-1 lg:order-2">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-xl">
-                <img 
-                  src="https://i.postimg.cc/3xJQ0dM9/Whats-App-Image-2026-06-21-at-12-00-37.jpg" 
-                  alt={t('founder.name')} 
+                <Image
+                  src="/founder.jpg"
+                  alt={t('founder.name')}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
                   className="w-full h-full object-cover"
-                  width={800}
-                  height={600}
-                  loading="lazy"
                 />
               </div>
             </div>

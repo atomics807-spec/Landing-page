@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { Reveal } from '@/components/ui/reveal';
 import { Star, Quote, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -133,20 +133,8 @@ export function TestimonialsSection() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="relative z-10"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-3xl mx-auto mb-12"
-          >
+        <div className="relative z-10">
+          <Reveal className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
               {t('title')}
             </h2>
@@ -160,16 +148,12 @@ export function TestimonialsSection() {
             >
               {showForm ? 'Close Form' : 'Leave a Review'}
             </Button>
-          </motion.div>
-        </motion.div>
+          </Reveal>
+        </div>
 
         {/* Review Form */}
         {showForm && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="max-w-xl mx-auto mb-12"
-          >
+          <div className="max-w-xl mx-auto mb-12 animate-fade-up">
             <div className="bg-white rounded-2xl p-6 shadow-xl">
               {submitted ? (
                 <div className="text-center py-8">
@@ -245,7 +229,7 @@ export function TestimonialsSection() {
                 </form>
               )}
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Testimonials Grid */}
@@ -256,12 +240,9 @@ export function TestimonialsSection() {
         ) : (
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {displayTestimonials.slice(0, 6).map((testimonial, index) => (
-              <motion.div
+              <Reveal
                 key={testimonial.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                delay={index * 100}
                 className="bg-white rounded-2xl p-8 shadow-xl relative"
               >
                 <Quote className="absolute top-6 right-6 w-10 h-10 text-primary-100" />
@@ -285,7 +266,7 @@ export function TestimonialsSection() {
                     <p className="text-sm text-gray-500">{testimonial.company}</p>
                   )}
                 </div>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         )}

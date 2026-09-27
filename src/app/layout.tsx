@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { PWAProvider } from '@/components/providers/pwa-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Analytics } from '@vercel/analytics/next';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { DeferredAnalytics } from '@/components/providers/deferred-analytics';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getSiteUrl } from '@/lib/seo';
 import './globals.css';
@@ -284,10 +284,9 @@ export default async function RootLayout({
         </PWAProvider>
         <Analytics />
         <SpeedInsights />
-        {/* Google Analytics 4 — @next/third-parties loads gtag and sends the
-            initial page_view. Locale-route navigations are covered by the
-            App Router's client-side navigation handling. */}
-        <GoogleAnalytics gaId="G-N03DYCXW2X" />
+        {/* Google Analytics 4 — measurement ID G-N03DYCXW2X. Mounted after the
+            window load event so it stays off the critical rendering path. */}
+        <DeferredAnalytics gaId="G-N03DYCXW2X" />
       </body>
     </html>
   );

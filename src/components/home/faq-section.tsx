@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { Reveal } from '@/components/ui/reveal';
 import { ChevronDown, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
@@ -32,20 +32,18 @@ function FAQItem({ question, answer, isOpen, onToggle }: FAQItemProps) {
           )}
         />
       </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="pb-6 text-gray-600 dark:text-gray-300">
-              {answer}
-            </div>
-          </motion.div>
+      <div
+        className={cn(
+          'grid transition-all duration-300 ease-out',
+          isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
         )}
-      </AnimatePresence>
+      >
+        <div className="overflow-hidden">
+          <div className="pb-6 text-gray-600 dark:text-gray-300">
+            {answer}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -159,20 +157,14 @@ export function FAQSection() {
   return (
     <section className="py-20 bg-gray-50 dark:bg-gray-800/50">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-3xl mx-auto mb-16"
-        >
+        <Reveal className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">
             {t('title')}
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300">
             {t('subtitle')}
           </p>
-        </motion.div>
+        </Reveal>
 
         <div className="max-w-3xl mx-auto">
           <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 md:p-10">

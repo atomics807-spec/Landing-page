@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LogOut, Home, LayoutDashboard, Building2, FileText, 
   Briefcase, Users as UsersIcon, Mail, Settings,
-  Image, MessageSquare, HelpCircle, Briefcase as CareerIcon,
+  Image as ImageIcon, MessageSquare, HelpCircle, Briefcase as CareerIcon,
   Star, Users, Cog, Clock, Menu, X, Sun, Moon, Globe, ChevronDown,
   BarChart3, Package, Images
 } from 'lucide-react';
@@ -33,7 +34,7 @@ const navItems = [
   { href: '/admin/blog', label: 'Blog', icon: FileText },
   { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
   { href: '/admin/contact-messages', label: 'Messages', icon: MessageSquare },
-  { href: '/admin/media-library', label: 'Media', icon: Image },
+  { href: '/admin/media-library', label: 'Media', icon: ImageIcon },
   { href: '/admin/gallery', label: 'Gallery', icon: Images },
   { href: '/admin/settings', label: 'Settings', icon: Cog },
   { href: '/admin/audit-logs', label: 'Logs', icon: Clock },
@@ -212,9 +213,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
             <Link href={`/${currentLocale}`} className="flex items-center gap-3">
-              <img 
-                src="https://i.postimg.cc/yYmF58bc/Whats-App-Image-2026-06-21-at-12-00-37-(1).jpg" 
-                alt="Paraysco Logo" 
+              <Image
+                src="/logo.png"
+                alt="Paraysco Consulting"
+                width={96}
+                height={96}
+                sizes="96px"
                 className="w-10 h-10 object-contain rounded-lg"
               />
               <span className="font-heading text-xl font-bold text-gray-900 dark:text-white">

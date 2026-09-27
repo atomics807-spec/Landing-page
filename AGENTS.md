@@ -87,3 +87,34 @@ in `src/app/layout.tsx`. The earlier hand-rolled loader pointed at
 at module scope, which throws during `next build` page-data collection when the
 key is unset. It now builds the client lazily and returns 503 if unconfigured.
 `npm ci` fails on this repo (lockfile out of sync); use `npm install`.
+
+## Mobile PageSpeed: LCP is JS-driven, not font- or image-driven (2026-09)
+
+Measured with Lighthouse mobile (simulate throttling) on `next start`:
+
+| Scenario | FCP | LCP | Score |
+|---|---|---|---|
+| Baseline | 1.1s | 4.9s | 70-72 |
+| Fonts blocked (`--blocked-url-patterns='*.woff2'`) | 1.8s | 4.8s | 80 |
+| **All JS chunks blocked** (`*/_next/static/chunks/*`) | 0.9s | **2.5s** | **98** |
+
+The LCP element is always the header announcement bar
+(`navigation.announcement`, "Building Sustainable Partnerships ..."). Its LCP
+breakdown is TTFB ~460ms + **render delay ~4.4s**, with Load Delay/Load Time 0.
+
+Conclusion: the render delay is **main-thread blocking during hydration**, not
+fonts or images. Font blocking barely moves LCP (4.9s -> 4.8s); removing all JS
+drops it to 2.5s. `bootup-time` puts ~840ms in chunk `1255`, ~350ms in
+`4bd1b696` (react-dom), ~250ms in gtag. Long tasks cluster at 0.9-1.6s.
+
+So the remaining lever is reducing initial JS/hydration, e.g.:
+- Server-render above-the-fold content and defer/remove client components that
+  are not needed for the first paint (header already SSRs the text).
+- `next/dynamic` for below-the-fold client sections, or convert them to RSC.
+- gtag/GTM is loaded eagerly (third-party blocking 140ms + long tasks at
+  ~5.8s); consider loading after interaction/idle.
+
+Removing Framer Motion from the initial bundle (home sections + header
+`user-menu`) cut First Load JS for `/[locale]` from 264 kB to 226 kB, but LCP
+stayed ~4.9s, confirming hydration cost is spread across React + app JS rather
+than the animation library alone.

@@ -1,7 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { Reveal } from '@/components/ui/reveal';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -27,21 +27,14 @@ export function AboutSection({ locale }: AboutSectionProps) {
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Image Side */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
+          <Reveal variant="left" className="relative">
             <div className="relative aspect-square lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-xl">
-              <img 
-                src="https://cdn.nishtyainfotech.com/content/learnings/data/blog/banner/68b98b1fd04231.13423553.webp" 
-                alt="Paraysco Consulting" 
+              <Image
+                src="/about-banner.webp"
+                alt="Paraysco Consulting"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="w-full h-full object-cover"
-                width={800}
-                height={600}
-                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-8 left-8 right-8 text-white">
@@ -53,26 +46,14 @@ export function AboutSection({ locale }: AboutSectionProps) {
             </div>
 
             {/* Experience Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="absolute -bottom-6 -right-6 bg-primary-600 text-white rounded-xl shadow-xl p-6 hidden lg:block"
-            >
+            <Reveal variant="scale" delay={500} className="absolute -bottom-6 -right-6 bg-primary-600 text-white rounded-xl shadow-xl p-6 hidden lg:block">
               <p className="text-4xl font-bold">10+</p>
               <p className="text-primary-100">Years of Excellence</p>
-            </motion.div>
-          </motion.div>
+            </Reveal>
+          </Reveal>
 
           {/* Content Side */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
+          <Reveal variant="right" className="space-y-8">
             <div>
               <p className="text-primary-600 font-medium mb-2">
                 {t('subtitle')}
@@ -137,7 +118,7 @@ export function AboutSection({ locale }: AboutSectionProps) {
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>
