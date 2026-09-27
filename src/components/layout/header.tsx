@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import {
   Menu,
@@ -188,40 +187,37 @@ export function Header({ locale }: HeaderProps) {
                           )} />
                         </button>
                         
-                        <AnimatePresence>
-                          {isPropertiesDropdownOpen && (
-                            <motion.div
-                              initial={{ opacity: 0, y: -8 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -8 }}
-                              transition={{ duration: 0.15 }}
-                              className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden"
-                              onClick={() => setIsPropertiesDropdownOpen(false)}
-                            >
-                              <div className="p-2 space-y-1">
-                                {propertiesMenu.map((item) => (
-                                  <Link
-                                    key={item.label}
-                                    href={item.href}
-                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors group"
-                                  >
-                                    <div className="w-10 h-10 rounded-lg bg-primary-100 group-hover:bg-primary-200 dark:bg-primary-900/50 dark:group-hover:bg-primary-800 flex items-center justify-center flex-shrink-0">
-                                      <item.icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-300">
-                                        {item.label}
-                                      </p>
-                                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        {item.description}
-                                      </p>
-                                    </div>
-                                  </Link>
-                                ))}
-                              </div>
-                            </motion.div>
+                        <div
+                          className={cn(
+                            'absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden origin-top transition-[opacity,transform] duration-150 ease-out',
+                            isPropertiesDropdownOpen
+                              ? 'opacity-100 scale-100 pointer-events-auto'
+                              : 'opacity-0 scale-95 pointer-events-none'
                           )}
-                        </AnimatePresence>
+                          onClick={() => setIsPropertiesDropdownOpen(false)}
+                        >
+                          <div className="p-2 space-y-1">
+                            {propertiesMenu.map((item) => (
+                              <Link
+                                key={item.label}
+                                href={item.href}
+                                className="flex items-start gap-3 p-3 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors group"
+                              >
+                                <div className="w-10 h-10 rounded-lg bg-primary-100 group-hover:bg-primary-200 dark:bg-primary-900/50 dark:group-hover:bg-primary-800 flex items-center justify-center flex-shrink-0">
+                                  <item.icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-300">
+                                    {item.label}
+                                  </p>
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    {item.description}
+                                  </p>
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
                       </>
                     ) : (
                       <Link
@@ -254,32 +250,30 @@ export function Header({ locale }: HeaderProps) {
                   <Globe className="h-4 w-4" />
                   <span className="uppercase hidden sm:inline">{locale}</span>
                 </button>
-                <AnimatePresence>
-                  {isLangMenuOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      className="absolute right-0 mt-2 w-36 rounded-lg border bg-white shadow-lg dark:bg-gray-900"
-                    >
-                      {locales.map((loc) => (
-                        <button
-                          key={loc}
-                          onClick={() => {
-                            switchLocale(loc);
-                            setIsLangMenuOpen(false);
-                          }}
-                          className={cn(
-                            'block w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-800 first:rounded-t-lg last:rounded-b-lg',
-                            locale === loc && 'text-primary-600 font-medium'
-                          )}
-                        >
-                          {loc === 'en' ? 'English' : 'Français'}
-                        </button>
-                      ))}
-                    </motion.div>
+                <div
+                  className={cn(
+                    'absolute right-0 mt-2 w-36 rounded-lg border bg-white shadow-lg dark:bg-gray-900 origin-top-right transition-[opacity,transform] duration-150 ease-out',
+                    isLangMenuOpen
+                      ? 'opacity-100 scale-100 pointer-events-auto'
+                      : 'opacity-0 scale-95 pointer-events-none'
                   )}
-                </AnimatePresence>
+                >
+                  {locales.map((loc) => (
+                    <button
+                      key={loc}
+                      onClick={() => {
+                        switchLocale(loc);
+                        setIsLangMenuOpen(false);
+                      }}
+                      className={cn(
+                        'block w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-800 first:rounded-t-lg last:rounded-b-lg',
+                        locale === loc && 'text-primary-600 font-medium'
+                      )}
+                    >
+                      {loc === 'en' ? 'English' : 'Français'}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Theme Toggle */}
@@ -288,8 +282,8 @@ export function Header({ locale }: HeaderProps) {
                 className="p-2.5 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Toggle theme"
               >
-                <Sun className={cn("h-5 w-5", theme === 'light' ? 'opacity-100' : 'opacity-0 absolute')} />
-                <Moon className={cn("h-5 w-5", theme === 'dark' ? 'opacity-100' : 'opacity-0 absolute')} />
+                <Sun className={cn('h-5 w-5', theme === 'light' ? 'block' : 'hidden')} />
+                <Moon className={cn('h-5 w-5', theme === 'dark' ? 'block' : 'hidden')} />
               </button>
 
               {/* Install App (PWA) — auto-hides when unavailable/installed */}
@@ -321,77 +315,78 @@ export function Header({ locale }: HeaderProps) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="2xl:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden"
-          >
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 space-y-1">
-              {navItems.map((item) => (
-                <div key={item.label}>
-                  {item.isDropdown ? (
-                    <div className="space-y-1">
-                      <Link
-                        href={`/${locale}/properties`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={cn(
-                          'flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px]',
-                          pathname.includes('/properties')
-                            ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
-                            : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300'
-                        )}
-                      >
-                        <Building2 className="h-5 w-5" />
-                        <span>Properties</span>
-                      </Link>
-                      <Link
-                        href={`/${locale}/products`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={cn(
-                          'flex items-center gap-3 pl-10 pr-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px]',
-                          pathname.includes('/products')
-                            ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
-                            : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400'
-                        )}
-                      >
-                        <Package className="h-5 w-5" />
-                        <span>Products</span>
-                      </Link>
-                    </div>
-                  ) : (
+      {/* Mobile Menu — animated with a CSS grid-rows transition (no JS animation runtime). */}
+      <div
+        className={cn(
+          '2xl:hidden grid border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden transition-[grid-template-rows] duration-300 ease-out',
+          isMobileMenuOpen
+            ? 'grid-rows-[1fr] border-t'
+            : 'grid-rows-[0fr]'
+        )}
+        aria-hidden={!isMobileMenuOpen}
+      >
+        <div className="min-h-0">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 space-y-1">
+            {navItems.map((item) => (
+              <div key={item.label}>
+                {item.isDropdown ? (
+                  <div className="space-y-1">
                     <Link
-                      href={item.href}
+                      href={`/${locale}/properties`}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
                         'flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px]',
-                        pathname === item.href
+                        pathname.includes('/properties')
                           ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
                           : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300'
                       )}
                     >
-                      {item.icon && <item.icon className="h-5 w-5" />}
-                      <span>{item.label}</span>
+                      <Building2 className="h-5 w-5" />
+                      <span>Properties</span>
                     </Link>
-                  )}
-                </div>
-              ))}
-              <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
-                <UserMenu locale={locale} />
-                <Link href={`/${locale}/login`} className="mt-2 block">
-                  <Button variant="outline" className="w-full">{t('login')}</Button>
-                </Link>
-                <div className="mt-2">
-                  <InstallAppButton variant="default" className="w-full" />
-                </div>
+                    <Link
+                      href={`/${locale}/products`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        'flex items-center gap-3 pl-10 pr-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px]',
+                        pathname.includes('/products')
+                          ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
+                          : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400'
+                      )}
+                    >
+                      <Package className="h-5 w-5" />
+                      <span>Products</span>
+                    </Link>
+                  </div>
+                ) : (
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      'flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors min-h-[48px]',
+                      pathname === item.href
+                        ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20'
+                        : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300'
+                    )}
+                  >
+                    {item.icon && <item.icon className="h-5 w-5" />}
+                    <span>{item.label}</span>
+                  </Link>
+                )}
+              </div>
+            ))}
+            <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
+              <UserMenu locale={locale} />
+              <Link href={`/${locale}/login`} className="mt-2 block">
+                <Button variant="outline" className="w-full">{t('login')}</Button>
+              </Link>
+              <div className="mt-2">
+                <InstallAppButton variant="default" className="w-full" />
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

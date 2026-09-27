@@ -1,7 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Play, MessageCircle } from 'lucide-react';
 import type { Locale } from '@/i18n';
@@ -12,6 +12,12 @@ const WHATSAPP_MESSAGE = 'Hello! I would like to learn more about Paraysco Consu
 interface HeroSectionProps {
   locale: Locale;
 }
+
+// Above-the-fold entrance is pure CSS so the hero paints with the first
+// stylesheet instead of waiting on hydration or the animation library.
+const fadeUp = 'animate-fade-up';
+const fadeUpDelay = (delay: '100' | '200' | '300' | '400') =>
+  `animate-fade-up animate-delay-${delay}`;
 
 export function HeroSection({ locale }: HeroSectionProps) {
   const t = useTranslations('hero');
@@ -31,45 +37,28 @@ export function HeroSection({ locale }: HeroSectionProps) {
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="text-center lg:text-left"
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 text-primary-700 text-sm font-medium mb-6"
-            >
-              <span className="w-2 h-2 rounded-full bg-primary-500 mr-2 animate-pulse" />
-              Building Sustainable Partnerships
-            </motion.div>
+          <div className={`text-center lg:text-left ${fadeUp}`}>
+            <div className={fadeUpDelay('100')}>
+              <span className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 text-primary-700 text-sm font-medium mb-6">
+                <span className="w-2 h-2 rounded-full bg-primary-500 mr-2 animate-pulse" />
+                Building Sustainable Partnerships
+              </span>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gray-900 dark:text-white leading-tight mb-6"
+            <h1
+              className={`text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gray-900 dark:text-white leading-tight mb-6 ${fadeUpDelay('200')}`}
             >
               {t('title')}
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0"
+            <p
+              className={`text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0 ${fadeUpDelay('300')}`}
             >
               {t('subtitle')}
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            <div
+              className={`flex flex-col sm:flex-row gap-4 justify-center lg:justify-start ${fadeUpDelay('400')}`}
             >
               <Button size="lg" asChild className="group">
                 <a href={`/${locale}/contact`}>
@@ -83,14 +72,11 @@ export function HeroSection({ locale }: HeroSectionProps) {
                   {t('ctaSecondary')}
                 </a>
               </Button>
-            </motion.div>
+            </div>
 
             {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="grid grid-cols-3 gap-8 mt-12 pt-12 border-t border-gray-200 dark:border-gray-700"
+            <div
+              className={`grid grid-cols-3 gap-8 mt-12 pt-12 border-t border-gray-200 dark:border-gray-700 ${fadeUpDelay('400')}`}
             >
               <div>
                 <p className="text-3xl font-bold text-primary-600">500+</p>
@@ -104,35 +90,29 @@ export function HeroSection({ locale }: HeroSectionProps) {
                 <p className="text-3xl font-bold text-primary-600">10+</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Years</p>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
-          {/* Hero Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-            className="relative"
-          >
-            <div className="relative aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
-              <img 
-                src="https://i0.wp.com/expertshouseuae.com/wp-content/uploads/2023/10/SmallBusiness6002.jpeg?fit=600%2C600&ssl=1" 
-                alt="Professional Building" 
-                className="w-full h-full object-cover"
-                width={800}
-                height={600}
-                loading="lazy"
+          {/* Hero Image — the mobile LCP element. Served from the app origin,
+              preloaded at high priority, and never lazy-loaded. next/image emits
+              a responsive srcset (AVIF/WebP) so phones fetch a phone-sized asset
+              rather than the desktop one. */}
+          <div className={`relative ${fadeUp}`}>
+            <div className="relative aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl bg-gray-100 dark:bg-gray-800">
+              <Image
+                src="/hero-consulting.jpg"
+                alt="Paraysco Consulting — professional advisory team"
+                fill
+                priority
+                fetchPriority="high"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             </div>
 
             {/* Floating Cards */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
-              className="absolute -bottom-6 -left-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl p-4 hidden lg:block"
-            >
+            <div className="absolute -bottom-6 -left-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl p-4 hidden lg:block">
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
                   <span className="text-green-600 text-xl">✓</span>
@@ -142,14 +122,9 @@ export function HeroSection({ locale }: HeroSectionProps) {
                   <p className="text-sm text-gray-500">Verified Company</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1, duration: 0.5 }}
-              className="absolute -top-6 -right-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl p-4 hidden lg:block"
-            >
+            <div className="absolute -top-6 -right-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl p-4 hidden lg:block">
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
                   <span className="text-primary-600 text-xl">★</span>
@@ -159,39 +134,16 @@ export function HeroSection({ locale }: HeroSectionProps) {
                   <p className="text-sm text-gray-500">Client Satisfaction</p>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="w-6 h-10 rounded-full border-2 border-gray-400 flex items-start justify-center p-2"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="w-1.5 h-1.5 rounded-full bg-gray-400"
-          />
-        </motion.div>
-      </motion.div>
-
-      {/* WhatsApp Floating Button */}
-      <motion.a
+      {/* WhatsApp Floating Button — below the fold. */}
+      <a
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`}
         target="_blank"
         rel="noopener noreferrer"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1.5, duration: 0.5, type: 'spring' }}
         className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
         aria-label="Chat on WhatsApp"
       >
@@ -199,7 +151,7 @@ export function HeroSection({ locale }: HeroSectionProps) {
         <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
           Chat with us
         </span>
-      </motion.a>
+      </a>
     </section>
   );
 }

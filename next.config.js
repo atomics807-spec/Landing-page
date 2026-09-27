@@ -4,7 +4,15 @@ const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    // Tree-shake the icon and animation libraries so above-the-fold hydration
+    // only ships the symbols actually referenced.
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
   images: {
+    // AVIF first for the smallest payloads, WebP as the fallback for browsers
+    // that don't decode AVIF yet.
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -41,6 +49,13 @@ const nextConfig = {
         source: '/offline.html',
         headers: [
           { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+        ],
+      },
+      {
+        // Hero image is content-hashed by name changes only, so cache it long.
+        source: '/hero-consulting.jpg',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
       },
       {

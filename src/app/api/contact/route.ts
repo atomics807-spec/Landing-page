@@ -1,11 +1,21 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-// Initialize your email service handler via environmental parameters
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Instantiate lazily so a missing key doesn't throw while the server bundle is
+// being evaluated (which broke `next build`'s page-data collection).
+function getResend(): Resend | null {
+  const key = process.env.RESEND_API_KEY;
+  return key ? new Resend(key) : null;
+}
 
 export async function POST(request: Request) {
   try {
+    const resend = getResend();
+    if (!resend) {
+      console.error('RESEND_API_KEY is not configured; contact email not sent.');
+      return NextResponse.json({ error: 'Email service unavailable.' }, { status: 503 });
+    }
+
     const body = await request.json();
     const { name, email, phone, subject, message, propertyTitle, userLocation } = body;
 

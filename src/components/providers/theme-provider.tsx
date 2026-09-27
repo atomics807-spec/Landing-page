@@ -15,21 +15,19 @@ const ThemeContext = createContext<ThemeContextType>({
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
+  // Read the class the blocking <head> script already applied. Defaulting to
+  // 'light' here just keeps SSR and the first client render in sync; the class
+  // itself is never gated on this state, so children always render immediately.
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof document === 'undefined') return 'light';
+    return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  });
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem('theme') as Theme | null;
-    if (stored) {
-      setTheme(stored);
-      document.documentElement.classList.toggle('dark', stored === 'dark');
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initialTheme = prefersDark ? 'dark' : 'light';
-      setTheme(initialTheme);
-      document.documentElement.classList.toggle('dark', initialTheme === 'dark');
-    }
+    // Catch up if the pre-hydration script chose a theme after this state
+    // initialiser ran (e.g. slow hydration on mobile).
+    const isDark = document.documentElement.classList.contains('dark');
+    setTheme(isDark ? 'dark' : 'light');
   }, []);
 
   const toggleTheme = () => {
@@ -41,7 +39,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {mounted ? children : <div style={{ visibility: 'hidden' }}>{children}</div>}
+      {children}
     </ThemeContext.Provider>
   );
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Users, Briefcase, Globe, Award } from 'lucide-react';
 
@@ -41,30 +40,17 @@ export function StatisticsSection() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
             {t('title')}
           </h2>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat, index) => {
+          {stats.map((stat) => {
             const Icon = iconMap[stat.icon];
             return (
-              <motion.div
-                key={stat.icon}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center"
-              >
+              <div key={stat.icon} className="text-center">
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
                   <Icon className="w-8 h-8 text-white" />
                 </div>
@@ -72,7 +58,7 @@ export function StatisticsSection() {
                   {stat.value}{stat.suffix}
                 </p>
                 <p className="text-primary-100 text-sm md:text-base">{t(stat.labelKey)}</p>
-              </motion.div>
+              </div>
             );
           })}
         </div>

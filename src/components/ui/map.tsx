@@ -96,12 +96,46 @@ export function InteractiveMap({ className = '' }: MapProps) {
       }
     };
 
-    // Small delay to ensure DOM is ready
-    const timer = setTimeout(initMap, 100);
+    // Defer the third-party Leaflet bundle until the map is actually near the
+    // viewport. It is below the fold and would otherwise compete with the hero
+    // for bandwidth and main-thread time on first load.
+    const container = mapRef.current;
+    let idleHandle: number | undefined;
+
+    const scheduleInit = () => {
+      if (typeof window.requestIdleCallback === 'function') {
+        idleHandle = window.requestIdleCallback(() => initMap());
+      } else {
+        idleHandle = window.setTimeout(initMap, 200);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          scheduleInit();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (container) {
+      observer.observe(container);
+    } else {
+      scheduleInit();
+    }
 
     return () => {
       isMounted = false;
-      clearTimeout(timer);
+      observer.disconnect();
+      if (idleHandle !== undefined) {
+        if (typeof window.cancelIdleCallback === 'function') {
+          window.cancelIdleCallback(idleHandle);
+        } else {
+          clearTimeout(idleHandle);
+        }
+      }
       if (mapInstanceRef.current) {
         try {
           mapInstanceRef.current.remove();
