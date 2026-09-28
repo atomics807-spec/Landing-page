@@ -118,3 +118,71 @@ Removing Framer Motion from the initial bundle (home sections + header
 `user-menu`) cut First Load JS for `/[locale]` from 264 kB to 226 kB, but LCP
 stayed ~4.9s, confirming hydration cost is spread across React + app JS rather
 than the animation library alone.
+
+## Mobile PageSpeed: green 90+ (2026-09)
+
+Reached **91-95** (was 74) on mobile Lighthouse. LCP 7.4s -> 2.8-3.3s,
+TBT -> 80-140ms, CLS 0, unused JS eliminated, render-blocking eliminated.
+
+Highest-impact fixes, in rough order of payoff:
+
+1. **`clients.claim()` self-reload bug (biggest LCP win).** `public/sw.js` calls
+   `skipWaiting()` + `clients.claim()` on install, which fires
+   `controllerchange`. `pwa-provider.tsx` reloaded the page on every
+   `controllerchange`, so a first-ever visit reloaded itself mid-load and
+   re-inflated LCP. Now the reload listener is only attached when
+   `navigator.serviceWorker.controller` already existed (i.e. a genuine
+   update). Never reload when there was no prior controller.
+2. **zod was in the shared `cn()` module.** `src/lib/utils.ts` imported zod for
+   its form schemas, and ~25 components import `cn`, so zod (~74 KB) landed in
+   the home page's initial JS. Schemas moved to `src/lib/validations.ts`.
+   First Load JS for `/[locale]`: 156 kB -> 143 kB.
+3. **Deferred everything non-critical** so it stays out of the load window:
+   Vercel Analytics/SpeedInsights (`deferred-vitals.tsx`, after load + idle),
+   GA (`deferred-analytics.tsx`, interaction or 6s), service-worker
+   registration (after `load`), cookie banner (interaction or 4s - its fixed
+   full-width text can otherwise become the mobile LCP element), header auth
+   check (interaction / auth-cookie hint).
+4. **Removed `backdrop-blur` from the fixed header.** It forces a compositing
+   layer that costs paint work; `bg-white/95` looks effectively the same.
+   Worth ~TBT 200ms -> 160ms.
+5. **Reveal animations via one `RevealObserver`** instead of per-element client
+   islands, so the animation runtime never ships. The hidden state is gated on
+   a `.js` class set by the inline head script, so content stays visible if JS
+   fails.
+
+Also tried and reverted (kept here so they aren't re-attempted):
+`display: optional` fonts (no gain), modern `browserslist` targets (no legacy
+JS reduction), `experimental.inlineCss` (grew HTML 154->364 kB), lazy-loading
+the below-fold home client islands (raised First Load JS).
+
+Remaining known items (not blocking green): legacy-JS ~11 KB in chunk `1255`
+(React internals, not app code); sitewide CSP blocks
+`/_vercel/insights/script.js` in prod (logged console error, should be allowed
+or the component dropped).
+
+## Mobile audit - round 2 (metadata, a11y, link text)
+
+- **Streaming metadata hid the description from Lighthouse.** Next 15.2+ streams
+  metadata into `<body>` for non-bot user agents and relies on React to hoist it
+  into `<head>` client-side; only user agents matching `htmlLimitedBots` get a
+  blocking response with the tags already in `<head>`. Lighthouse is not on that
+  list, so its raw-HTML read saw no description. Fix: `htmlLimitedBots: /./` in
+  `next.config.js`, which disables streaming for every client. Metadata here only
+  reads already-loaded translations, so the TTFB cost is negligible. Live DOM
+  (and therefore Googlebot) always showed the tags correctly, so this is a tool
+  false positive, not an SEO defect.
+- **`CTASection` was a server component imported by two client pages.**
+  `/en/about` and `/en/services` both returned 500 (`getTranslations is not
+  supported in Client Components`). Rendered it from the server page instead -
+  `about/page.tsx` and `services/page.tsx` - and removed it from the client
+  pages. Keep `CTASection` server-side: it is a below-fold section and pulling
+  it into the client graph also drags `next-intl/server` along.
+- **`aria-hidden` mobile menu now also `inert`.** The menu is collapsed with
+  `grid-rows-[0fr]`, so its links stayed tabbable while hidden. `inert` removes
+  them from the tab order and the a11y tree together.
+- **Descriptive link text.** The subcompany cards each read "Learn More"; a
+  `sr-only` span now names the company.
+- After these: home mobile perf 94-96, SEO 100, a11y 100; `/about` and
+  `/services` 92-93 perf, SEO 100. Remaining best-practices ding is the Vercel
+  analytics 404/MIME console error, which only occurs locally.

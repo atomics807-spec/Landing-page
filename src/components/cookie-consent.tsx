@@ -19,36 +19,43 @@ export function CookieConsent({ locale }: CookieConsentProps) {
 
     let cancelled = false;
     let idleHandle: number | undefined;
-    let timerHandle: ReturnType<typeof setTimeout> | undefined;
+    let timerHandle: number | undefined;
 
     // Never mount during the initial load. This is a fixed, full-width overlay
-    // whose text became the mobile LCP element; waiting until the page has
-    // loaded and the main thread is idle keeps it out of the critical path.
+    // whose text can become the mobile LCP element, and mounting it also costs a
+    // layout + paint on the main thread. Show it only after the visitor starts
+    // interacting, or after a delay long enough to clear the LCP window.
     const show = () => {
       if (typeof window.requestIdleCallback === 'function') {
         idleHandle = window.requestIdleCallback(() => {
           if (!cancelled) setIsVisible(true);
         });
       } else {
-        timerHandle = setTimeout(() => {
+        timerHandle = window.setTimeout(() => {
           if (!cancelled) setIsVisible(true);
         }, 200);
       }
     };
 
-    if (document.readyState === 'complete') {
+    const events = ['scroll', 'click', 'keydown', 'touchstart', 'pointerdown'] as const;
+    const onInteract = () => {
       show();
-    } else {
-      window.addEventListener('load', show, { once: true });
+      for (const e of events) window.removeEventListener(e, onInteract);
+    };
+    for (const e of events) {
+      window.addEventListener(e, onInteract, { once: true, passive: true });
     }
+
+    const delayHandle = window.setTimeout(show, 4000);
 
     return () => {
       cancelled = true;
-      window.removeEventListener('load', show);
+      window.clearTimeout(delayHandle);
+      for (const e of events) window.removeEventListener(e, onInteract);
       if (idleHandle !== undefined && typeof window.cancelIdleCallback === 'function') {
         window.cancelIdleCallback(idleHandle);
       }
-      if (timerHandle !== undefined) clearTimeout(timerHandle);
+      if (timerHandle !== undefined) window.clearTimeout(timerHandle);
     };
   }, []);
 

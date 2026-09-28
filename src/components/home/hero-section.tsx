@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Play, MessageCircle } from 'lucide-react';
@@ -19,8 +17,8 @@ const fadeUp = 'animate-fade-up';
 const fadeUpDelay = (delay: '100' | '200' | '300' | '400') =>
   `animate-fade-up animate-delay-${delay}`;
 
-export function HeroSection({ locale }: HeroSectionProps) {
-  const t = useTranslations('hero');
+export async function HeroSection({ locale }: HeroSectionProps) {
+  const t = await getTranslations('hero');
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">

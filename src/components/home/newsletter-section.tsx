@@ -6,7 +6,10 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CheckCircle, Loader2 } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
+// Loaded on demand so @supabase/supabase-js stays out of the initial
+// home-page bundle; these sections only need it after mount/user action.
+const getSupabase = () =>
+  import('@/lib/supabase/client').then((m) => m.createClient());
 
 export function NewsletterSection() {
   const t = useTranslations('newsletter');
@@ -19,7 +22,7 @@ export function NewsletterSection() {
     setStatus('loading');
 
     try {
-      const supabase = createClient();
+      const supabase = await getSupabase();
       
       // Check if already subscribed
       const { data: existing } = await supabase

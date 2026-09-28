@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Users, Briefcase, Globe, Award } from 'lucide-react';
 
 const iconMap = {
@@ -24,8 +22,8 @@ const stats: StatItem[] = [
   { icon: 'award', value: '10', suffix: '+', labelKey: 'experience' },
 ];
 
-export function StatisticsSection() {
-  const t = useTranslations('statistics');
+export async function StatisticsSection() {
+  const t = await getTranslations('statistics');
 
   return (
     <section className="py-20 bg-primary-600 relative overflow-hidden">

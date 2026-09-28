@@ -1,6 +1,3 @@
-'use client';
-
-import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 
 type RevealVariant = 'up' | 'left' | 'right' | 'scale';
@@ -14,44 +11,20 @@ interface RevealProps {
 }
 
 /**
- * Scroll-reveal wrapper backed by IntersectionObserver + a CSS transition.
+ * Server-rendered scroll-reveal wrapper.
  *
- * Replaces Framer Motion's `whileInView` for the below-the-fold home sections.
- * Those sections are always in the initial JS graph, so importing Framer Motion
- * for them pulled ~112 KB of animation runtime into the first load and delayed
- * hydration past the LCP. This adds no dependency at all.
+ * It only emits the `.reveal` class and the transition delay; a single
+ * `RevealObserver` mounted once in the home page adds `is-visible` when each
+ * element scrolls into view. Keeping this free of hooks means the sections using
+ * it stay server components, and one observer replaces what used to be a client
+ * island per wrapper (17 on the home page).
+ *
+ * The CSS transition is defined in globals.css and honours reduced motion, so
+ * content is never hidden from users who cannot animate it.
  */
 export function Reveal({ children, className = '', variant = 'up', delay = 0 }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    if (typeof IntersectionObserver === 'undefined') {
-      el.classList.add('is-visible');
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div
-      ref={ref}
       className={`reveal reveal-${variant} ${className}`}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >

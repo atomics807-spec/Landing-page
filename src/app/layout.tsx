@@ -3,21 +3,27 @@ import { getLocale } from 'next-intl/server';
 import { Inter, Playfair_Display } from 'next/font/google';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { PWAProvider } from '@/components/providers/pwa-provider';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import { Analytics } from '@vercel/analytics/next';
 import { DeferredAnalytics } from '@/components/providers/deferred-analytics';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { DeferredVitals } from '@/components/providers/deferred-vitals';
 import { getSiteUrl } from '@/lib/seo';
 import './globals.css';
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
+  preload: true,
+  adjustFontFallback: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
+  display: 'swap',
+  preload: true,
+  adjustFontFallback: true,
+  fallback: ['Georgia', 'serif'],
 });
 
 const baseUrl = getSiteUrl();
@@ -136,7 +142,7 @@ export default async function RootLayout({
             theme without hiding content behind hydration. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.classList.toggle('dark',t==='dark');}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.classList.toggle('dark',t==='dark');}catch(e){}document.documentElement.classList.add('js');})();`,
           }}
         />
 
@@ -278,12 +284,9 @@ export default async function RootLayout({
       </head>
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>
         <PWAProvider>
-          <ThemeProvider>
-            <TooltipProvider>{children}</TooltipProvider>
-          </ThemeProvider>
+          <ThemeProvider>{children}</ThemeProvider>
         </PWAProvider>
-        <Analytics />
-        <SpeedInsights />
+        <DeferredVitals />
         {/* Google Analytics 4 — measurement ID G-N03DYCXW2X. Mounted after the
             window load event so it stays off the critical rendering path. */}
         <DeferredAnalytics gaId="G-N03DYCXW2X" />

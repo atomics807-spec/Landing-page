@@ -61,15 +61,28 @@ export function PWAProvider({ children }: { children: React.ReactNode }) {
     let cancelled = false;
     const register = async () => {
       try {
+        // Was there an active controller before registering? On a first-ever
+        // load there is none, and `clients.claim()` will fire `controllerchange`
+        // during install. Reloading on that event would reload the page the
+        // visitor just opened, so only reload for genuine updates.
+        const hadController = !!navigator.serviceWorker.controller;
+
         const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
-        // Keep the SW fresh: if a new one takes over, reload once so the page
-        // runs against the latest assets.
-        if (reg.waiting) {
-          reg.waiting.postMessage('SKIP_WAITING');
+
+        if (hadController) {
+          // Keep the SW fresh: if a new one takes over, reload once so the page
+          // runs against the latest assets.
+          if (reg.waiting) {
+            reg.waiting.postMessage('SKIP_WAITING');
+          }
+          navigator.serviceWorker.addEventListener(
+            'controllerchange',
+            () => {
+              if (!cancelled) window.location.reload();
+            },
+            { once: true },
+          );
         }
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!cancelled) window.location.reload();
-        });
       } catch (err) {
         // SW registration failure is non-fatal; site still works online-only.
         console.warn('[PWA] Service worker registration failed:', err);
@@ -78,9 +91,18 @@ export function PWAProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    register();
+    // Register after the load event: SW install runs its own script fetch and
+    // can contend with the initial render. Registration is not needed for first
+    // paint, and deferring it costs nothing on repeat visits.
+    if (document.readyState === 'complete') {
+      register();
+    } else {
+      window.addEventListener('load', register, { once: true });
+    }
+
     return () => {
       cancelled = true;
+      window.removeEventListener('load', register);
     };
   }, []);
 

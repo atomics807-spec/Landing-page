@@ -1,8 +1,6 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Facebook, Twitter, Linkedin, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import type { Locale } from '@/i18n';
@@ -20,10 +18,10 @@ interface FooterProps {
   locale: Locale;
 }
 
-export function Footer({ locale }: FooterProps) {
-  const t = useTranslations('footer');
-  const tNav = useTranslations('navigation');
-  const tServices = useTranslations('services');
+export async function Footer({ locale }: FooterProps) {
+  const t = await getTranslations('footer');
+  const tNav = await getTranslations('navigation');
+  const tServices = await getTranslations('services');
 
   const currentYear = new Date().getFullYear();
 

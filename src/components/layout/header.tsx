@@ -131,7 +131,7 @@ export function Header({ locale }: HeaderProps) {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:border-gray-800 dark:bg-gray-950/95">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-gray-100 bg-white/95 dark:border-gray-800 dark:bg-gray-950/95">
       {/* Announcement Bar */}
       <div className="bg-primary-600 text-white py-2 text-center text-sm">
         <p>{t('announcement')}</p>
@@ -316,7 +316,9 @@ export function Header({ locale }: HeaderProps) {
         </div>
       </div>
 
-      {/* Mobile Menu — animated with a CSS grid-rows transition (no JS animation runtime). */}
+      {/* Mobile Menu — animated with a CSS grid-rows transition (no JS animation runtime).
+          Collapsed via grid-rows, so the links stay focusable unless the subtree
+          is made inert; aria-hidden alone leaves them reachable by Tab. */}
       <div
         className={cn(
           '2xl:hidden grid border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden transition-[grid-template-rows] duration-300 ease-out',
@@ -325,6 +327,7 @@ export function Header({ locale }: HeaderProps) {
             : 'grid-rows-[0fr]'
         )}
         aria-hidden={!isMobileMenuOpen}
+        inert={!isMobileMenuOpen}
       >
         <div className="min-h-0">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 space-y-1">

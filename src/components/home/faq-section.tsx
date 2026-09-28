@@ -3,9 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Reveal } from '@/components/ui/reveal';
+import { useInView } from '@/hooks/use-in-view';
 import { ChevronDown, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { createClient } from '@/lib/supabase/client';
+// Loaded on demand so @supabase/supabase-js stays out of the initial
+// home-page bundle; these sections only need it after mount/user action.
+const getSupabase = () =>
+  import('@/lib/supabase/client').then((m) => m.createClient());
 
 interface FAQItemProps {
   question: string;
@@ -130,13 +134,15 @@ export function FAQSection() {
   const [isLoading, setIsLoading] = useState(true);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
+  const { ref: inViewRef, inView } = useInView<HTMLElement>();
+
   useEffect(() => {
-    fetchFaqs();
-  }, []);
+    if (inView) fetchFaqs();
+  }, [inView]);
 
   const fetchFaqs = async () => {
     try {
-      const supabase = createClient();
+      const supabase = await getSupabase();
       const { data } = await supabase
         .from('faqs')
         .select('*')
@@ -155,7 +161,7 @@ export function FAQSection() {
   const displayFaqs = faqs.length > 0 ? faqs : defaultFaqs;
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800/50">
+    <section ref={inViewRef} className="py-20 bg-gray-50 dark:bg-gray-800/50">
       <div className="container mx-auto px-4">
         <Reveal className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">

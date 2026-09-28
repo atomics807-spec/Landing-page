@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Reveal } from '@/components/ui/reveal';
 import Link from 'next/link';
 import { ArrowRight, Building, Cog, Construction, Truck, TrendingUp, Users } from 'lucide-react';
@@ -20,8 +18,8 @@ const iconMap = {
   consultancy: Users,
 };
 
-export function ServicesSection({ locale }: ServicesSectionProps) {
-  const t = useTranslations('services');
+export async function ServicesSection({ locale }: ServicesSectionProps) {
+  const t = await getTranslations('services');
 
   const services = [
     { key: 'realEstate', color: 'bg-blue-500' },

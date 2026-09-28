@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Reveal } from '@/components/ui/reveal';
 import Link from 'next/link';
 import { ArrowRight, Calendar } from 'lucide-react';
@@ -11,8 +9,8 @@ interface CTASectionProps {
   locale: Locale;
 }
 
-export function CTASection({ locale }: CTASectionProps) {
-  const t = useTranslations('common');
+export async function CTASection({ locale }: CTASectionProps) {
+  const t = await getTranslations('common');
 
   return (
     <section className="py-20 bg-white dark:bg-gray-900">

@@ -32,6 +32,7 @@ import {
   FAQSection,
   NewsletterSection,
 } from '@/components/home';
+import { RevealObserver } from '@/components/ui/reveal-observer';
 
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
@@ -39,6 +40,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
   return (
     <>
+      <RevealObserver />
       <HeroSection locale={locale as Locale} />
       <StatisticsSection />
       <AboutSection locale={locale as Locale} />

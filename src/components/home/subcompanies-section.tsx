@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Reveal } from '@/components/ui/reveal';
 import Link from 'next/link';
 import { ArrowRight, Truck, Ship, ShoppingBag, CheckCircle } from 'lucide-react';
@@ -17,8 +15,8 @@ const iconMap = {
   houseOfPat: ShoppingBag,
 };
 
-export function SubcompaniesSection({ locale }: SubcompaniesSectionProps) {
-  const t = useTranslations('subcompanies');
+export async function SubcompaniesSection({ locale }: SubcompaniesSectionProps) {
+  const t = await getTranslations('subcompanies');
 
   const subcompanies = [
     {
@@ -90,6 +88,7 @@ export function SubcompaniesSection({ locale }: SubcompaniesSectionProps) {
                     >
                       <Link href={`/${locale}/contact`}>
                         Learn More
+                        <span className="sr-only"> about {t(`${company.key}.name`)}</span>
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>

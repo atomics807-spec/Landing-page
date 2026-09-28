@@ -9,6 +9,13 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit"
   },
+  "browserslist": [
+    "chrome 111",
+    "edge 111",
+    "firefox 111",
+    "safari 16.4",
+    "ios_saf 16.4"
+  ],
   "dependencies": {
     "@next/third-parties": "15.5.25",
     "@hookform/resolvers": "^3.9.0",

@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Reveal } from '@/components/ui/reveal';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,8 +10,8 @@ interface AboutSectionProps {
   locale: Locale;
 }
 
-export function AboutSection({ locale }: AboutSectionProps) {
-  const t = useTranslations('about');
+export async function AboutSection({ locale }: AboutSectionProps) {
+  const t = await getTranslations('about');
 
   const values = [
     { key: 'integrity', icon: Shield },

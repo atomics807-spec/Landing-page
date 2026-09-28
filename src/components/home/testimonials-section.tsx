@@ -3,12 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Reveal } from '@/components/ui/reveal';
+import { useInView } from '@/hooks/use-in-view';
 import { Star, Quote, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { createClient } from '@/lib/supabase/client';
+// Loaded on demand so @supabase/supabase-js stays out of the initial
+// home-page bundle; these sections only need it after mount/user action.
+const getSupabase = () =>
+  import('@/lib/supabase/client').then((m) => m.createClient());
 
 interface Testimonial {
   id: string;
@@ -56,13 +60,15 @@ export function TestimonialsSection() {
     rating: 5,
   });
 
+  const { ref: inViewRef, inView } = useInView<HTMLElement>();
+
   useEffect(() => {
-    fetchTestimonials();
-  }, []);
+    if (inView) fetchTestimonials();
+  }, [inView]);
 
   async function fetchTestimonials() {
     try {
-      const supabase = createClient();
+      const supabase = await getSupabase();
       const { data } = await supabase
         .from('testimonials')
         .select('*')
@@ -84,7 +90,7 @@ export function TestimonialsSection() {
     setSubmitting(true);
 
     try {
-      const supabase = createClient();
+      const supabase = await getSupabase();
       await supabase.from('testimonials').insert({
         name: formData.name,
         company: formData.company || null,
@@ -120,7 +126,7 @@ export function TestimonialsSection() {
   }));
 
   return (
-    <section className="py-20 bg-primary-600 relative overflow-hidden">
+    <section ref={inViewRef} className="py-20 bg-primary-600 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div

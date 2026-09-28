@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
-import { registerFormSchema } from '@/lib/utils';
+import { registerFormSchema } from '@/lib/validations';
 import { Eye, EyeOff, Loader2, Mail, CheckCircle } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 

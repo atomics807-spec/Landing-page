@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { absoluteUrl, buildHreflang } from '@/lib/seo';
 import AboutClientPage from './client-page';
+import { CTASection } from '@/components/home/cta-section';
+import type { Locale } from '@/i18n';
 
 interface AboutPageProps {
   params: Promise<{ locale: string }>;
@@ -82,6 +84,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
       <AboutClientPage />
+      <CTASection locale={locale as Locale} />
     </>
   );
 }

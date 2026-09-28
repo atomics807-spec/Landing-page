@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { Building, Cog, Construction, Truck, TrendingUp, Users, ArrowRight, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { CTASection } from '@/components/home/cta-section';
 import type { Locale } from '@/i18n';
 
 const iconMap = {
@@ -236,7 +235,6 @@ export default function ServicesClientPage() {
         </div>
       </section>
 
-      <CTASection locale={locale} />
     </div>
   );
 }

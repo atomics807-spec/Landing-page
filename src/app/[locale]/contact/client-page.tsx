@@ -13,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { InteractiveMap } from '@/components/ui/map';
-import { contactFormSchema, type ContactFormData } from '@/lib/utils';
+import { contactFormSchema, type ContactFormData } from '@/lib/validations';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Loader2, Building2, Briefcase, Lock, ShieldCheck, ChevronDown } from 'lucide-react';
 import { getUserProfile } from '@/app/actions/auth';
 

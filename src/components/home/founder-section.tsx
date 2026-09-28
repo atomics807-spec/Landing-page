@@ -1,8 +1,6 @@
-'use client';
-
 import Image from 'next/image';
 import { Reveal } from '@/components/ui/reveal';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { Quote, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,8 +10,8 @@ interface FounderSectionProps {
   locale: Locale;
 }
 
-export function FounderSection({ locale }: FounderSectionProps) {
-  const t = useTranslations('founder');
+export async function FounderSection({ locale }: FounderSectionProps) {
+  const t = await getTranslations('founder');
 
   return (
     <section className="py-20 bg-white dark:bg-gray-900 overflow-hidden">

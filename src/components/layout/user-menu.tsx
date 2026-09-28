@@ -4,17 +4,38 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { User, LogOut, Settings, LayoutDashboard, ChevronDown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { createClient } from '@/lib/supabase/client';
+
+// The Supabase browser client is loaded on demand. It is imported dynamically
+// rather than at module scope because this component sits in the header on
+// every route, so a static import dragged `@supabase/supabase-js` (~179 KB)
+// into the initial JS for the home page and every other page.
+const getSupabase = () => import('@/lib/supabase/client').then((m) => m.createClient());
+
+/**
+ * Cheap synchronous hint that an auth session might exist, read from the
+ * Supabase session cookie (`sb-<ref>-auth-token`) that `createBrowserClient`
+ * writes. A false positive just means we show the spinner and load the client;
+ * a false negative is not possible for a real logged-in session.
+ *
+ * This lets the vast majority of visits — logged-out readers — skip the
+ * ~179 KB Supabase client entirely instead of only deferring it.
+ */
+function hasAuthCookieHint(): boolean {
+  if (typeof document === 'undefined') return false;
+  return document.cookie
+    .split(';')
+    .some((c) => /^\s*sb-.*-auth-token/.test(c));
+}
 
 export function UserMenu({ locale }: { locale: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(hasAuthCookieHint);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const loadUser = useCallback(async () => {
     setIsLoading(true);
-    const supabase = createClient();
+    const supabase = await getSupabase();
     const { data: { user: authUser } } = await supabase.auth.getUser();
     
     if (authUser) {
@@ -36,23 +57,56 @@ export function UserMenu({ locale }: { locale: string }) {
   }, []);
 
   useEffect(() => {
-    loadUser();
+    // No session cookie means there is nothing to resolve: render the "Login"
+    // button without ever fetching the Supabase client.
+    if (!hasAuthCookieHint()) return;
 
-    // Listen for auth state changes
-    const supabase = createClient();
-    
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_OUT') {
-        setUser(null);
-      }
-      
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
-        loadUser();
-      }
-    });
+    // With a session present the auth check pulls in the ~179 KB Supabase
+    // client. Firing it on mount put that parse/execute inside the home page's
+    // LCP window, so it now waits until the visitor interacts or the menu opens,
+    // with a post-LCP timeout as the fallback.
+    let cancelled = false;
+    let started = false;
+    let unsubscribe: (() => void) | undefined;
+
+    const start = () => {
+      if (started || cancelled) return;
+      started = true;
+      teardownListeners();
+
+      loadUser();
+
+      getSupabase().then((supabase) => {
+        if (cancelled) return;
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+          if (event === 'SIGNED_OUT') {
+            setUser(null);
+          }
+
+          if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
+            loadUser();
+          }
+        });
+        unsubscribe = () => subscription.unsubscribe();
+      });
+    };
+
+    const events = ['scroll', 'click', 'keydown', 'touchstart', 'pointerdown'] as const;
+    const onInteract = () => start();
+    for (const e of events) {
+      window.addEventListener(e, onInteract, { once: true, passive: true });
+    }
+    const timer = window.setTimeout(start, 6000);
+
+    function teardownListeners() {
+      for (const e of events) window.removeEventListener(e, onInteract);
+      window.clearTimeout(timer);
+    }
 
     return () => {
-      subscription.unsubscribe();
+      cancelled = true;
+      teardownListeners();
+      unsubscribe?.();
     };
   }, [loadUser]);
 
@@ -60,8 +114,8 @@ export function UserMenu({ locale }: { locale: string }) {
     setIsLoggingOut(true);
     
     try {
-      const supabase = createClient();
-      
+      const supabase = await getSupabase();
+
       // Clear all auth data from browser
       await supabase.auth.signOut({ scope: 'global' });
       

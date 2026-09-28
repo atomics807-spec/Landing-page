@@ -4,10 +4,24 @@ const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Next.js 15.2+ streams metadata into the body for non-bot user agents and
+  // lets React hoist it client-side; only listed bots get it in <head>. That
+  // makes tooling which reads the raw HTML (Lighthouse's SEO audit included)
+  // report a missing description even though crawlers receive one. Disabling
+  // streaming keeps the tags in <head> for every client. Metadata generation
+  // here only reads already-loaded translations, so the added TTFB is small.
+  htmlLimitedBots: /./,
   experimental: {
     // Tree-shake the icon and animation libraries so above-the-fold hydration
     // only ships the symbols actually referenced.
     optimizePackageImports: ['lucide-react', 'framer-motion'],
+    // One stylesheet per route instead of per-chunk, so styles are not injected
+    // in waves that re-trigger style/layout during the LCP window.
+    //
+    // Note: `experimental.inlineCss` was tried and reverted. It grew the HTML
+    // from ~154 kB to ~364 kB, which costs more under mobile throttling than the
+    // saved stylesheet round trip.
+    cssChunking: 'strict',
   },
   images: {
     // AVIF first for the smallest payloads, WebP as the fallback for browsers
