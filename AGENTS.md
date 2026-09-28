@@ -186,3 +186,19 @@ or the component dropped).
 - After these: home mobile perf 94-96, SEO 100, a11y 100; `/about` and
   `/services` 92-93 perf, SEO 100. Remaining best-practices ding is the Vercel
   analytics 404/MIME console error, which only occurs locally.
+
+## `next/image` `fill` needs a positioned wrapper
+
+Commit `5bf1544` converted several `<img>` tags to `<Image fill>` for LCP. `fill`
+sets `position: absolute`, so the image sizes and positions against its nearest
+*positioned* ancestor. If the wrapper has no `relative`, that ancestor is the
+viewport and the image explodes to full-screen below the header.
+
+`/en/about` was missed (the home hero/founder/about-section wrappers were all
+given `relative`, the About page one was not). Fix was `relative` on the
+`aspect-[3/4]` wrapper. When converting an image to `fill`, always add `relative`
+to the immediate wrapper; `fill` also already implies `w-full h-full`, so those
+classes and any viewport-relative `sizes` hint are redundant.
+
+Also note `/en/about` has a pre-existing `color-contrast` finding on
+`text-primary-100` (a11y 96, still green).
