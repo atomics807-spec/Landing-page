@@ -112,13 +112,13 @@ export default function AboutClientPage() {
               <p className="text-2xl font-heading font-bold text-gray-900 dark:text-white italic">{t('founder.signature')}</p>
             </div>
             <div className="order-1 lg:order-2">
-              <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-xl">
+              <div className="relative aspect-[3/4] max-w-md mx-auto lg:mx-0 rounded-2xl overflow-hidden shadow-xl">
                 <Image
                   src="/founder.jpg"
                   alt={t('founder.name')}
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="w-full h-full object-cover"
+                  className="object-cover"
                 />
               </div>
             </div>
