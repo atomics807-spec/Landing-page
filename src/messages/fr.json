@@ -31,7 +31,71 @@
     "register": "S'inscrire",
     "profile": "Profil",
     "welcome": "Bienvenue",
-    "copyright": "Tous droits réservés"
+    "copyright": "Tous droits réservés",
+    "internalLinks": {
+      "eyebrow": "Explorez Notre Site",
+      "title": "Tout ce que Paraysco Consulting Propose",
+      "subtitle": "Parcourez chaque domaine de notre activité — des services et propriétés à notre équipe, nos articles et nos carrières.",
+      "description": "Chaque page ci-dessous est disponible en anglais et en français.",
+      "items": {
+        "about": {
+          "title": "À propos de Paraysco",
+          "description": "Notre histoire, notre vision, notre mission et les valeurs qui guident une décennie de conseil multidisciplinaire en Afrique."
+        },
+        "services": {
+          "title": "Services de Conseil",
+          "description": "Immobilier, ingénierie, construction, approvisionnement, conseil en investissement et conseil aux entreprises réunis."
+        },
+        "properties": {
+          "title": "Propriétés à Vendre & à Louer",
+          "description": "Parcourez les annonces résidentielles, commerciales, foncières et industrielles avec prix et détails complets."
+        },
+        "products": {
+          "title": "Produits & Matériaux",
+          "description": "Équipements, matériaux et gammes de produits que nous fournissons aux projets de la région."
+        },
+        "sourcing": {
+          "title": "Services de Sourcing",
+          "description": "Approvisionnement international et sourcing de chaîne d'approvisionnement pour une livraison fiable et rentable."
+        },
+        "consultants": {
+          "title": "Nos Consultants",
+          "description": "Rencontrez les spécialistes qui dirigent nos missions de conseil dans plusieurs disciplines."
+        },
+        "team": {
+          "title": "Notre Équipe",
+          "description": "Les professionnels qui livrent chaque jour des solutions d'ingénierie, de construction et d'affaires."
+        },
+        "gallery": {
+          "title": "Galerie de Projets",
+          "description": "Photos et flyers de projets réalisés, de chantiers et d'activités de l'entreprise."
+        },
+        "blog": {
+          "title": "Articles & Blog",
+          "description": "Guides, analyses et actualités sur l'immobilier, l'ingénierie, l'investissement et les affaires en Afrique."
+        },
+        "careers": {
+          "title": "Carrières",
+          "description": "Postes ouverts et opportunités pour bâtir votre carrière chez Paraysco Consulting."
+        },
+        "contact": {
+          "title": "Contactez-nous",
+          "description": "Joignez nos bureaux de Limbe et Lagos, ou envoyez-nous un message directement."
+        },
+        "privacy": {
+          "title": "Politique de Confidentialité",
+          "description": "Comment nous collectons, utilisons et protégeons vos informations personnelles."
+        },
+        "terms": {
+          "title": "Conditions d'Utilisation",
+          "description": "Les conditions régissant l'accès à notre site et son utilisation."
+        },
+        "cookies": {
+          "title": "Politique des Cookies",
+          "description": "Comment nous utilisons les cookies et technologies similaires sur ce site."
+        }
+      }
+    }
   },
   "navigation": {
     "announcement": "Construire des Partenariats Durables • Excellence Professionnelle",
@@ -335,7 +399,8 @@
     "cookies": "Politique des Cookies",
     "contactUs": "Contactez-nous",
     "generalInquiries": "Demandes Générales",
-    "clientSupport": "Support Client"
+    "clientSupport": "Support Client",
+    "explore": "Explorer"
   },
   "privacy": {
     "title": "Politique de Confidentialité",

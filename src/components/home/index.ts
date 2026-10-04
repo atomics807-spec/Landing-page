@@ -8,3 +8,4 @@ export { TestimonialsSection } from './testimonials-section';
 export { CTASection } from './cta-section';
 export { FAQSection } from './faq-section';
 export { NewsletterSection } from './newsletter-section';
+export { ExploreLinksSection } from './explore-links-section';

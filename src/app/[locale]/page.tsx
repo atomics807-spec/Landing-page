@@ -31,6 +31,7 @@ import {
   CTASection,
   FAQSection,
   NewsletterSection,
+  ExploreLinksSection,
 } from '@/components/home';
 import { RevealObserver } from '@/components/ui/reveal-observer';
 
@@ -51,6 +52,7 @@ export default async function HomePage({ params }: HomePageProps) {
       <FAQSection />
       <CTASection locale={locale as Locale} />
       <NewsletterSection />
+      <ExploreLinksSection locale={locale as Locale} />
     </>
   );
 }

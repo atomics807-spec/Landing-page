@@ -31,7 +31,71 @@
     "register": "Register",
     "profile": "Profile",
     "welcome": "Welcome",
-    "copyright": "All rights reserved"
+    "copyright": "All rights reserved",
+    "internalLinks": {
+      "eyebrow": "Explore Our Website",
+      "title": "Everything Paraysco Consulting Offers",
+      "subtitle": "Browse every area of our practice — from services and properties to our team, insights, and careers.",
+      "description": "Every page below is available in English and French.",
+      "items": {
+        "about": {
+          "title": "About Paraysco",
+          "description": "Our story, vision, mission, and the values behind a decade of multidisciplinary consulting across Africa."
+        },
+        "services": {
+          "title": "Consulting Services",
+          "description": "Real estate, engineering, construction, procurement, investment advisory, and business consultancy under one roof."
+        },
+        "properties": {
+          "title": "Properties for Sale & Rent",
+          "description": "Browse residential, commercial, land, and industrial listings with pricing and full details."
+        },
+        "products": {
+          "title": "Products & Materials",
+          "description": "Equipment, materials, and product lines we supply to projects across the region."
+        },
+        "sourcing": {
+          "title": "Sourcing Services",
+          "description": "International procurement and supply-chain sourcing for reliable, cost-effective delivery."
+        },
+        "consultants": {
+          "title": "Our Consultants",
+          "description": "Meet the specialists who lead our advisory engagements across multiple disciplines."
+        },
+        "team": {
+          "title": "Our Team",
+          "description": "The professionals delivering engineering, construction, and business solutions every day."
+        },
+        "gallery": {
+          "title": "Project Gallery",
+          "description": "Photos and flyers from completed projects, sites, and company activities."
+        },
+        "blog": {
+          "title": "Insights & Blog",
+          "description": "Guides, analysis, and updates on real estate, engineering, investment, and business in Africa."
+        },
+        "careers": {
+          "title": "Careers",
+          "description": "Open roles and opportunities to build your career with Paraysco Consulting."
+        },
+        "contact": {
+          "title": "Contact Us",
+          "description": "Reach our offices in Limbe and Lagos, or send us a message directly."
+        },
+        "privacy": {
+          "title": "Privacy Policy",
+          "description": "How we collect, use, and protect your personal information."
+        },
+        "terms": {
+          "title": "Terms of Service",
+          "description": "The terms governing access to and use of our website."
+        },
+        "cookies": {
+          "title": "Cookie Policy",
+          "description": "How we use cookies and similar technologies on this website."
+        }
+      }
+    }
   },
   "navigation": {
     "announcement": "Building Sustainable Partnerships • Delivering Professional Excellence",
@@ -335,7 +399,8 @@
     "cookies": "Cookie Policy",
     "contactUs": "Contact Us",
     "generalInquiries": "General Inquiries",
-    "clientSupport": "Client Support"
+    "clientSupport": "Client Support",
+    "explore": "Explore"
   },
   "privacy": {
     "title": "Privacy Policy",

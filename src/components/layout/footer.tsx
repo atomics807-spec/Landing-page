@@ -34,6 +34,17 @@ export async function Footer({ locale }: FooterProps) {
     { label: tNav('contact'), href: `/${locale}/contact` },
   ];
 
+  // Secondary routes surfaced from every page so crawlers can reach the whole
+  // site through real anchor tags rather than the client-side menus alone.
+  const exploreLinks = [
+    { label: tNav('products'), href: `/${locale}/products` },
+    { label: tNav('sourcing'), href: `/${locale}/sourcing` },
+    { label: tNav('consultants'), href: `/${locale}/consultants` },
+    { label: tNav('team'), href: `/${locale}/team` },
+    { label: tNav('gallery'), href: `/${locale}/gallery` },
+    { label: tNav('careers'), href: `/${locale}/careers` },
+  ];
+
   const services = [
     { label: tServices('realEstate.title'), href: `/${locale}/services#real-estate` },
     { label: tServices('engineering.title'), href: `/${locale}/services#engineering` },
@@ -54,7 +65,7 @@ export async function Footer({ locale }: FooterProps) {
     <footer className="bg-gray-900 text-gray-300">
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
@@ -123,6 +134,23 @@ export async function Footer({ locale }: FooterProps) {
             </ul>
           </div>
 
+          {/* Explore — secondary pages, linked from every page */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-4">{t('explore')}</h3>
+            <ul className="space-y-3">
+              {exploreLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm hover:text-primary-400 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Contact Info */}
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">{t('connect')}</h3>
@@ -152,7 +180,7 @@ export async function Footer({ locale }: FooterProps) {
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">{t('generalInquiries')}</p>
                     <a 
-                      href="mailto:info@://parayscoconsulting.com" 
+                      href="mailto:info@parayscoconsulting.com" 
                       className="text-sm text-white hover:text-primary-400 transition-colors block break-all font-medium"
                     >
                       info@parayscoconsulting.com
@@ -161,7 +189,7 @@ export async function Footer({ locale }: FooterProps) {
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">{t('clientSupport')}</p>
                     <a 
-                      href="mailto:support@://parayscoconsulting.com" 
+                      href="mailto:support@parayscoconsulting.com" 
                       className="text-sm text-white hover:text-primary-400 transition-colors block break-all font-medium"
                     >
                       support@parayscoconsulting.com
