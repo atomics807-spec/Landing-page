@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { Facebook, Twitter, Linkedin, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import type { Locale } from '@/i18n';
+import { subsidiaries, getSubsidiaryPath } from '@/lib/subsidiaries';
 
 // Custom TikTok Icon
 function TikTokIcon({ className }: { className?: string }) {
@@ -22,6 +23,7 @@ export async function Footer({ locale }: FooterProps) {
   const t = await getTranslations('footer');
   const tNav = await getTranslations('navigation');
   const tServices = await getTranslations('services');
+  const tSub = await getTranslations('subcompanies');
 
   const currentYear = new Date().getFullYear();
 
@@ -65,7 +67,7 @@ export async function Footer({ locale }: FooterProps) {
     <footer className="bg-gray-900 text-gray-300">
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
@@ -145,6 +147,24 @@ export async function Footer({ locale }: FooterProps) {
                     className="text-sm hover:text-primary-400 transition-colors"
                   >
                     {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Subsidiary Companies — real anchors so crawlers can reach the
+              landing pages from every page */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-4">{tNav('subcompanies')}</h3>
+            <ul className="space-y-3">
+              {subsidiaries.map((company) => (
+                <li key={company.slug}>
+                  <Link
+                    href={getSubsidiaryPath(locale, company.slug)}
+                    className="text-sm hover:text-primary-400 transition-colors"
+                  >
+                    {tSub(`${company.key}.name`)}
                   </Link>
                 </li>
               ))}

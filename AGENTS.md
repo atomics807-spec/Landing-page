@@ -202,3 +202,32 @@ classes and any viewport-relative `sizes` hint are redundant.
 
 Also note `/en/about` has a pre-existing `color-contrast` finding on
 `text-primary-100` (a11y 96, still green).
+
+## Subsidiary company landing pages (2026-10)
+
+Each subsidiary now has a logo and a dedicated landing page.
+
+- `src/lib/subsidiaries.ts` is the single source of truth: `key` (matches the
+  `subcompanies` / `subsidiaries` translation namespaces), `slug`, `logo`,
+  `icon` and a `brand` block (Tailwind gradient + hex accent). The brand classes
+  are written as literals so Tailwind's content scanner keeps them; accent
+  colours are sampled from each logo (Express navy/gold, Elohim navy/sky, House
+  Of Pat lavender).
+- Logos live in `public/subcompanies/{paraysco-express,elohim-azar,house-of-pat}.jpg`.
+  They were supplied with light backgrounds, so the cards render them on a
+  tinted plate (`brand.accentSoftBg`) rather than a dark gradient.
+- `src/app/[locale]/subsidiaries/[slug]/page.tsx` is a server component:
+  `generateStaticParams` prerenders all three (SSG, 478 B / 111 kB), `notFound()`
+  on an unknown slug, per-page `generateMetadata` with canonical + hreflang +
+  OpenGraph, and an `Organization` JSON-LD block. Sections: hero with logo plate,
+  About, Services, Why Choose Us, Other Companies, CTA. `RevealObserver` is
+  mounted here too so the `.reveal` wrappers animate on this page (it is normally
+  mounted by the home page only).
+- `SubcompaniesSection` and the footer now link to `/${locale}/subsidiaries/<slug>`;
+  the sitemap emits the three routes for every locale. The footer grid was widened
+  from `lg:grid-cols-5` to `lg:grid-cols-3 xl:grid-cols-6` to fit the new
+  "Subsidiary Companies" column.
+- When adding a company: append to `subsidiaries`, add `subsidiaries.<key>`
+  (tagline/heroSubtitle/about/services/highlights) and
+  `meta.subsidiaries.<key>` to both message files. `next build` prerenders it
+  automatically.

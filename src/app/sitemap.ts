@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import { getSiteUrl } from '@/lib/seo';
 import { locales } from '@/i18n';
+import { subsidiaries } from '@/lib/subsidiaries';
 
 /**
  * Sitemap queries Supabase for indexable dynamic content, so it must not be
@@ -142,6 +143,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       entries.push({
         url: `${baseUrl}/${locale}${route}`,
         alternates: localeAlternates(baseUrl, route),
+      });
+    }
+  }
+
+  // Subsidiary company landing pages (one per company, under every locale).
+  for (const company of subsidiaries) {
+    const path = `/subsidiaries/${company.slug}`;
+    for (const locale of locales) {
+      entries.push({
+        url: `${baseUrl}/${locale}${path}`,
+        alternates: localeAlternates(baseUrl, path),
       });
     }
   }

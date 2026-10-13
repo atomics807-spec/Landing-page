@@ -778,6 +778,193 @@
     "cookies": {
       "title": "Politique de Cookies | Paraysco Consulting",
       "description": "Découvrez comment Paraysco Consulting utilise les cookies et technologies similaires pour améliorer votre expérience de navigation."
+    },
+    "subsidiaries": {
+      "parayscoExpress": {
+        "title": "Paraysco Express | Services de Logistique et Livraison",
+        "description": "Paraysco Express est la société logistique du Groupe Paraysco : livraison de repas, colis, courses, ramassage et dépôt et envoi express à Limbe, Buea et dans la Région du Sud-Ouest."
+      },
+      "elohimAzar": {
+        "title": "Elohim Azar Speedboat Services | Transport Maritime",
+        "description": "Elohim Azar Speedboat Services offre un transport maritime haut de gamme au Cameroun : passagers, affrètements privés, location d'entreprise, tourisme, urgences et fret."
+      },
+      "houseOfPat": {
+        "title": "House Of Pat | Tissus de Luxe et Mode Nuptiale",
+        "description": "House Of Pat est un détaillant de mode de luxe proposant des dentelles haut de gamme, des collections nuptiales, des pochettes de luxe, la vente en gros et des conseils de style."
+      }
+    }
+  },
+  "subsidiaries": {
+    "backToGroup": "Groupe Paraysco",
+    "eyebrow": "Une société du Groupe Paraysco",
+    "aboutTitle": "À propos de la société",
+    "servicesTitle": "Nos Services",
+    "servicesSubtitle": "Ce que nous offrons à nos clients.",
+    "whyTitle": "Pourquoi Nous Choisir",
+    "whySubtitle": "Les atouts sur lesquels nos clients s'appuient.",
+    "otherCompanies": "Découvrez Nos Autres Sociétés",
+    "otherSubtitle": "Explorez le reste du Groupe Paraysco.",
+    "cta": {
+      "title": "Prêt à travailler avec nous ?",
+      "subtitle": "Parlez à notre équipe et trouvons ensemble la solution adaptée.",
+      "contact": "Nous Contacter",
+      "exploreGroup": "Voir Toutes les Sociétés"
+    },
+    "parayscoExpress": {
+      "tagline": "Nous livrons à l'heure, à chaque fois",
+      "heroSubtitle": "Une livraison rapide, fiable et technologique pour les particuliers et les entreprises à Limbe, Buea et dans la Région du Sud-Ouest.",
+      "about": [
+        "Paraysco Express est la branche logistique et livraison du Groupe Paraysco. Nous relions particuliers et entreprises grâce à une livraison fiable, le jour même ou programmée, appuyée par une technologie simple qui garde chaque commande visible du ramassage à la livraison.",
+        "D'un repas chaud à un document urgent, nos coursiers et notre équipe de répartition reposent sur une seule promesse : votre livraison arrive à l'heure, à chaque fois. Nous servons les ménages, les restaurants, les vendeurs en ligne et les entreprises qui ont besoin d'un coursier fiable."
+      ],
+      "services": [
+        {
+          "title": "Livraison de Repas",
+          "description": "Livraison rapide et respectueuse de la température pour les restaurants et vendeurs de nourriture."
+        },
+        {
+          "title": "Livraison de Colis",
+          "description": "Livraison de colis le jour même ou programmée pour les vendeurs en ligne, bureaux et particuliers."
+        },
+        {
+          "title": "Services de Courses",
+          "description": "Déléguez vos courses quotidiennes, du marché au dépôt de documents, à un coursier de confiance."
+        },
+        {
+          "title": "Ramassage & Dépôt",
+          "description": "Ramassage et dépôt porte-à-porte avec suivi en direct à chaque étape."
+        },
+        {
+          "title": "Envoi Express",
+          "description": "Traitement prioritaire des envois urgents, avec le délai le plus court possible."
+        },
+        {
+          "title": "Logistique d'Entreprise",
+          "description": "Tournées récurrentes et tarifs de compte pour les entreprises ayant des besoins réguliers."
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Promesse de Ponctualité",
+          "description": "Des délais que nous tenons, avec des mises à jour proactives en cas de changement."
+        },
+        {
+          "title": "Suivi en Direct",
+          "description": "Sachez où se trouve votre livraison à chaque instant, du ramassage à la remise."
+        },
+        {
+          "title": "Coursiers Formés",
+          "description": "Des coursiers professionnels et vérifiés qui traitent chaque colis avec soin."
+        },
+        {
+          "title": "Prix Justes et Clairs",
+          "description": "Des tarifs transparents sans frais cachés, et des tarifs de compte pour les clients réguliers."
+        }
+      ]
+    },
+    "elohimAzar": {
+      "tagline": "Service de Transport en Vedette Rapide",
+      "heroSubtitle": "Transport maritime et logistique haut de gamme pour passagers et marchandises le long des côtes camerounaises.",
+      "about": [
+        "Elohim Azar Speedboat Services est la société de transport maritime du Groupe Paraysco. Nous déplaçons personnes et marchandises rapidement et en toute sécurité sur les routes côtières et fluviales où le transport routier est lent ou impossible.",
+        "Notre flotte et notre équipage sont conçus autour de la sécurité et de la fiabilité. Que ce soit pour un trajet quotidien, une sortie d'entreprise ou un fret urgent, nous offrons un service professionnel avec des capitaines expérimentés et des embarcations bien entretenues."
+      ],
+      "services": [
+        {
+          "title": "Transport de Passagers",
+          "description": "Voyages en vedette rapide confortables et programmés pour les navetteurs et les voyageurs."
+        },
+        {
+          "title": "Services d'Affrètement",
+          "description": "Affrètements privés pour groupes, événements et excursions selon votre horaire."
+        },
+        {
+          "title": "Location d'Entreprise",
+          "description": "Transport maritime dédié aux entreprises déplaçant personnel, invités et équipements."
+        },
+        {
+          "title": "Tourisme & Excursions",
+          "description": "Sorties côtières panoramiques pour les visiteurs découvrant le Cameroun par l'eau."
+        },
+        {
+          "title": "Intervention Maritime d'Urgence",
+          "description": "Transport maritime à réponse rapide pour les situations urgentes et critiques."
+        },
+        {
+          "title": "Cargaison & Fret",
+          "description": "Acheminement fiable de marchandises sur les voies navigables, y compris les zones difficiles d'accès."
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Capitaines Expérimentés",
+          "description": "Équipage agréé avec une connaissance approfondie des eaux et conditions locales."
+        },
+        {
+          "title": "Sécurité Avant Tout",
+          "description": "Embarcations entretenues, gilets de sauvetage et contrôles de sécurité avant chaque trajet."
+        },
+        {
+          "title": "Horaires Flexibles",
+          "description": "Départs programmés et affrètements privés adaptés à votre emploi du temps."
+        },
+        {
+          "title": "Plus Rapide que la Route",
+          "description": "Réduisez fortement les temps de trajet là où les routes sont lentes ou peu fiables."
+        }
+      ]
+    },
+    "houseOfPat": {
+      "tagline": "Des Choix Infinis, une Qualité Exceptionnelle",
+      "heroSubtitle": "Vente au détail de mode de luxe spécialisée dans les tissus haut de gamme, les collections nuptiales et les accessoires.",
+      "about": [
+        "House Of Pat est la société de mode et de style de vie du Groupe Paraysco. Nous sélectionnons des tissus en dentelle haut de gamme, des pièces nuptiales et des accessoires de luxe pour les clients qui apprécient la qualité, l'artisanat et l'élégance.",
+        "Que vous prépariez un mariage, achetiez du tissu en gros pour votre propre marque ou cherchiez l'accessoire parfait, notre équipe vous aide à trouver des pièces aussi agréables à porter que belles à voir. Nous allions une collection soigneusement choisie à des conseils de style personnalisés."
+      ],
+      "services": [
+        {
+          "title": "Tissus en Dentelle de Luxe",
+          "description": "Sélections de dentelles et tissus de haute qualité pour les grandes occasions et la couture."
+        },
+        {
+          "title": "Collection Nuptiale",
+          "description": "Tissus et pièces nuptiales sélectionnés pour sublimer les mariées et leur entourage."
+        },
+        {
+          "title": "Pochettes de Luxe",
+          "description": "Pochettes élégantes et accessoires remarquables pour parfaire toute tenue."
+        },
+        {
+          "title": "Vente en Gros",
+          "description": "Approvisionnement en gros fiable pour créateurs, tailleurs et détaillants à prix compétitifs."
+        },
+        {
+          "title": "Conseils de Style",
+          "description": "Des conseils personnalisés pour associer tissus, couleurs et accessoires en toute confiance."
+        },
+        {
+          "title": "Commandes Personnalisées",
+          "description": "Recherche et commandes sur mesure pour des pièces hors collection standard."
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Qualité Sélectionnée",
+          "description": "Chaque pièce est choisie pour son artisanat, sa texture et sa finition."
+        },
+        {
+          "title": "Spécialistes du Nuptial",
+          "description": "Accompagnement dédié des mariées et de leur entourage, de la sélection au style."
+        },
+        {
+          "title": "Prix de Gros",
+          "description": "Tarifs compétitifs pour créateurs, tailleurs et revendeurs achetant en gros."
+        },
+        {
+          "title": "Style Personnalisé",
+          "description": "Des conseils individuels pour repartir avec des pièces qui vous conviennent vraiment."
+        }
+      ]
     }
   }
 }

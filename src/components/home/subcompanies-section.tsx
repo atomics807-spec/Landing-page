@@ -1,40 +1,19 @@
 import { getTranslations } from 'next-intl/server';
 import { Reveal } from '@/components/ui/reveal';
 import Link from 'next/link';
-import { ArrowRight, Truck, Ship, ShoppingBag, CheckCircle } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Locale } from '@/i18n';
+import { subsidiaries, getSubsidiaryPath } from '@/lib/subsidiaries';
 
 interface SubcompaniesSectionProps {
   locale: Locale;
 }
 
-const iconMap = {
-  parayscoExpress: Truck,
-  elohimAzar: Ship,
-  houseOfPat: ShoppingBag,
-};
-
 export async function SubcompaniesSection({ locale }: SubcompaniesSectionProps) {
   const t = await getTranslations('subcompanies');
-
-  const subcompanies = [
-    {
-      key: 'parayscoExpress',
-      color: 'bg-gradient-to-br from-blue-500 to-blue-600',
-      features: ['Food Delivery', 'Package Delivery', 'Errand Services'],
-    },
-    {
-      key: 'elohimAzar',
-      color: 'bg-gradient-to-br from-cyan-500 to-cyan-600',
-      features: ['Passenger Transport', 'Charter Services', 'Emergency Marine'],
-    },
-    {
-      key: 'houseOfPat',
-      color: 'bg-gradient-to-br from-pink-500 to-pink-600',
-      features: ['Luxury Lace Fabrics', 'Bridal Collection', 'Styling Advice'],
-    },
-  ];
+  const tCommon = await getTranslations('common');
 
   return (
     <section className="py-20 bg-gray-50 dark:bg-gray-800/50" id="subcompanies">
@@ -49,29 +28,36 @@ export async function SubcompaniesSection({ locale }: SubcompaniesSectionProps) 
         </Reveal>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {subcompanies.map((company, index) => {
-            const Icon = iconMap[company.key as keyof typeof iconMap];
+          {subsidiaries.map((company) => {
+            const name = t(`${company.key}.name`);
+            const href = getSubsidiaryPath(locale, company.slug);
 
             return (
-              <Reveal variant="up">
+              <Reveal key={company.key} variant="up" className="h-full">
                 <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group h-full flex flex-col">
-                  {/* Header */}
-                  <div className={`${company.color} p-8 text-white`}>
-                    <div className="w-16 h-16 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <Icon className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">
-                      {t(`${company.key}.name`)}
-                    </h3>
-                    <p className="text-white/80 text-sm">
-                      {t(`${company.key}.description`)}
-                    </p>
+                  {/* Logo panel — the supplied logos sit on a light background, so
+                      they rest on a tinted plate rather than the brand gradient. */}
+                  <div className={`relative h-44 ${company.brand.accentSoftBg}`}>
+                    <Image
+                      src={company.logo}
+                      alt={`${name} logo`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain p-6 transition-transform duration-300 group-hover:scale-105"
+                    />
                   </div>
 
                   {/* Content */}
                   <div className="p-8 flex-1 flex flex-col">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                      {name}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">
+                      {t(`${company.key}.description`)}
+                    </p>
+
                     <div className="space-y-3 mb-6 flex-1">
-                      {(t.raw(`${company.key}.services`) as string[]).map((service, i) => (
+                      {(t.raw(`${company.key}.services`) as string[]).slice(0, 3).map((service, i) => (
                         <div key={i} className="flex items-start space-x-3">
                           <CheckCircle className="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" />
                           <span className="text-sm text-gray-600 dark:text-gray-300">
@@ -86,9 +72,9 @@ export async function SubcompaniesSection({ locale }: SubcompaniesSectionProps) 
                       variant="outline"
                       className="w-full group-hover:bg-primary-50 group-hover:border-primary-600"
                     >
-                      <Link href={`/${locale}/contact`}>
-                        Learn More
-                        <span className="sr-only"> about {t(`${company.key}.name`)}</span>
+                      <Link href={href}>
+                        {tCommon('learnMore')}
+                        <span className="sr-only"> about {name}</span>
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>

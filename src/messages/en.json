@@ -778,6 +778,193 @@
     "cookies": {
       "title": "Cookie Policy | Paraysco Consulting",
       "description": "Learn how Paraysco Consulting uses cookies and similar technologies to improve your browsing experience."
+    },
+    "subsidiaries": {
+      "parayscoExpress": {
+        "title": "Paraysco Express | Logistics & Delivery Services",
+        "description": "Paraysco Express is the Paraysco Group's logistics company, offering food delivery, parcel courier, errands, pickup & drop-off and express shipping across Limbe, Buea and Cameroon's South West Region."
+      },
+      "elohimAzar": {
+        "title": "Elohim Azar Speedboat Services | Marine Transport",
+        "description": "Elohim Azar Speedboat Services provides premium marine transport in Cameroon: passenger travel, private charters, corporate hire, tourism excursions, emergency response and cargo."
+      },
+      "houseOfPat": {
+        "title": "House Of Pat | Luxury Fabrics & Bridal Fashion",
+        "description": "House Of Pat is a luxury fashion retailer offering premium lace fabrics, bridal collections, luxury clutches, bulk supply and personal styling advice."
+      }
+    }
+  },
+  "subsidiaries": {
+    "backToGroup": "Paraysco Group",
+    "eyebrow": "A Paraysco Group Company",
+    "aboutTitle": "About the Company",
+    "servicesTitle": "Our Services",
+    "servicesSubtitle": "What we deliver for our customers.",
+    "whyTitle": "Why Choose Us",
+    "whySubtitle": "The strengths our customers rely on.",
+    "otherCompanies": "Explore Our Other Companies",
+    "otherSubtitle": "Discover the rest of the Paraysco Group.",
+    "cta": {
+      "title": "Ready to work with us?",
+      "subtitle": "Talk to the team and let us find the right solution for you.",
+      "contact": "Contact Us",
+      "exploreGroup": "View All Companies"
+    },
+    "parayscoExpress": {
+      "tagline": "We Deliver On Time, Every Time",
+      "heroSubtitle": "Fast, reliable and technology-driven delivery for individuals and businesses across Limbe, Buea and the South West Region.",
+      "about": [
+        "Paraysco Express is the logistics and delivery arm of the Paraysco Group. We connect people and businesses with dependable same-day and scheduled delivery, backed by simple technology that keeps every order visible from pickup to drop-off.",
+        "From a hot meal to a time-critical document, our riders and dispatch team are built around one promise: your delivery arrives on time, every time. We serve households, restaurants, online sellers and corporate clients who need a courier they can rely on."
+      ],
+      "services": [
+        {
+          "title": "Food Delivery",
+          "description": "Temperature-conscious, rapid delivery for restaurants and food vendors, so meals arrive fresh and on schedule."
+        },
+        {
+          "title": "Package & Parcel Delivery",
+          "description": "Same-day and scheduled parcel delivery for online sellers, offices and individuals across the region."
+        },
+        {
+          "title": "Errand Services",
+          "description": "Delegate everyday errands, from market runs to document submission, to a trusted courier."
+        },
+        {
+          "title": "Pickup & Drop-off",
+          "description": "Door-to-door pickup and drop-off with live status updates at every stage of the trip."
+        },
+        {
+          "title": "Express Shipping",
+          "description": "Priority handling for urgent items that cannot wait, with the shortest possible turnaround."
+        },
+        {
+          "title": "Business Logistics",
+          "description": "Recurring delivery routes and account pricing for businesses with regular dispatch needs."
+        }
+      ],
+      "highlights": [
+        {
+          "title": "On-Time Promise",
+          "description": "Schedules we hold ourselves to, with proactive updates if anything changes."
+        },
+        {
+          "title": "Live Order Tracking",
+          "description": "Know where your delivery is at every moment, from pickup to drop-off."
+        },
+        {
+          "title": "Trained Couriers",
+          "description": "Vetted, professional riders who handle every item with care."
+        },
+        {
+          "title": "Fair, Clear Pricing",
+          "description": "Transparent rates with no hidden charges, plus account pricing for regular clients."
+        }
+      ]
+    },
+    "elohimAzar": {
+      "tagline": "Speedboat Transport Service",
+      "heroSubtitle": "Premium marine transport and logistics for passengers and cargo across Cameroon's coastal waters.",
+      "about": [
+        "Elohim Azar Speedboat Services is the marine transport company of the Paraysco Group. We move people and cargo quickly and safely across coastal and river routes where road travel is slow or impossible.",
+        "Our fleet and crew are built around safety and reliability. Whether you are commuting, hosting a corporate outing or moving time-sensitive freight, we provide a professional service with experienced captains and well-maintained vessels."
+      ],
+      "services": [
+        {
+          "title": "Passenger Transport",
+          "description": "Comfortable, scheduled speedboat travel for commuters and travellers along coastal routes."
+        },
+        {
+          "title": "Charter Services",
+          "description": "Private charters for groups, events and trips tailored to your schedule and destination."
+        },
+        {
+          "title": "Corporate Hire",
+          "description": "Dedicated marine transport for companies moving staff, guests and equipment."
+        },
+        {
+          "title": "Tourism & Excursions",
+          "description": "Scenic coastal trips and excursions for visitors exploring Cameroon by water."
+        },
+        {
+          "title": "Emergency Marine Response",
+          "description": "Rapid response marine transport for urgent and time-critical situations."
+        },
+        {
+          "title": "Cargo & Freight",
+          "description": "Reliable movement of goods and freight across waterways, including hard-to-reach locations."
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Experienced Captains",
+          "description": "Licensed crew with deep knowledge of local waters and conditions."
+        },
+        {
+          "title": "Safety First",
+          "description": "Well-maintained vessels, life jackets and pre-trip safety checks on every journey."
+        },
+        {
+          "title": "Flexible Scheduling",
+          "description": "Scheduled departures and private charters that fit your timetable."
+        },
+        {
+          "title": "Faster Than Road",
+          "description": "Cut travel time dramatically on routes where roads are slow or unreliable."
+        }
+      ]
+    },
+    "houseOfPat": {
+      "tagline": "Endless Choices, Exceptional Quality",
+      "heroSubtitle": "Luxury fashion retail specialising in premium fabrics, bridal collections and statement accessories.",
+      "about": [
+        "House Of Pat is the fashion and lifestyle company of the Paraysco Group. We curate premium lace fabrics, bridal pieces and luxury accessories for customers who value quality, craftsmanship and elegance.",
+        "Whether you are dressing for a wedding, sourcing fabric in bulk for your own label or looking for the perfect finishing accessory, our team helps you find pieces that feel as good as they look. We combine a carefully chosen collection with personal styling guidance."
+      ],
+      "services": [
+        {
+          "title": "Luxury Lace Fabrics",
+          "description": "Hand-picked, high-quality lace and fabric selections for special occasions and tailoring."
+        },
+        {
+          "title": "Bridal Collection",
+          "description": "Curated bridal fabrics and pieces to help brides and their parties look their best."
+        },
+        {
+          "title": "Luxury Clutches",
+          "description": "Elegant clutches and statement accessories to complete any outfit."
+        },
+        {
+          "title": "Bulk & Wholesale Supply",
+          "description": "Reliable bulk supply for designers, tailors and retailers at competitive prices."
+        },
+        {
+          "title": "Styling Advice",
+          "description": "Personal guidance to help you match fabrics, colours and accessories with confidence."
+        },
+        {
+          "title": "Custom Orders",
+          "description": "Sourcing and custom requests for pieces that are not part of the standard collection."
+        }
+      ],
+      "highlights": [
+        {
+          "title": "Hand-Picked Quality",
+          "description": "Every piece is selected for craftsmanship, texture and finish."
+        },
+        {
+          "title": "Bridal Specialists",
+          "description": "Dedicated support for brides and wedding parties from selection to styling."
+        },
+        {
+          "title": "Wholesale Pricing",
+          "description": "Competitive rates for designers, tailors and resellers buying in bulk."
+        },
+        {
+          "title": "Personal Styling",
+          "description": "One-to-one advice so you leave with pieces that truly suit you."
+        }
+      ]
     }
   }
 }
